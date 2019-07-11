@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>My First Bootstrap Page</h1>
+    <p>This is some text.</p>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">temperature</th>
+            <th scope="col">humidity</th>
+            <th scope="col">pressure</th>
+            <th scope="col">created</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for dt in db_data %}
+            <tr>
+                <th scope="row">{{ dt['id'] }}</th>
+                <td>{{ dt['temperature'] }}</td>
+                <td>{{ dt['humidity'] }}</td>
+                <td>{{ dt['pressure'] }}</td>
+                <td>{{ dt['created'].strftime('%Y-%m-%d %I:%M') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
