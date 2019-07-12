@@ -1,120 +1,1 @@
-{% extends 'sensors/sensors.html' %}
-
-{% block graphics_name %}
-    <h3 class="h3" style="color: #F9AA33">{% block title %}Temperature BME280{% endblock %}</h3>
-{% endblock %}
-
-{% block graphics_data %}
-
-    <div>
-        <canvas id="canvas" style="display: block; height: auto; width: auto;"
-                class="chartjs-render-monitor"></canvas>
-    </div>
-
-    <script>
-        var timeFormat = 'MM/DD/YYYY HH:mm';
-
-        function newDate(days) {
-            return moment().add(days, 'd').toDate();
-        }
-
-        function newDateString(days) {
-            return moment().add(days, 'd').format(timeFormat);
-        }
-
-        var color = Chart.helpers.color;
-        var config = {
-            type: 'line',
-            data: {
-                labels: [ // Date Objects
-                    newDate(0),
-                    newDate(1),
-                    newDate(2),
-                    newDate(3),
-                    newDate(4),
-                    newDate(5),
-                    newDate(6)
-                ],
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-                    borderColor: window.chartColors.red,
-                    fill: false,
-                    data: [
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor()
-                    ],
-                }, {
-                    label: 'My Second dataset',
-                    backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                    borderColor: window.chartColors.blue,
-                    fill: false,
-                    data: [
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor()
-                    ],
-                }, {
-                    label: 'Dataset with point data',
-                    backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
-                    borderColor: window.chartColors.green,
-                    fill: false,
-                    data: [{
-                        x: newDateString(0),
-                        y: randomScalingFactor()
-                    }, {
-                        x: newDateString(5),
-                        y: randomScalingFactor()
-                    }, {
-                        x: newDateString(7),
-                        y: randomScalingFactor()
-                    }, {
-                        x: newDateString(15),
-                        y: randomScalingFactor()
-                    }],
-                }]
-            },
-            options: {
-                title: {
-                    text: 'Chart.js Time Scale'
-                },
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        time: {
-                            parser: timeFormat,
-                            // round: 'day'
-                            tooltipFormat: 'll HH:mm'
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Date'
-                        }
-                    }],
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'value'
-                        }
-                    }]
-                },
-            }
-        };
-
-        window.onload = function () {
-            var ctx = document.getElementById('canvas').getContext('2d');
-            window.myLine = new Chart(ctx, config);
-
-        };
-    </script>
-
-{% endblock %}
+{% extends 'sensors/sensors.html' %}{% block graphics_name %}    <h3 class="h3" style="color: #F9AA33">{% block title %}Temperature BME280{% endblock %}</h3>{% endblock %}{% block graphics_data %}    <style>        canvas {            -moz-user-select: none;            -webkit-user-select: none;            -ms-user-select: none;        }        .chartjs-tooltip {            opacity: 1;            position: absolute;            background: rgba(0, 0, 0, .7);            color: white;            border-radius: 3px;            -webkit-transition: all .1s ease;            transition: all .1s ease;            pointer-events: none;            -webkit-transform: translate(-50%, 0);            transform: translate(-50%, 0);            padding: 4px;        }    </style>    <div id="canvas-holder1">        <canvas id="chart" style="display: block; height: auto; width: auto; cursor: pointer;"                class="chartjs-render-monitor"></canvas>        <div class="chartjs-tooltip" id="tooltip-0"></div>    </div>    <script type="text/javascript">        var customTooltips = function (tooltip) {            $(this._chart.canvas).css('cursor', 'pointer');            var positionY = this._chart.canvas.offsetTop;            var positionX = this._chart.canvas.offsetLeft;            $('.chartjs-tooltip').css({                opacity: 0,            });            if (!tooltip || !tooltip.opacity) {                return;            }            if (tooltip.dataPoints.length > 0) {                tooltip.dataPoints.forEach(function (dataPoint) {                    var content = [dataPoint.xLabel, dataPoint.yLabel].join(': ');                    var $tooltip = $('#tooltip-' + dataPoint.datasetIndex);                    $tooltip.html(content);                    $tooltip.css({                        opacity: 1,                        top: positionY + dataPoint.y + 'px',                        left: positionX + dataPoint.x + 'px',                    });                });            }        };        var timeFormat = 'MM/DD/YYYY HH:mm:ss';        var color = Chart.helpers.color;        var config = {            type: 'line',            data: {                labels: {{ db_data[5]|safe }},                datasets: [{                    label: 'Temperature',                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),                    borderColor: window.chartColors.red,                    fill: false,                    data: {{ db_data[2]|safe }},                },]            },            options: {                title: {                    text: 'Chart.js Time Scale'                },                scales: {                    xAxes: [{                        type: 'time',                        time: {                            parser: timeFormat,                            // round: 'day'                            tooltipFormat: 'll HH:mm'                        },                        scaleLabel: {                            display: true,                            labelString: 'Date'                        }                    }],                    yAxes: [{                        scaleLabel: {                            display: true,                            labelString: 'value'                        }                    }]                },                tooltips: {                    enabled: false,                    mode: 'index',                    intersect: false,                    custom: customTooltips                },                legend: {                    labels: {                        defaultFontColor: '#c17b00',                        fontColor: '#c17b00',                        labelTextColors: '#c17b00',                    }                }            }        };        window.onload = function () {            var ctx = document.getElementById('chart');            window.myLine = new Chart(ctx, config);        };    </script>{% endblock %}

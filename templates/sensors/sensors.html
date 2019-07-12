@@ -11,16 +11,16 @@
             <div class="list-group">
                 <a href="/sensors/temp_bme280"
                    class="list-group-item list-group-item-action list-group-item-primary">
-                    Temperature: {{ bme_temp }} °C</a>
+                    Temperature: {{ db_data[2][0] }} °C</a>
                 <a href="/sensors/hum_bme280"
                    class="list-group-item list-group-item-action list-group-item-secondary">
-                    Humidity: {{ bme_hum }} %</a>
+                    Humidity: {{ db_data[3][0] }} %</a>
                 <a href="#"
                    class="list-group-item list-group-item-action list-group-item-warning">
-                    Pressure: {{ bme_pres }} hPa</a>
-                <a href="#"
+                    Pressure: {{ db_data[4][0] }} hPa</a>
+                <!--<a href="#"
                    class="list-group-item list-group-item-action list-group-item-info">
-                    Altitude: {{ bme_alt }} m</a>
+                    Altitude: {{ db_data[5][0] }} m</a>-->
             </div>
 
             <h3 class="h3 py-sm-1" style="color: #F9AA33">RPi</h3>
