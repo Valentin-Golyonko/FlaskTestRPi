@@ -9,37 +9,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <title>Title</title>
+    <title>{% block title %}{% endblock %} - FlaskTestRPi</title>
 </head>
-<body>
+<body style="background-color: #232F34">
 
-<div class="container">
-    <h1>My First Bootstrap Page</h1>
-    <p>This is some text.</p>
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">id</th>
-            <th scope="col">temperature</th>
-            <th scope="col">humidity</th>
-            <th scope="col">pressure</th>
-            <th scope="col">created</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for dt in db_data %}
-            <tr>
-                <th scope="row">{{ dt['id'] }}</th>
-                <td>{{ dt['temperature'] }}</td>
-                <td>{{ dt['humidity'] }}</td>
-                <td>{{ dt['pressure'] }}</td>
-                <td>{{ dt['created'].strftime('%Y-%m-%d %I:%M') }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+<div>
+    <nav class="nav" style="background-color: #344955">
+        <a class="nav-link active text-white" href="/">Home</a>
+        <a class="nav-link text-white" href="/sensors">Sensors</a>
+        <a class="nav-link text-white" href="#">Link</a>
+        <a class="nav-link disabled" href="#">Disabled</a>
+    </nav>
 </div>
+
+<div class="p-sm-1">
+    <section class="content">
+        {% block content %}{% endblock %}
+    </section>
+</div>
+
 </body>
 </html>

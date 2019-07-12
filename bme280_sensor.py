@@ -34,19 +34,20 @@ def bme280_date(delta_time=5):
         bme280.sea_level_pressure = 1013.25
 
         while True:
-            sleep(delta_time)
             temperature = "%.2f" % bme280.temperature
             humidity = "%.2f" % bme280.humidity
             pressure = "%.2f" % bme280.pressure
             altitude = "%.2f" % bme280.altitude
             log_info("\ttemp %s, hum %s, pres %s, alt %s" % (temperature, humidity, pressure, altitude))
             yield temperature, humidity, pressure
+            sleep(delta_time)
 
     except Exception as ex:
-        log_error("adafruit_bme280: \n%s" % ex)
+        log_error("\tadafruit_bme280: \n%s" % ex)
 
 
-def update():
+def update_db():
+    log_verbose("bme280: update_db()")
     bme280 = bme280_date(60)
 
     db = 0
@@ -71,4 +72,4 @@ if __name__ == '__main__':
     # _bme280 = bme280_date(2)
     # while True:
     #     next(_bme280)
-    update()
+    update_db()

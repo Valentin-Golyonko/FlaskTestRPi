@@ -3,8 +3,6 @@ import os
 from flask import Flask
 from threading import Thread
 
-from bme280_sensor import update
-
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
@@ -34,20 +32,25 @@ def create_app(test_config=None):
         return 'Hello, World!'
 
     # register the database commands
-    from . import db
-    db.init_app(app)
+    from db import init_app
+    init_app(app)
 
     # apply the blueprints to the app
-    from . import main_ui
-    app.register_blueprint(main_ui.bp)
+    from . import main
+    app.register_blueprint(main.bp)
 
-    th_s = Thread(target=update, daemon=True, name="upd_bme280")
+    from . import sensors
+    app.register_blueprint(sensors.bp)
+
+    #
+    from bme280_sensor import update_db
+    th_s = Thread(target=update_db, daemon=True, name="upd_bme280")
     th_s.start()
 
     # make url_for('index') == url_for('blog.index')
     # in another app, you might define a separate main index here with
     # app.route, while giving the blog blueprint a url_prefix, but for
     # the tutorial the blog will be the main index
-    app.add_url_rule('/', endpoint='index')
+    app.add_url_rule('/', endpoint='home')
 
     return app

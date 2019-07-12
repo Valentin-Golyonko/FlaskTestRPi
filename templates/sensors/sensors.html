@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+
+{% block title %}Sensors{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-4"> <!--justify-content-start align-items-start-->
+
+            <h3 class="h3 py-sm-1" style="color: #F9AA33">BME 280</h3>
+            <div class="list-group">
+                <a href="/sensors/temp_bme280"
+                   class="list-group-item list-group-item-action list-group-item-primary">
+                    Temperature: {{ bme_temp }} °C</a>
+                <a href="/sensors/hum_bme280"
+                   class="list-group-item list-group-item-action list-group-item-secondary">
+                    Humidity: {{ bme_hum }} %</a>
+                <a href="#"
+                   class="list-group-item list-group-item-action list-group-item-warning">
+                    Pressure: {{ bme_pres }} hPa</a>
+                <a href="#"
+                   class="list-group-item list-group-item-action list-group-item-info">
+                    Altitude: {{ bme_alt }} m</a>
+            </div>
+
+            <h3 class="h3 py-sm-1" style="color: #F9AA33">RPi</h3>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action list-group-item-success">
+                    temperature: {{ rpi_t }} °C</a>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+
+            <section class="content rounded py-sm-1 text-white" style="background-color: #344955">
+                {% block graphics_name %}{% endblock %}
+                {% block graphics_data %}{% endblock %}
+            </section>
+            <br>
+
+            <div class="rounded py-sm-1" style="background-color: #344955">
+                <table class="table table-striped text-white">
+                    <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">temperature</th>
+                        <th scope="col">humidity</th>
+                        <th scope="col">pressure</th>
+                        <th scope="col">created</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for dt in db_data %}
+                        <tr>
+                            <th scope="row">{{ dt['id'] }}</th>
+                            <td>{{ dt['temperature'] }}</td>
+                            <td>{{ dt['humidity'] }}</td>
+                            <td>{{ dt['pressure'] }}</td>
+                            <td>{{ dt['created'].strftime('%Y-%m-%d %I:%M') }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
