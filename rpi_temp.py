@@ -1,7 +1,7 @@
 import os
 from time import sleep
 
-from color_log.Log_Color import log_verbose, log_error
+from color_log.log_color import log_verbose, log_error
 
 
 def measure_rpi_temp(delta_time=2):

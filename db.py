@@ -5,7 +5,7 @@ from flask import current_app, g
 from flask.cli import with_appcontext
 
 from bme280_sensor import bme280_date
-from color_log.Log_Color import log_verbose, log_error
+from color_log.log_color import log_error, log_verbose
 
 
 def get_db():
@@ -60,11 +60,11 @@ def init_app(app):
 def update_bme280_db_table():
     log_verbose("update_db()")
 
-    bme280 = bme280_date(600)  # timer = 10 min
+    bme280 = bme280_date(60)  # timer = 10 min
     try:
         while True:
             t, h, p = next(bme280)
-            db = sqlite3.connect("flask_test.sqlite")
+            db = sqlite3.connect("data/flask_test.sqlite")
             # db = get_db()
             cursor = db.cursor()
             cursor.execute(
@@ -75,5 +75,5 @@ def update_bme280_db_table():
             db.commit()
             db.close()
     except Exception as ex:
-        log_error("\tEx. in - update_db: \n%s" % ex)
+        log_error("\tEx. in - update_bme280_db_table: \n%s" % ex)
         db.close()

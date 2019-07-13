@@ -8,7 +8,7 @@ i2cdetect -y 1
 """
 from time import sleep
 
-from color_log.Log_Color import log_verbose, log_error
+from color_log.log_color import log_verbose, log_error, log_info
 
 
 def bme280_date(delta_time=5):

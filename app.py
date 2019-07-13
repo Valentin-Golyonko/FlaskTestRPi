@@ -2,18 +2,16 @@ import os
 from threading import Thread
 
 from flask import Flask
-from color_log.Log_Color import log_start
 
 
 def create_app(test_config=None):
-    log_start("create_app()")
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         # a default secret that should be overridden by instance config
         SECRET_KEY='dev',
         # store the database in the instance folder
-        DATABASE=os.path.join(app.root_path, 'flask_test.sqlite'),
+        DATABASE=os.path.join(app.root_path, 'data/flask_test.sqlite'),
     )
 
     if test_config is None:
@@ -43,7 +41,6 @@ def create_app(test_config=None):
     from . import sensors
     app.register_blueprint(sensors.bp)
 
-    #
     from db import update_bme280_db_table
     th_s = Thread(target=update_bme280_db_table, daemon=True, name="Thread - update_db")
     th_s.start()
