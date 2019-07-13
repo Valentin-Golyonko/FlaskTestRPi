@@ -1,7 +1,7 @@
 import os
 from time import sleep
 
-from color_log.Log_Color import *
+from color_log.Log_Color import log_verbose, log_error
 
 
 def measure_rpi_temp(delta_time=2):
@@ -10,17 +10,14 @@ def measure_rpi_temp(delta_time=2):
         while True:
             temp = os.popen("vcgencmd measure_temp").readline()
             temp = str(temp).strip().replace("temp=", "").replace("'C", "")
-            log_info("\tRPi temp: %s °C" % temp)
+            # log_info("\tRPi temp: %s °C" % temp)
             yield temp
             sleep(delta_time)
-
     except Exception as ex:
         log_error("RPi measure temp: \n%s" % ex)
 
 
 if __name__ == "__main__":
-
     rpi_temp = measure_rpi_temp(2)
-
     while True:
         next(rpi_temp)

@@ -1,11 +1,9 @@
-import json
-
 from flask import (
-    Blueprint, render_template,
-    redirect, url_for)
+    Blueprint, render_template)
 
+from color_log.Log_Color import log_verbose
 from db import get_db, close_db
-from color_log.Log_Color import *
+from rpi_temp import measure_rpi_temp
 
 bp = Blueprint('sensors', __name__)
 
@@ -13,7 +11,7 @@ bp = Blueprint('sensors', __name__)
 @bp.route('/sensors')
 def index():
     log_verbose("sensors: index()")
-    global db_data, _id, t, h, p, c
+    global db_data, _id, t, h, p, c, rp
     cur = get_db().cursor()
     db_data = cur.execute(
         'SELECT *'
@@ -29,17 +27,20 @@ def index():
     c = [i['created'].strftime('%x %X') for i in db_data]
     # log_info("\tcreated: %s %s" % (c, type(c[0])))
 
-    return render_template('sensors/sensors.html', db_data=[db_data, _id, t, h, p, c])
+    rpi_temp = measure_rpi_temp(2)
+    rp = next(rpi_temp)
+
+    return render_template('sensors/sensors.html', db_data=[db_data, _id, t, h, p, c, rp])
     # return redirect(url_for('sensors.index'))
 
 
 @bp.route('/sensors/temp_bme280')
 def show_tem_bme280():
     log_verbose("sensors: show_tem_bme280()")
-    return render_template('sensors/temp_bme280.html', db_data=[db_data, _id, t, h, p, c])
+    return render_template('sensors/temp_bme280.html', db_data=[db_data, _id, t, h, p, c, rp])
 
 
 @bp.route('/sensors/hum_bme280')
 def show_hum_bme280():
     log_verbose("sensors: show_hum_bme280()")
-    return render_template('sensors/hum_bme280.html', db_data=[reversed(db_data), _id, t, h, p, c])
+    return render_template('sensors/hum_bme280.html', db_data=[reversed(db_data), _id, t, h, p, c, rp])

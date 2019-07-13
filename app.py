@@ -1,10 +1,12 @@
 import os
+from threading import Thread
 
 from flask import Flask
-from threading import Thread
+from color_log.Log_Color import log_start
 
 
 def create_app(test_config=None):
+    log_start("create_app()")
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -38,13 +40,12 @@ def create_app(test_config=None):
     # apply the blueprints to the app
     from . import main
     app.register_blueprint(main.bp)
-
     from . import sensors
     app.register_blueprint(sensors.bp)
 
     #
-    from bme280_sensor import update_db
-    th_s = Thread(target=update_db, daemon=True, name="upd_bme280")
+    from db import update_bme280_db_table
+    th_s = Thread(target=update_bme280_db_table, daemon=True, name="Thread - update_db")
     th_s.start()
 
     # make url_for('index') == url_for('blog.index')

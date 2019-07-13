@@ -6,10 +6,9 @@ pip3 install adafruit-circuitpython-bme280
 pip3 install --upgrade adafruit_blinka
 i2cdetect -y 1
 """
-import sqlite3
 from time import sleep
 
-from color_log.Log_Color import *
+from color_log.Log_Color import log_verbose, log_error
 
 
 def bme280_date(delta_time=5):
@@ -37,8 +36,8 @@ def bme280_date(delta_time=5):
             temperature = "%.2f" % bme280.temperature
             humidity = "%.2f" % bme280.humidity
             pressure = "%.2f" % bme280.pressure
-            altitude = "%.2f" % bme280.altitude
-            log_info("\ttemp %s, hum %s, pres %s, alt %s" % (temperature, humidity, pressure, altitude))
+            # altitude = "%.2f" % bme280.altitude
+            # log_info("\ttemp %s, hum %s, pres %s, alt %s" % (temperature, humidity, pressure, altitude))
             yield temperature, humidity, pressure
             sleep(delta_time)
 
@@ -46,30 +45,8 @@ def bme280_date(delta_time=5):
         log_error("\tadafruit_bme280: \n%s" % ex)
 
 
-def update_db():
-    log_verbose("bme280: update_db()")
-    bme280 = bme280_date(600)   # timer = 10 min
-
-    db = 0
-    try:
-        db = sqlite3.connect("flask_test.sqlite")
-        cursor = db.cursor()
-        while True:
-            t, h, p = next(bme280)
-            cursor.execute(
-                'INSERT INTO bme280 (temperature, humidity, pressure)'
-                ' VALUES (?, ?, ?)',
-                (t, h, p,)
-            )
-            db.commit()
-    except sqlite3.Error as e:
-        log_error("\tsqlite3.Error: \n%s" % str(e))
-    finally:
-        db.close()
-
-
 if __name__ == '__main__':
-    # _bme280 = bme280_date(2)
-    # while True:
-    #     next(_bme280)
-    update_db()
+    _bme280 = bme280_date(2)
+    while True:
+        next(_bme280)
+    # update_db()
