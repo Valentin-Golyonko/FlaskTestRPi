@@ -48,7 +48,7 @@ def bme280_date(delta_time=5):
 
 def update_db():
     log_verbose("bme280: update_db()")
-    bme280 = bme280_date(60)
+    bme280 = bme280_date(600)   # timer = 10 min
 
     db = 0
     try:
