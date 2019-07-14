@@ -9,20 +9,29 @@ import urllib.request
 from time import sleep
 
 from flask import (
-    Blueprint, render_template)
+    Blueprint, render_template, request)
 
 import api_keys.keys as key
-from color_log.log_color import log_info, log_verbose, log_error
+from color_log.log_color import *
 from db import get_db, close_db
 
 bp = Blueprint('weather', __name__)
 
 
-@bp.route('/weather')
+@bp.route('/weather', methods=('GET', 'POST'))
 def index():
     log_verbose("weather: index()")
-    owm_db_data = []
-    dt = 0
+    data = []
+
+    if request.method == 'POST':
+        log_info("\tPOST")
+        city = request.form['city']
+        log_warning("\tcity: %s" % city)
+        if city:
+            city = str(city).split()
+            log_info("\tcity: %s" % city)
+            city_id = open_city_json(city[0], city[1])
+            log_info("\tcity_id: %s" % city_id)
 
     try:
         cur = get_db().cursor()
@@ -34,15 +43,18 @@ def index():
         close_db()
         log_info("\tOpen owm table - OK")
 
-        dt = datetime.datetime.utcfromtimestamp(owm_db_data[0][11])  # convert from unix time
+        data = [i for i in owm_db_data[0]]
+
+        dt = datetime.datetime.utcfromtimestamp(data[11])  # convert from unix time
         log_info("\tlast owm time: " + str(dt))  # test print
+        data[11] = str(dt)
 
     except sqlite3.DatabaseError as err:
         log_error("\tEx. in - weather: index(): \n%s" % err)
     finally:
         close_db()
 
-    return render_template('weather.html', owm_db_data=[owm_db_data, dt])
+    return render_template('weather.html', owm_db_data=data)
     # return redirect(url_for('sensors.index'))
 
 

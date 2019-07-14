@@ -63,6 +63,7 @@ def update_bme280_db_table():
             )
             db.commit()
             db.close()
+            log_info("\tupdate_bme280_db_table - OK")
     except Exception as ex:
         log_error("\tEx. in - update_bme280_db_table: \n%s" % ex)
         db.close()
