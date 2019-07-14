@@ -40,10 +40,16 @@ def create_app(test_config=None):
     app.register_blueprint(main.bp)
     from . import sensors
     app.register_blueprint(sensors.bp)
+    from . import weather
+    app.register_blueprint(weather.bp)
 
-    from db import update_bme280_db_table
-    th_s = Thread(target=update_bme280_db_table, daemon=True, name="Thread - update_db")
+    from bme280_sensor import update_bme280_db_table
+    th_s = Thread(target=update_bme280_db_table, daemon=True, name="Thread - update_bme280_db_table")
     th_s.start()
+
+    from weather import update_owm_db_table
+    th_w = Thread(target=update_owm_db_table, daemon=True, name="Thread - update_owm_db_table")
+    th_w.start()
 
     # make url_for('index') == url_for('blog.index')
     # in another app, you might define a separate main index here with

@@ -18,10 +18,10 @@
 <body style="background-color: #232F34">
 
 <div>
-    <nav class="nav" style="background-color: #344955">
+    <nav class="nav fixed-top" style="background-color: #344955">
         <a class="nav-link active text-white" href="/">Main page</a>
         <a class="nav-link text-white" href="/sensors">Smart Home</a>
-        <a class="nav-link text-white" href="#">Weather</a>
+        <a class="nav-link text-white" href="/weather">Weather</a>
         <a class="nav-link disabled" href="#">Test 3</a>
         <a class="nav-link text-white" href="#">Social</a>
         <a class="nav-link disabled" href="#">Test 5</a>
@@ -29,7 +29,7 @@
     </nav>
 </div>
 
-<div class="p-sm-2">
+<div class="p-sm-2 pt-sm-5">
     <section class="content">
         {% block content %}{% endblock %}
     </section>

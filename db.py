@@ -55,25 +55,3 @@ def init_app(app):
     """
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
-
-
-def update_bme280_db_table():
-    log_verbose("update_db()")
-
-    bme280 = bme280_date(60)  # timer = 10 min
-    try:
-        while True:
-            t, h, p = next(bme280)
-            db = sqlite3.connect("data/flask_test.sqlite")
-            # db = get_db()
-            cursor = db.cursor()
-            cursor.execute(
-                'INSERT INTO bme280 (temperature, humidity, pressure)'
-                ' VALUES (?, ?, ?)',
-                (t, h, p,)
-            )
-            db.commit()
-            db.close()
-    except Exception as ex:
-        log_error("\tEx. in - update_bme280_db_table: \n%s" % ex)
-        db.close()

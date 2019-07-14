@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+
+{% block title %}Sensors{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-8">
+
+            <div class="rounded py-sm-1" style="background-color: #344955">
+                <table class="table table-striped text-white">
+                    <thead>
+                    <tr>
+                        <th scope="col">weather_id</th>
+                        <th scope="col">description</th>
+                        <th scope="col">icon</th>
+                        <th scope="col">temp</th>
+                        <th scope="col">pressure</th>
+                        <th scope="col">humidity</th>
+                        <th scope="col">temp_min</th>
+                        <th scope="col">temp_max</th>
+                        <th scope="col">wind_speed</th>
+                        <th scope="col">wind_deg</th>
+                        <th scope="col">wind_gust</th>
+                        <th scope="col">time_unix</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for odt in owm_db_data[0] %}
+                        <tr>
+                            <th scope="row">{{ odt['weather_id'] }}</th>
+                            <td>{{ odt['description'] }}</td>
+                            <td>{{ odt['icon'] }}</td>
+                            <td>{{ odt['temp'] }}</td>
+                            <td>{{ odt['pressure'] }}</td>
+                            <td>{{ odt['humidity'] }}</td>
+                            <td>{{ odt['temp_min'] }}</td>
+                            <td>{{ odt['temp_max'] }}</td>
+                            <td>{{ odt['wind_speed'] }}</td>
+                            <td>{{ odt['wind_deg'] }}</td>
+                            <td>{{ odt['wind_gust'] }}</td>
+                            <td>{{ owm_db_data[1] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+{% endblock %}

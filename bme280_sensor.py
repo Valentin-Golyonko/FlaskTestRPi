@@ -6,6 +6,7 @@ pip3 install adafruit-circuitpython-bme280
 pip3 install --upgrade adafruit_blinka
 i2cdetect -y 1
 """
+import sqlite3
 from time import sleep
 
 from color_log.log_color import log_verbose, log_error, log_info
@@ -43,6 +44,28 @@ def bme280_date(delta_time=5):
 
     except Exception as ex:
         log_error("\tadafruit_bme280: \n%s" % ex)
+
+
+def update_bme280_db_table():
+    log_verbose("update_bme280_db_table()")
+
+    bme280 = bme280_date(600)  # timer = 10 min
+    try:
+        while True:
+            t, h, p = next(bme280)
+            db = sqlite3.connect("data/flask_test.sqlite")
+            # db = get_db()
+            cursor = db.cursor()
+            cursor.execute(
+                'INSERT INTO bme280 (temperature, humidity, pressure)'
+                ' VALUES (?, ?, ?)',
+                (t, h, p,)
+            )
+            db.commit()
+            db.close()
+    except Exception as ex:
+        log_error("\tEx. in - update_bme280_db_table: \n%s" % ex)
+        db.close()
 
 
 if __name__ == '__main__':
