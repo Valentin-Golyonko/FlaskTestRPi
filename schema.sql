@@ -17,6 +17,7 @@ CREATE TABLE bme280
 
 CREATE TABLE owm
 (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
     weather_id  INTEGER NOT NULL,
     description TEXT    NOT NULL,
     icon        TEXT    NOT NULL,

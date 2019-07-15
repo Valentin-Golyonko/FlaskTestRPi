@@ -9,7 +9,7 @@ import urllib.request
 from time import sleep
 
 from flask import (
-    Blueprint, render_template, request)
+    Blueprint, render_template, request, redirect, url_for)
 
 import api_keys.keys as key
 from color_log.log_color import *
@@ -21,29 +21,27 @@ bp = Blueprint('weather', __name__)
 @bp.route('/weather', methods=('GET', 'POST'))
 def index():
     log_verbose("weather: index()")
-    data = []
 
     if request.method == 'POST':
         city = request.form['city']
         if city:
             city = str(city).split()
+
             set_city(city)
+            upd_db_new_city()
 
     db_row_data = get_owm_data()
-
-    if not db_row_data:
-        upd_db_new_city()
-        db_row_data = get_owm_data()
 
     if db_row_data:
         data = [i for i in db_row_data[0]]
 
-        dt = datetime.datetime.utcfromtimestamp(data[11])  # convert from unix time
+        dt = datetime.datetime.utcfromtimestamp(data[12])  # convert from unix time
         log_info("\tlast owm time: " + str(dt))  # test print
         data[11] = str(dt)
 
-    return render_template('weather.html', owm_db_data=data)
-    # return redirect(url_for('sensors.index'))
+        return render_template('weather.html', owm_db_data=data)
+    else:
+        return redirect(url_for('sensors.index'))
 
 
 def get_owm_data():
@@ -53,10 +51,11 @@ def get_owm_data():
         owm_db_data = cur.execute(
             'SELECT *'
             ' FROM owm'
-            ' ORDER BY time_unix DESC LIMIT 1'
+            ' ORDER BY id DESC LIMIT 1'
         ).fetchall()
         close_db()
-        log_info("\tget_owm_data() - Open owm table - OK")
+        if not owm_db_data:
+            log_error("\tget_owm_data() - %s" % owm_db_data)
 
         return owm_db_data
 
@@ -77,11 +76,17 @@ def set_city(city):
         log_warning("\tset_city - city_id: %s" % city_id)
 
         cur.execute(
+            "UPDATE owm_city_list SET active = 0"
+        )
+        db.commit()
+
+        cur.execute(
             "UPDATE owm_city_list SET active = ?"
             " WHERE id = ?",
             (True, city_id,)
         )
         db.commit()
+
         close_db()
         log_info("\tset_city() - OK")
 
@@ -92,7 +97,7 @@ def set_city(city):
 
 def update_owm_db_table():
     log_verbose("update_owm_db_table()")
-    _owm = owm(600)  # timer = 10 min
+    _owm = owm(60)  # timer = 10 min
     try:
         while True:
             owm_data = next(_owm)

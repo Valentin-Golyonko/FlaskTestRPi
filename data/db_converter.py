@@ -124,10 +124,10 @@ if __name__ == '__main__':
     625144 - Minsk
     """
 
-    # db_data = open_json()
+    db_data = open_json()
 
-    # test_json_open(db_data)
+    test_json_open(db_data)
 
-    # convert_json_to_db(db_data)
+    convert_json_to_db(db_data)
 
-    # test_db("Minsk")
+    test_db("Minsk")
