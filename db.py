@@ -4,9 +4,6 @@ import click
 from flask import current_app, g
 from flask.cli import with_appcontext
 
-from bme280_sensor import bme280_date
-from color_log.log_color import log_error, log_verbose
-
 
 def get_db():
     """Connect to the application's configured database. The connection

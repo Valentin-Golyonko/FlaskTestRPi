@@ -4,6 +4,7 @@
 DROP TABLE IF EXISTS bme280;
 DROP TABLE IF EXISTS owm;
 DROP TABLE IF EXISTS twee;
+DROP TABLE IF EXISTS owm_city_list;
 
 CREATE TABLE bme280
 (
@@ -37,4 +38,14 @@ CREATE TABLE twee
     full_text      TEXT NOT NULL,
     media_url      TEXT NOT NULL,
     user_image_url TEXT NOT NULL
+);
+
+CREATE TABLE owm_city_list
+(
+    id        INTEGER PRIMARY KEY NOT NULL,
+    name      TEXT                NOT NULL,
+    country   TEXT                NOT NULL,
+    coord_lat NUMERIC             NOT NULL,
+    coord_lon NUMERIC             NOT NULL,
+    active    TEXT                NOT NULL
 );

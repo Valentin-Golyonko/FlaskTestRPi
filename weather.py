@@ -24,15 +24,30 @@ def index():
     data = []
 
     if request.method == 'POST':
-        log_info("\tPOST")
         city = request.form['city']
-        log_warning("\tcity: %s" % city)
         if city:
             city = str(city).split()
-            log_info("\tcity: %s" % city)
-            city_id = open_city_json(city[0], city[1])
-            log_info("\tcity_id: %s" % city_id)
+            set_city(city)
 
+    db_row_data = get_owm_data()
+
+    if not db_row_data:
+        upd_db_new_city()
+        db_row_data = get_owm_data()
+
+    if db_row_data:
+        data = [i for i in db_row_data[0]]
+
+        dt = datetime.datetime.utcfromtimestamp(data[11])  # convert from unix time
+        log_info("\tlast owm time: " + str(dt))  # test print
+        data[11] = str(dt)
+
+    return render_template('weather.html', owm_db_data=data)
+    # return redirect(url_for('sensors.index'))
+
+
+def get_owm_data():
+    log_verbose("get_owm_data()")
     try:
         cur = get_db().cursor()
         owm_db_data = cur.execute(
@@ -41,21 +56,38 @@ def index():
             ' ORDER BY time_unix DESC LIMIT 1'
         ).fetchall()
         close_db()
-        log_info("\tOpen owm table - OK")
+        log_info("\tget_owm_data() - Open owm table - OK")
 
-        data = [i for i in owm_db_data[0]]
-
-        dt = datetime.datetime.utcfromtimestamp(data[11])  # convert from unix time
-        log_info("\tlast owm time: " + str(dt))  # test print
-        data[11] = str(dt)
+        return owm_db_data
 
     except sqlite3.DatabaseError as err:
-        log_error("\tEx. in - weather: index(): \n%s" % err)
-    finally:
+        log_error("\tEx. in - weather: get_owm_data(): \n%s" % err)
         close_db()
 
-    return render_template('weather.html', owm_db_data=data)
-    # return redirect(url_for('sensors.index'))
+
+def set_city(city):
+    log_verbose("set_city()")
+    try:
+        db = get_db()
+        cur = get_db().cursor()
+        city_id = cur.execute("SELECT id FROM owm_city_list "
+                              "WHERE name = ? AND country = ?",
+                              (city[0], city[1],)).fetchone()[0]
+
+        log_warning("\tset_city - city_id: %s" % city_id)
+
+        cur.execute(
+            "UPDATE owm_city_list SET active = ?"
+            " WHERE id = ?",
+            (True, city_id,)
+        )
+        db.commit()
+        close_db()
+        log_info("\tset_city() - OK")
+
+    except Exception as ex:
+        log_error("\tEx. in - set_city:\n%s" % ex)
+        close_db()
 
 
 def update_owm_db_table():
@@ -77,38 +109,24 @@ def update_owm_db_table():
             log_info("\tupdate_owm_db_table - OK")
     except Exception as ex:
         log_error("\tEx. in - update_owm_db_table: \n%s" % ex)
-        db.close()
-
-
-def open_city_json(input_city, country_code):
-    log_verbose("open_city_json()")
-
-    with open("data/city.list.json", encoding="utf8") as f_city:
-        data_city = json.load(f_city)
-    log_info("\topened")
-
-    city_id = 0
-    for city in data_city:
-        if city["name"] == input_city and city["country"] == country_code:
-            city_id = city["id"]
-            log_info("\tcity: %s, %s, id: %d" % (str(city["name"]), str(city["country"]), city_id))
-            break
-
-    if city_id == 0:
-        log_error("\tNo such city in the base. \nPlease, check your input or select nearest city to yours")
-
-    return city_id
+        close_db()
 
 
 def owm(delta_time=600):
     log_verbose("owm()")
 
-    id_city = open_city_json("Minsk", "BY")
     try:
         while True:
+            cur = get_db().cursor()
+            city_id = cur.execute("SELECT id FROM owm_city_list "
+                                  "WHERE active = ?",
+                                  (True,)).fetchone()[0]
+            cur.close()
+            log_info("\towm, city_id: %s" % city_id)
+
             owm_output = []
             owm_call = "http://api.openweathermap.org/data/2.5/weather?id=" + \
-                       str(id_city) + "&units=metric&APPID=" + str(key.owm_api_key)
+                       str(city_id) + "&units=metric&APPID=" + str(key.owm_api_key)
 
             owm_data = urllib.request.urlopen(owm_call).read()
             owm_data_str = owm_data.decode('utf8').replace("'", '"')  # for python 3.5 on raspberry !
@@ -145,6 +163,27 @@ def owm(delta_time=600):
 
     except Exception as ex:
         log_error("\tEx. in - owm(): \n%s" % ex)
+
+
+def upd_db_new_city():
+    log_verbose("upd_db_new_city()")
+    _owm = owm()
+    try:
+        _data = next(_owm)
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO owm (weather_id, description,"
+                       " icon, temp, pressure, humidity, temp_min,"
+                       " temp_max, wind_speed, wind_deg, wind_gust, time_unix)"
+                       " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", _data)
+
+        db.commit()
+        close_db()
+        log_info("\tupd_db_new_city - OK")
+
+    except Exception as ex:
+        log_error("\tEx. in - upd_db_new_city: \n%s" % ex)
+        close_db()
 
 
 if __name__ == '__main__':

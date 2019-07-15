@@ -2,6 +2,7 @@ import os
 from threading import Thread
 
 from flask import Flask
+# --host=192.168.0.102
 
 
 def create_app(test_config=None):
@@ -32,8 +33,8 @@ def create_app(test_config=None):
         return 'Hello, World!'
 
     # register the database commands
-    from db import init_app
-    init_app(app)
+    from . import db
+    db.init_app(app)
 
     # apply the blueprints to the app
     from . import main
