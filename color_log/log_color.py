@@ -1,21 +1,24 @@
+from datetime import datetime
+
+
 def log_info(string):
-    print(Colors.GREEN + str(string) + Colors.END)
+    print(Colors.GREEN + str(string) + " \t\tTime: " + str(datetime.now()) + Colors.END)
 
 
 def log_verbose(string):
-    print(Colors.BLUE + str(string) + Colors.END)
+    print(Colors.BLUE + str(string) + " \t\tTime: " + str(datetime.now()) + Colors.END)
 
 
 def log_error(string):
-    print(Colors.FAIL + str(string) + Colors.END)
+    print(Colors.FAIL + str(string) + " \t\tTime: " + str(datetime.now()) + Colors.END)
 
 
 def log_start(string):
-    print(Colors.HEADER + str(string) + Colors.END)
+    print(Colors.HEADER + str(string) + " \t\tTime: " + str(datetime.now()) + Colors.END)
 
 
 def log_warning(string):
-    print(Colors.WARNING + str(string) + Colors.END)
+    print(Colors.WARNING + str(string) + " \t\tTime: " + str(datetime.now()) + Colors.END)
 
 
 class Colors:

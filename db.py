@@ -26,7 +26,7 @@ def close_db(e=None):
     """
     db = g.pop('db', None)
 
-    if db is not None:
+    if db is not None:  # TODO: app.context Error from Thread()
         db.close()
 
 

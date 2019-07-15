@@ -6,6 +6,7 @@ pip3 install adafruit-circuitpython-bme280
 pip3 install --upgrade adafruit_blinka
 i2cdetect -y 1
 """
+from datetime import datetime
 import sqlite3
 from time import sleep
 
@@ -57,13 +58,16 @@ def update_bme280_db_table():
             # db = get_db()
             cursor = db.cursor()
             cursor.execute(
-                'INSERT INTO bme280 (temperature, humidity, pressure)'
-                ' VALUES (?, ?, ?)',
-                (t, h, p,)
+                'INSERT INTO bme280 (temperature, humidity, pressure, created)'
+                ' VALUES (?, ?, ?, ?)',
+                (t, h, p, datetime.now(),)
             )
             db.commit()
             db.close()
-            log_info("\tupdate_bme280_db_table - OK")
+            if t and h and p:
+                log_info("\tupdate_bme280_db_table - OK")
+            else:
+                log_error("\tError with bme280 values")
     except Exception as ex:
         log_error("\tEx. in - update_bme280_db_table: \n%s" % ex)
 

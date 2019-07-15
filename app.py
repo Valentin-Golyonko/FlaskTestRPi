@@ -2,7 +2,6 @@ import os
 from threading import Thread
 
 from flask import Flask
-# --host=192.168.0.102
 
 
 def create_app(test_config=None):
