@@ -36,11 +36,12 @@ def index():
         data = [i for i in db_row_data[0]]
 
         dt = datetime.datetime.utcfromtimestamp(data[12])  # convert from unix time
-        log_info("\tlast owm time: " + str(dt))  # test print
-        data[11] = str(dt)
+        data[12] = str(dt)
+        log_info("\tlast owm time: " + str(data[12]))  # test print
 
         return render_template('weather.html', owm_db_data=data)
     else:
+        log_warning("redirect to 'sensors.index'")
         return redirect(url_for('sensors.index'))
 
 
