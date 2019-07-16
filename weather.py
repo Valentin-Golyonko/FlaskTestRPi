@@ -34,9 +34,9 @@ def index():
     if db_row_data:
         data = [i for i in db_row_data]
 
-        dt = datetime.fromtimestamp(data[12])  # convert from unix time
-        data[12] = str(dt)
-        log_info("\tlast owm time: " + str(data[12]))  # test print
+        dt = datetime.fromtimestamp(data[12])  # convert from unix time to local time
+        data[12] = dt
+        # log_info("\tlast owm time: %s (%s)" % (data[12], type(data[12])))  # test print
 
         return render_template('weather.html', owm_db_data=data)
     else:
@@ -139,7 +139,7 @@ def owm(delta_time=600):
                 owm_data_str = owm_data.decode('utf8').replace("'", '"')  # for python 3.5 on raspberry !
 
                 json_owm = json.loads(owm_data_str)
-                # log_info("\tjson_owm: %s" % str(json_owm))         # test output
+                log_info("\tjson_owm: %s" % json_owm)         # test output
 
                 owm_output.append(json_owm['weather'][0]["id"])  # 0
                 owm_output.append(json_owm['weather'][0]["description"])  # 1

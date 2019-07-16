@@ -19,20 +19,41 @@
                 </div>
             </form>
 
-            <ul class="list-group text-white">
-                <li class="list-group-item" style="background-color: #344955">weather_id: {{ owm_db_data[1] }}</li>
-                <li class="list-group-item" style="background-color: #344955">description: {{ owm_db_data[2] }}</li>
-                <li class="list-group-item" style="background-color: #344955">icon: {{ owm_db_data[3] }}</li>
-                <li class="list-group-item" style="background-color: #344955">temp: {{ owm_db_data[4] }} °C</li>
-                <li class="list-group-item" style="background-color: #344955">pressure: {{ owm_db_data[5] }} hpa</li>
-                <li class="list-group-item" style="background-color: #344955">humidity: {{ owm_db_data[6] }} %</li>
-                <li class="list-group-item" style="background-color: #344955">temp_min: {{ owm_db_data[7] }} °C</li>
-                <li class="list-group-item" style="background-color: #344955">temp_max: {{ owm_db_data[8] }} °C</li>
-                <li class="list-group-item" style="background-color: #344955">wind_speed: {{ owm_db_data[9] }} m/s</li>
-                <li class="list-group-item" style="background-color: #344955">wind_deg: {{ owm_db_data[10] }} °</li>
-                <li class="list-group-item" style="background-color: #344955">wind_gust: {{ owm_db_data[11] }} m/s</li>
-                <li class="list-group-item" style="background-color: #344955">time: {{ owm_db_data[12] }}</li>
-            </ul>
+            <div class="list-group-item text-white rounded" style="background-color: #344955">
+                <p style="font-size:200%;">{{ owm_db_data[4] }} °C
+                    <img src="../static/img/owm_icons/{{ owm_db_data[3] }}.png" alt="weather_icon"></p>
+                {{ owm_db_data[2].title() }}
+                <br>
+                {{ owm_db_data[12].strftime('%c') }}
+            </div>
+            <br>
+            <div class="row text-white rounded m-sm-0" style="background-color: #344955">
+                <div class="col my-sm-2">Pressure</div>
+                <div class="col my-sm-2">
+                    {{ owm_db_data[5] }} hPa
+                    <br>
+                    ({{ owm_db_data[5] * 0.75 }} mmHg)
+                </div>
+                <div class="w-100"></div>
+                <div class="col my-sm-2">Humidity</div>
+                <div class="col my-sm-2">{{ owm_db_data[6] }} %</div>
+                <div class="w-100"></div>
+                <div class="col my-sm-2">Temp. min/max</div>
+                <div class="col my-sm-2">{{ owm_db_data[7] }} / {{ owm_db_data[8] }} °C</div>
+                <div class="w-100"></div>
+                <div class="col my-sm-2">
+                    Wind speed
+                    <br>
+                    gust
+                </div>
+                <div class="col my-sm-2">
+                    {{ owm_db_data[9] }} m/s ({{ owm_db_data[10] }} °)
+                    <br>
+                    {{ owm_db_data[11] }} m/s
+                </div>
+            </div>
+
+
         </div>
 
         <div class="col-md-8">
