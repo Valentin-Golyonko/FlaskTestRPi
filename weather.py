@@ -38,10 +38,10 @@ def index():
         data[12] = dt
         # log_info("\tlast owm time: %s (%s)" % (data[12], type(data[12])))  # test print
 
-        return render_template('weather.html', owm_db_data=data)
+        return render_template('weather/weather.html', owm_db_data=data)
     else:
-        log_warning("redirect to 'sensors.index'")
-        return redirect(url_for('sensors.index'))
+        log_warning("redirect to 'smart_home.index'")
+        return redirect(url_for('smart_home.index'))
 
 
 def get_owm_data():
@@ -87,8 +87,8 @@ def set_city(city):
             close_db()
             log_info("\tset_city() - OK")
         else:
-            log_error("\tset_city() - city_id NOT FOUND\nredirect to 'sensors.index'")
-            redirect(url_for('sensors.index'))
+            log_error("\tset_city() - city_id NOT FOUND\nredirect to 'smart_home.index'")
+            redirect(url_for('smart_home.index'))
     except Exception as ex:
         log_error("\tEx. in - set_city():\n%s" % ex)
         close_db()

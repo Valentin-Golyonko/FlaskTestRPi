@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+{% block title %}Sensors{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-4"> <!--justify-content-start align-items-start-->
+
+            <h3 class="h3 py-sm-1" style="color: #F9AA33">BME 280</h3>
+            <div class="list-group">
+                <a href="#" id="data_temp"
+                   class="list-group-item list-group-item-action list-group-item-primary">
+                    Temperature: {{ db_data[2][0] }} °C</a>
+                <a href="#" id="data_hum"
+                   class="list-group-item list-group-item-action list-group-item-secondary">
+                    Humidity: {{ db_data[3][0] }} %</a>
+                <a href="#" id="data_pres"
+                   class="list-group-item list-group-item-action list-group-item-warning">
+                    Pressure: {{ db_data[4][0] }} hPa</a>
+                <!--<a href="#"
+                   class="list-group-item list-group-item-action list-group-item-info">
+                    Altitude: {{ db_data[5][0] }} m</a>-->
+            </div>
+
+            <h3 class="h3 py-sm-1" style="color: #F9AA33">RPi</h3>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action list-group-item-success">
+                    temperature: {{ db_data[6] }} °C</a>
+            </div>
+
+            <h3 class="h3 py-sm-1" style="color: #F9AA33">TBD</h3>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action list-group-item-danger">
+                    +</a>
+            </div>
+
+        </div>
+
+        <div class="col-md-8">
+
+            <section class="content rounded py-sm-1" style="background-color: #344955">
+                {% include "smart_home/chart_bme280.html" %}
+            </section>
+
+            <br>
+
+            <div class="rounded py-sm-1" style="background-color: #344955">
+                <table class="table table-striped text-white">
+                    <thead>
+                    <tr style="color: #F9AA33">
+                        <th scope="col">temperature</th>
+                        <th scope="col">humidity</th>
+                        <th scope="col">pressure</th>
+                        <th scope="col">created</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for dt in db_data[0] %}
+                        <tr>
+                            <td>{{ dt['temperature'] }}</td>
+                            <td>{{ dt['humidity'] }}</td>
+                            <td>{{ dt['pressure'] }}</td>
+                            <td>{{ dt['created'].strftime('%Y-%m-%d %H:%M') }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

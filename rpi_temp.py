@@ -10,7 +10,9 @@ def measure_rpi_temp(delta_time=2):
         while True:
             temp = os.popen("vcgencmd measure_temp").readline()
             temp = str(temp).strip().replace("temp=", "").replace("'C", "")
-            # log_info("\tRPi temp: %s °C" % temp)
+            if not temp:
+                log_error("\tRPi temp = None")
+                temp = None
             yield temp
             sleep(delta_time)
     except Exception as ex:

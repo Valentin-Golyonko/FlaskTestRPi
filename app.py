@@ -38,10 +38,12 @@ def create_app(test_config=None):
     # apply the blueprints to the app
     from . import main
     app.register_blueprint(main.bp)
-    from . import sensors
-    app.register_blueprint(sensors.bp)
+    from . import smart_home
+    app.register_blueprint(smart_home.bp)
     from . import weather
     app.register_blueprint(weather.bp)
+    from . import social
+    app.register_blueprint(social.bp)
 
     from bme280_sensor import update_bme280_db_table
     th_s = Thread(target=update_bme280_db_table, daemon=True, name="Thread - update_bme280_db_table")
