@@ -3,5 +3,38 @@
 {% block title %}Sensors{% endblock %}
 
 {% block content %}
-    <h3 class="h3 py-sm-1" style="color: #F9AA33">Social Networks</h3>
+
+    <div class="row">
+        <div class="col-md-4"> <!--justify-content-start align-items-start-->
+
+            <h3 class="h3 py-sm-1" style="color: #F9AA33">Social Networks</h3>
+
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action list-group-item-primary">
+                    Twitter</a>
+                <a href="#" class="list-group-item list-group-item-action list-group-item-danger">
+                    +</a>
+            </div>
+
+        </div>
+
+        <div class="col-md-8">
+            <h3 class="h3 ml-sm-2" style="color: #F9AA33">Your Feed</h3>
+
+            <ul class="list-group">
+                {% for i in data %}
+                    <li class="list-group-item text-white" style="background-color: #344955">
+                        <p><img src="{{ i[4] }}" alt="img">  <!--user icon-->
+                            {{ i[0: 2] }}</p>    <!--# time + user name-->
+                        <p>{{ i[2] }}</p>   <!--# tweet text-->
+                        {% if i[3] %}
+                            <img src="{{ i[3] }}" alt="img" width="400">   <!--# tweet media file (image)-->
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
 {% endblock %}

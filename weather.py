@@ -2,16 +2,16 @@
 Weather API:
     https://openweathermap.org/api
 """
-import json
-import sqlite3
-import urllib.request
 from datetime import datetime
+from json import loads
+from sqlite3 import connect
 from time import sleep
+from urllib.request import urlopen
 
 from flask import (
     Blueprint, render_template, request, redirect, url_for)
 
-import api_keys.keys as key
+from api_keys.keys import owm_api_key
 from color_log.log_color import log_verbose, log_error, log_info, log_warning
 from db import get_db, close_db
 
@@ -96,12 +96,12 @@ def set_city(city):
 
 def update_owm_db_table():
     log_verbose("update_owm_db_table()")
-    _owm = owm(600)  # timer = 10 min
+    _owm = owm(60)  # default timer = 10 min
     try:
         while True:
             owm_data = next(_owm)
             if owm_data:
-                db = sqlite3.connect("data/flask_test.sqlite")
+                db = connect("data/flask_test.sqlite")
                 # db = get_db()
                 cursor = db.cursor()
                 cursor.execute("INSERT INTO owm (weather_id, description,"
@@ -122,24 +122,24 @@ def owm(delta_time=600):
     log_verbose("owm()")
     try:
         while True:
-            db = sqlite3.connect("data/flask_test.sqlite")
+            db = connect("data/flask_test.sqlite")
             cur = db.cursor()
             city_id = cur.execute("SELECT id FROM owm_city_list "
                                   "WHERE active = ?",
                                   (True,)).fetchone()[0]
             db.close()
-            log_info("\towm() - city_id: %s" % city_id)
+            # log_info("\towm() - city_id: %s" % city_id)
 
             if city_id:
                 owm_output = []
                 owm_call = "http://api.openweathermap.org/data/2.5/weather?id=" + \
-                           str(city_id) + "&units=metric&APPID=" + str(key.owm_api_key)
+                           str(city_id) + "&units=metric&APPID=" + str(owm_api_key)
 
-                owm_data = urllib.request.urlopen(owm_call).read()
+                owm_data = urlopen(owm_call).read()
                 owm_data_str = owm_data.decode('utf8').replace("'", '"')  # for python 3.5 on raspberry !
 
-                json_owm = json.loads(owm_data_str)
-                log_info("\tjson_owm: %s" % json_owm)         # test output
+                json_owm = loads(owm_data_str)
+                # log_info("\tjson_owm: %s" % json_owm)         # test output
 
                 owm_output.append(json_owm['weather'][0]["id"])  # 0
                 owm_output.append(json_owm['weather'][0]["description"])  # 1

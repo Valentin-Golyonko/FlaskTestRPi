@@ -1,6 +1,6 @@
 import os
 from threading import Thread
-
+from concurrent.futures import ThreadPoolExecutor
 from flask import Flask
 
 
@@ -36,8 +36,8 @@ def create_app(test_config=None):
     db.init_app(app)
 
     # apply the blueprints to the app
-    from . import main
-    app.register_blueprint(main.bp)
+    from . import main_page
+    app.register_blueprint(main_page.bp)
     from . import smart_home
     app.register_blueprint(smart_home.bp)
     from . import weather
