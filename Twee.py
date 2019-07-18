@@ -2,6 +2,8 @@
 Tweepy Documentation:
     https://tweepy.readthedocs.io/en/latest/
 """
+import re
+
 import tweepy
 
 from MySteamListener_twee import MyStreamListener
@@ -36,12 +38,22 @@ def twee():
             one_tweet = list()
             one_tweet.append(str(tweet.created_at))  # 0 * 5
             one_tweet.append(str(tweet.user.name))  # 1 * 5
-            one_tweet.append(str(tweet.full_text))  # 2 * 5
+
+            tft = str(tweet.full_text)
+            text = re.search(r"", tft)
+
+            one_tweet.append(str(tft))  # 2 * 5
             if 'media' in tweet.entities:
                 one_tweet.append(str(tweet.entities['media'][0]['media_url_https']))  # 3 * 5
             else:
                 one_tweet.append(str(""))
             one_tweet.append(str(tweet.user.profile_image_url_https))  # 4 * 5
+
+            r = re.search(r"https://\w+.\w+/\w+", tft)
+            if r:
+                one_tweet.append(r.group(0))     # 5
+            else:
+                one_tweet.append("")  # 5
 
             your_feed.append(one_tweet)
             # log_info(str(one_tweet))

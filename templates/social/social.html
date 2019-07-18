@@ -28,11 +28,19 @@
             <ul class="list-group">
                 {% for i in data %}
                     <li class="list-group-item text-white" style="background-color: #344955">
-                        <p><img src="{{ i[4] }}" alt="img">  <!--user icon-->
-                            {{ i[0: 2] }}</p>    <!--# time + user name-->
-                        <p>{{ i[2] }}</p>   <!--# tweet text-->
+                        <p>
+                            <img src="{{ i[4] }}" alt="img">    <!--user icon-->
+                            {{ i[1] }},      <!-- user name-->
+                            {{ i[0] }}      <!-- time -->
+                        </p>
+                        <p class="m-sm-0">
+                            {{ i[2] }}      <!-- tweet text-->
+                        </p>
+                        <p class="m-sm-0">
+                            <a href="{{ i[5] }}" target="_blank">external reference</a>      <!-- tweet text-->
+                        </p>
                         {% if i[3] %}
-                            <img src="{{ i[3] }}" alt="img" width="400">   <!--# tweet media file (image)-->
+                            <img class="m-sm-0" src="{{ i[3] }}" alt="img" width="400">   <!-- tweet media file (image)-->
                         {% endif %}
                     </li>
                 {% endfor %}
