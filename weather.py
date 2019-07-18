@@ -2,6 +2,7 @@
 Weather API:
     https://openweathermap.org/api
 """
+import json
 from datetime import datetime
 from json import loads
 from sqlite3 import connect
@@ -18,16 +19,19 @@ from db import get_db, close_db
 bp = Blueprint('weather', __name__)
 
 
-@bp.route('/weather', methods=('GET', 'POST'))
+@bp.route('/weather', methods=('GET', 'POST', 'PUT'))
 def index():
     log_verbose("weather: index()")
 
     if request.method == 'POST':
         city = request.form['city']
+
         if city:
             city = str(city).split()
             set_city(city)
             upd_db_new_city()
+
+    forecast = owm_forecast()
 
     db_row_data = get_owm_data()[0]
 
@@ -38,7 +42,7 @@ def index():
         data[12] = dt
         # log_info("\tlast owm time: %s (%s)" % (data[12], type(data[12])))  # test print
 
-        return render_template('weather/weather.html', owm_db_data=data)
+        return render_template('weather/weather.html', owm_db_data=[data, forecast])
     else:
         log_warning("redirect to 'smart_home.index'")
         return redirect(url_for('smart_home.index'))
@@ -96,7 +100,7 @@ def set_city(city):
 
 def update_owm_db_table():
     log_verbose("update_owm_db_table()")
-    _owm = owm(60)  # default timer = 10 min
+    _owm = owm(600)  # default timer = 10 min
     try:
         while True:
             owm_data = next(_owm)
@@ -197,6 +201,52 @@ def upd_db_new_city():
     except Exception as ex:
         log_error("\tEx. in - upd_db_new_city: \n%s" % ex)
         close_db()
+
+
+def owm_forecast(delta_time=600):
+    log_verbose("owm_forecast()")
+    try:
+        while True:
+            db = connect("data/flask_test.sqlite")
+            cur = db.cursor()
+            city_id = cur.execute("SELECT id FROM owm_city_list "
+                                  "WHERE active = ?",
+                                  (True,)).fetchone()[0]
+            db.close()
+            # log_info("\towm() - city_id: %s" % city_id)
+
+            if city_id:
+                owm_output = []
+                # owm_call = "http://api.openweathermap.org/data/2.5/forecast?id=" + \
+                #            str(city_id) + "&units=metric&APPID=" + str(owm_api_key)
+                #
+                # owm_data = urlopen(owm_call).read()
+                # owm_data_str = owm_data.decode('utf8').replace("'", '"')  # for python 3.5 on raspberry !
+                #
+                # json_owm = loads(owm_data_str)
+                # log_info("\tjson_owm: %s" % json_owm)         # test output
+
+                with open('data/f.json') as f:
+                    json_owm = json.loads(f.read())
+                    log_info("\tJSON LOADED\n%s" % json_owm)
+
+                forecast_len = len(json_owm['list'])
+                for i in range(forecast_len):
+                    dt = datetime.fromtimestamp(json_owm['list'][i]['dt'])  # convert from unix time to local time
+                    json_owm['list'][i]['dt'] = dt
+
+                log_info("\tLoad owm_forecast - OK")
+
+                return json_owm
+                # sleep(delta_time)
+
+            else:
+                log_error("\towm_forecast() - city_id NOT FOUND\nretry in 1 min")
+                return None
+                # sleep(60)
+
+    except Exception as ex:
+        log_error("\tEx. in - owm_forecast():\n%s" % ex)
 
 
 if __name__ == '__main__':

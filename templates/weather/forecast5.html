@@ -1,0 +1,51 @@
+<div class="rounded py-sm-1" style="background-color: #344955">
+    <table class="table table-striped text-white">
+        <thead>
+        <tr style="color: #F9AA33">
+            <th scope="col">Day</th>
+            <th scope="col">Temperature, °C</th>
+            <th scope="col">Pressure, hPa</th>
+            <th scope="col">Humidity, %</th>
+            <th scope="col">Weather</th>
+            <th scope="col">Cloudiness, %</th>
+            <th scope="col">Wind, m/s</th>
+            <th scope="col">Rain/Snow, mm</th>
+            <th scope="col">Data/time of calculation, UTC</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if owm_db_data[1] %}
+            {% for f in owm_db_data[1]['list'] %}
+                <tr>
+                    <td>{{ f['dt'].strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        {{ f['main']['temp'] }}
+                        ({{ f['main']['temp_min'] }}/{{ f['main']['temp_max'] }})
+                    </td>
+                    <td>
+                        {{ f['main']['pressure'] }}
+                        ({{ f['main']['grnd_level'] }})
+                    </td>
+                    <td>{{ f['main']['humidity'] }}</td>
+                    <td>
+                        {{ f['weather'][0]['description'] }}
+                        <img src="../../static/img/owm_icons/{{ f['weather'][0]['icon'] }}.png" alt="weather_icon">
+                    </td>
+                    <td>{{ f['clouds']['all'] }}</td>
+                    <td>
+                        {{ f['wind']['speed'] }} ({{ f['wind']['deg'] }}°)
+                    </td>
+                    <td>
+                        {% if f['rain'] %}
+                            {{ f['rain']['3h'] }}
+                        {% endif %}
+                    </td>
+                    <td>{{ f['dt_txt'] }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <h4 class="rounded pl-sm-1" style="color: crimson">Connection Error</h4>
+        {% endif %}
+        </tbody>
+    </table>
+</div>

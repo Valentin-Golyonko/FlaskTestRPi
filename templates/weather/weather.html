@@ -20,26 +20,26 @@
             </form>
 
             <div class="list-group-item text-white rounded" style="background-color: #344955">
-                <p style="font-size:200%;">{{ owm_db_data[4] }} °C
-                    <img src="../static/img/owm_icons/{{ owm_db_data[3] }}.png" alt="weather_icon"></p>
-                {{ owm_db_data[2].title() }}
+                <p style="font-size:200%;">{{ owm_db_data[0][4] }} °C
+                    <img src="../static/img/owm_icons/{{ owm_db_data[0][3] }}.png" alt="weather_icon"></p>
+                {{ owm_db_data[0][2].title() }}
                 <br>
-                {{ owm_db_data[12].strftime('%c') }}
+                {{ owm_db_data[0][12].strftime('%c') }}
             </div>
             <br>
             <div class="row text-white rounded m-sm-0" style="background-color: #344955">
                 <div class="col my-sm-2">Pressure</div>
                 <div class="col my-sm-2">
-                    {{ owm_db_data[5] }} hPa
+                    {{ owm_db_data[0][5] }} hPa
                     <br>
-                    ({{ owm_db_data[5] * 0.75 }} mmHg)
+                    ({{ owm_db_data[0][5] * 0.75 }} mmHg)
                 </div>
                 <div class="w-100"></div>
                 <div class="col my-sm-2">Humidity</div>
-                <div class="col my-sm-2">{{ owm_db_data[6] }} %</div>
+                <div class="col my-sm-2">{{ owm_db_data[0][6] }} %</div>
                 <div class="w-100"></div>
                 <div class="col my-sm-2">Temp. min/max</div>
-                <div class="col my-sm-2">{{ owm_db_data[7] }} / {{ owm_db_data[8] }} °C</div>
+                <div class="col my-sm-2">{{ owm_db_data[0][7] }} / {{ owm_db_data[0][8] }} °C</div>
                 <div class="w-100"></div>
                 <div class="col my-sm-2">
                     Wind speed
@@ -47,9 +47,9 @@
                     gust
                 </div>
                 <div class="col my-sm-2">
-                    {{ owm_db_data[9] }} m/s ({{ owm_db_data[10] }} °)
+                    {{ owm_db_data[0][9] }} m/s ({{ owm_db_data[0][10] }} °)
                     <br>
-                    {{ owm_db_data[11] }} m/s
+                    {{ owm_db_data[0][11] }} m/s
                 </div>
             </div>
 
@@ -60,7 +60,7 @@
             <h3 class="h3 py-sm-1" style="color: #F9AA33">
                 Current weather and forecasts in your city</h3>
             <div class="rounded py-sm-1 text-white" style="background-color: #344955">
-                TBD
+                {% include "weather/forecast5.html" %}
             </div>
         </div>
 
