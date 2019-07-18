@@ -10,7 +10,7 @@ from datetime import datetime
 import sqlite3
 from time import sleep
 
-from color_log.log_color import log_verbose, log_error, log_info
+from .color_log.log_color import log_verbose, log_error, log_info
 
 
 def bme280_date(delta_time=5):

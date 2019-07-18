@@ -1,9 +1,9 @@
 from flask import (
     Blueprint, render_template)
 
-from color_log.log_color import log_verbose
-from db import get_db, close_db
-from rpi_temp import measure_rpi_temp
+from .color_log.log_color import log_verbose
+from .db import get_db, close_db
+from .rpi_temp import measure_rpi_temp
 
 bp = Blueprint('smart_home', __name__)
 

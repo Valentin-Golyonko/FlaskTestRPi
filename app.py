@@ -45,11 +45,11 @@ def create_app(test_config=None):
     from . import social
     app.register_blueprint(social.bp)
 
-    from bme280_sensor import update_bme280_db_table
+    from .bme280_sensor import update_bme280_db_table
     th_s = Thread(target=update_bme280_db_table, daemon=True, name="Thread - update_bme280_db_table")
     th_s.start()
 
-    from weather import update_owm_db_table
+    from .weather import update_owm_db_table
     th_w = Thread(target=update_owm_db_table, daemon=True, name="Thread - update_owm_db_table")
     th_w.start()
 

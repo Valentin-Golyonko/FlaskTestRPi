@@ -2,7 +2,6 @@
 Weather API:
     https://openweathermap.org/api
 """
-import json
 from datetime import datetime
 from json import loads
 from sqlite3 import connect
@@ -12,9 +11,9 @@ from urllib.request import urlopen
 from flask import (
     Blueprint, render_template, request, redirect, url_for)
 
-from api_keys.keys import owm_api_key
-from color_log.log_color import log_verbose, log_error, log_info, log_warning
-from db import get_db, close_db
+from .api_keys.keys import owm_api_key
+from .color_log.log_color import log_verbose, log_error, log_info, log_warning
+from .db import get_db, close_db
 
 bp = Blueprint('weather', __name__)
 
@@ -77,12 +76,12 @@ def set_city(city):
                               (city[0], city[1],)).fetchone()[0]
         if city_id:
             cur.execute(
-                "UPDATE owm_city_list SET active = 0"       # reset all
+                "UPDATE owm_city_list SET active = 0"  # reset all
             )
             db.commit()
 
             cur.execute(
-                "UPDATE owm_city_list SET active = ?"       # set ONE to True
+                "UPDATE owm_city_list SET active = ?"  # set ONE to True
                 " WHERE id = ?",
                 (True, city_id,)
             )
