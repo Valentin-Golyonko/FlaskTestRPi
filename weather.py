@@ -77,12 +77,12 @@ def set_city(city):
                               (city[0], city[1],)).fetchone()[0]
         if city_id:
             cur.execute(
-                "UPDATE owm_city_list SET active = 0"
+                "UPDATE owm_city_list SET active = 0"       # reset all
             )
             db.commit()
 
             cur.execute(
-                "UPDATE owm_city_list SET active = ?"
+                "UPDATE owm_city_list SET active = ?"       # set ONE to True
                 " WHERE id = ?",
                 (True, city_id,)
             )

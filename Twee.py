@@ -39,21 +39,28 @@ def twee():
             one_tweet.append(str(tweet.created_at))  # 0 * 5
             one_tweet.append(str(tweet.user.name))  # 1 * 5
 
-            tft = str(tweet.full_text)
-            text = re.search(r"", tft)
+            twit_ft = str(tweet.full_text)
+            twit_end = re.search(r"https://", twit_ft)
+            if twit_end:
+                twit_end = twit_end.start(0)    # get index of a first met of 'https://'
+                twit_text = twit_ft[:twit_end]
+                one_tweet.append(twit_text)  # 2 * 5
+            else:
+                one_tweet.append(twit_ft)
 
-            one_tweet.append(str(tft))  # 2 * 5
             if 'media' in tweet.entities:
                 one_tweet.append(str(tweet.entities['media'][0]['media_url_https']))  # 3 * 5
             else:
-                one_tweet.append(str(""))
+                one_tweet.append("")
             one_tweet.append(str(tweet.user.profile_image_url_https))  # 4 * 5
 
-            r = re.search(r"https://\w+.\w+/\w+", tft)
-            if r:
-                one_tweet.append(r.group(0))     # 5
+            reference = re.findall(r"https://\w+.\w+/\w+", twit_ft)
+            if reference:
+                one_tweet.append(reference[0])     # 5
+                # log_warning("\ttwee() - reference %s" % reference)
             else:
                 one_tweet.append("")  # 5
+                log_warning("\ttwee() - reference Not found")
 
             your_feed.append(one_tweet)
             # log_info(str(one_tweet))

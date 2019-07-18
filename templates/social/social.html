@@ -13,7 +13,6 @@
 
                 <a href="#" class="list-group-item list-group-item-action list-group-item-primary">
                     Twitter
-                    <button class="btn" type="submit" id="btn_upd_twee">Update</button>
                 </a>
 
                 <a href="#" class="list-group-item list-group-item-action list-group-item-danger">
@@ -36,11 +35,13 @@
                         <p class="m-sm-0">
                             {{ i[2] }}      <!-- tweet text-->
                         </p>
-                        <p class="m-sm-0">
-                            <a href="{{ i[5] }}" target="_blank">external reference</a>      <!-- tweet text-->
-                        </p>
+                        {% if i[5] %}
+                            <p class="m-sm-0">
+                                <a href="{{ i[5] }}" target="_blank">external reference</a>
+                            </p>
+                        {% endif %}
                         {% if i[3] %}
-                            <img class="m-sm-0" src="{{ i[3] }}" alt="img" width="400">   <!-- tweet media file (image)-->
+                            <img class="m-sm-0" src="{{ i[3] }}" alt="img" width="70%"> <!--media file(image)-->
                         {% endif %}
                     </li>
                 {% endfor %}

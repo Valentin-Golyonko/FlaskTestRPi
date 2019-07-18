@@ -2,7 +2,7 @@ import json
 import sqlite3
 import time
 
-from color_log.log_color import *
+from color_log.log_color import (log_verbose, log_warning, log_info, log_error)
 
 
 def open_json():
@@ -62,7 +62,7 @@ def convert_json_to_db(_data):
         if len(i) > 1:
             items += 1
 
-            id = i['id']
+            _id = i['id']
             name = i['name']
             country = i['country']
             coord_lat = i['coord']['lat']
@@ -70,7 +70,7 @@ def convert_json_to_db(_data):
 
             # log_info("%s, %s, %s, %s, %s" % (id, name, country, coord_lat, coord_lon))
 
-            purchase = (id, name, country, coord_lat, coord_lon, active)
+            purchase = (_id, name, country, coord_lat, coord_lon, active)
             purchases.append(purchase)
         else:
             items_zero += 1
@@ -104,7 +104,10 @@ def test_db(_str):
     i_cursor = i_db.cursor()
 
     try:
-        _id, city = i_cursor.execute("SELECT id, name FROM owm_city_list WHERE name = ?", (_str,)).fetchone()
+        _id, city = i_cursor.execute("SELECT id, name"
+                                     " FROM owm_city_list"
+                                     " WHERE name = ?",
+                                     (_str,)).fetchone()
         log_info("\t%s - %s" % (_id, city))
         i_db.close()
 

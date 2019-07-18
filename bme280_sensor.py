@@ -50,7 +50,7 @@ def bme280_date(delta_time=5):
 def update_bme280_db_table():
     log_verbose("update_bme280_db_table()")
 
-    bme280 = bme280_date(60)  # timer = 10 min
+    bme280 = bme280_date(600)  # timer = 10 min
     try:
         while True:
             t, h, p = next(bme280)

@@ -25,7 +25,6 @@ def index():
     h = [i['humidity'] for i in db_data]
     p = [i['pressure'] for i in db_data]
     c = [i['created'].strftime('%x %X') for i in db_data]
-    # log_info("\tcreated: %s %s" % (c, type(c[0])))
 
     rpi_temp = measure_rpi_temp(2)
     rp = next(rpi_temp)
