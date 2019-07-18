@@ -1,51 +1,71 @@
-<div class="rounded py-sm-1" style="background-color: #344955">
-    <table class="table table-striped text-white">
+<div class="rounded py-sm-2" style="background-color: #344955">
+    Charts - TBD
+</div>
+
+<br>
+
+<div class="rounded py-sm-2" style="background-color: #344955">
+    <table class="table table-striped" style="color: #f5f5f5">
         <thead>
-        <tr style="color: #F9AA33">
-            <th scope="col">Day</th>
-            <th scope="col">Temperature, °C</th>
-            <th scope="col">Pressure, hPa</th>
-            <th scope="col">Humidity, %</th>
+        <tr class="text-center" style="color: #F9AA33">
+            <th scope="col ">Day</th>
             <th scope="col">Weather</th>
-            <th scope="col">Cloudiness, %</th>
-            <th scope="col">Wind, m/s</th>
-            <th scope="col">Rain/Snow, mm</th>
-            <th scope="col">Data/time of calculation, UTC</th>
+            <th scope="col">Details</th>
+            <th scope="col">Wind</th>
         </tr>
         </thead>
         <tbody>
-        {% if owm_db_data[1] %}
-            {% for f in owm_db_data[1]['list'] %}
-                <tr>
-                    <td>{{ f['dt'].strftime('%Y-%m-%d %H:%M') }}</td>
-                    <td>
-                        {{ f['main']['temp'] }}
-                        ({{ f['main']['temp_min'] }}/{{ f['main']['temp_max'] }})
-                    </td>
-                    <td>
-                        {{ f['main']['pressure'] }}
-                        ({{ f['main']['grnd_level'] }})
-                    </td>
-                    <td>{{ f['main']['humidity'] }}</td>
-                    <td>
+        {% for f in owm_db_data[1]['list'] %}
+
+            <tr>
+                <td class="align-middle text-center">
+                    <p class="m-sm-1">
+                        {{ f['dt'] }}</p>
+                <td class="align-middle text-center" style="background-color: #5e7380">   <!--  style="background-color: #5e7380" -->
+                    <img src="../../static/img/owm_icons/{{ f['weather'][0]['icon'] }}.png" alt="weather_icon">
+                    <p class="m-sm-0">
                         {{ f['weather'][0]['description'] }}
-                        <img src="../../static/img/owm_icons/{{ f['weather'][0]['icon'] }}.png" alt="weather_icon">
-                    </td>
-                    <td>{{ f['clouds']['all'] }}</td>
-                    <td>
-                        {{ f['wind']['speed'] }} ({{ f['wind']['deg'] }}°)
-                    </td>
-                    <td>
                         {% if f['rain'] %}
-                            {{ f['rain']['3h'] }}
-                        {% endif %}
-                    </td>
-                    <td>{{ f['dt_txt'] }}</td>
-                </tr>
-            {% endfor %}
-        {% else %}
-            <h4 class="rounded pl-sm-1" style="color: crimson">Connection Error</h4>
-        {% endif %}
+                            {{ f['rain']['3h'] }} mm
+                        {% elif f['snow'] %}
+                            {{ f['snow']['3h'] }} mm
+                        {% endif %}</p>
+                </td>
+                <td class="align-middle">
+                    <p class="my-sm-1" style="color: #ffdc65">
+                        <span class="badge badge-warning">
+                            max {{ f['main']['temp_max'] }} °C
+                        </span>
+                        <span class="badge badge-success">
+                            min {{ f['main']['temp_min'] }} °C
+                        </span>
+                    </p>
+                    <p class="my-sm-1" style="color: #ffdc65">
+                        <span class="badge badge-info">
+                            humidity: {{ f['main']['humidity'] }} %
+                        </span>
+                    </p>
+                    <p class="my-sm-1">
+                        {{ f['main']['pressure'] }} ({{ f['main']['grnd_level'] }}) hPa
+                    </p>
+                    <p class="my-sm-1">
+                        clouds: {{ f['clouds']['all'] }} %
+                    </p>
+                </td>
+                <td class="align-middle">
+                    {% if f['wind'] %}
+                        <p class="m-sm-1">
+                            <span class="badge badge-primary">
+                                {{ f['wind']['speed'] }} m/s
+                            </span>
+                        </p>
+                        <p class="m-sm-1">
+                            {{ f['wind']['deg'] }}°
+                        </p>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>

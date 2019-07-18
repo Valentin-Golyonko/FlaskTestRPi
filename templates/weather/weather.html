@@ -19,7 +19,7 @@
                 </div>
             </form>
 
-            <div class="list-group-item text-white rounded" style="background-color: #344955">
+            <div class="list-group-item text-white rounded" style="background-color: #5e7380">
                 <p style="font-size:200%;">{{ owm_db_data[0][4] }} °C
                     <img src="../static/img/owm_icons/{{ owm_db_data[0][3] }}.png" alt="weather_icon"></p>
                 {{ owm_db_data[0][2].title() }}
@@ -53,14 +53,17 @@
                 </div>
             </div>
 
-
         </div>
 
         <div class="col-md-8">
             <h3 class="h3 py-sm-1" style="color: #F9AA33">
                 Current weather and forecasts in your city</h3>
-            <div class="rounded py-sm-1 text-white" style="background-color: #344955">
-                {% include "weather/forecast5.html" %}
+            <div class="rounded py-sm-1 text-white">
+                {% if owm_db_data[1] %}
+                    {% include "weather/forecast5.html" %}
+                {% else %}
+                    <h4 class="rounded pl-sm-1" style="color: crimson">Connection Error</h4>
+                {% endif %}
             </div>
         </div>
 

@@ -38,8 +38,7 @@ def index():
     if db_row_data:
         data = [i for i in db_row_data]
 
-        dt = datetime.fromtimestamp(data[12])  # convert from unix time to local time
-        data[12] = dt
+        data[12] = datetime.fromtimestamp(data[12])  # convert from unix time to local time
         # log_info("\tlast owm time: %s (%s)" % (data[12], type(data[12])))  # test print
 
         return render_template('weather/weather.html', owm_db_data=[data, forecast])
@@ -167,7 +166,7 @@ def owm(delta_time=600):
 
                 owm_output.append(json_owm['dt'])  # 11
 
-                log_info("\tLoad OWM - OK")
+                log_info("\tLoad owm() - OK")
 
                 yield owm_output
                 sleep(delta_time)
@@ -203,7 +202,7 @@ def upd_db_new_city():
         close_db()
 
 
-def owm_forecast(delta_time=600):
+def owm_forecast():
     log_verbose("owm_forecast()")
     try:
         while True:
@@ -216,32 +215,31 @@ def owm_forecast(delta_time=600):
             # log_info("\towm() - city_id: %s" % city_id)
 
             if city_id:
-                owm_output = []
-                # owm_call = "http://api.openweathermap.org/data/2.5/forecast?id=" + \
-                #            str(city_id) + "&units=metric&APPID=" + str(owm_api_key)
-                #
-                # owm_data = urlopen(owm_call).read()
-                # owm_data_str = owm_data.decode('utf8').replace("'", '"')  # for python 3.5 on raspberry !
-                #
-                # json_owm = loads(owm_data_str)
+                owm_call = "http://api.openweathermap.org/data/2.5/forecast?id=" + \
+                           str(city_id) + "&units=metric&APPID=" + str(owm_api_key)
+
+                owm_data = urlopen(owm_call).read()
+                owm_data_str = owm_data.decode('utf8').replace("'", '"')  # for python 3.5 on raspberry !
+
+                json_owm = loads(owm_data_str)
                 # log_info("\tjson_owm: %s" % json_owm)         # test output
 
-                with open('data/f.json') as f:
-                    json_owm = json.loads(f.read())
-                    log_info("\tJSON LOADED\n%s" % json_owm)
+                # with open('data/f.json') as f:
+                #     json_owm = json.loads(f.read())
+                #     log_info("\tJSON LOADED\n%s" % json_owm)
 
                 forecast_len = len(json_owm['list'])
                 for i in range(forecast_len):
-                    dt = datetime.fromtimestamp(json_owm['list'][i]['dt'])  # convert from unix time to local time
-                    json_owm['list'][i]['dt'] = dt
+                    # convert from unix time to local time
+                    json_owm['list'][i]['dt'] = datetime.fromtimestamp(json_owm['list'][i]['dt']).strftime('%A %b %d')
 
-                log_info("\tLoad owm_forecast - OK")
+                log_info("\tLoad owm_forecast() - OK")
 
                 return json_owm
                 # sleep(delta_time)
 
             else:
-                log_error("\towm_forecast() - city_id NOT FOUND\nretry in 1 min")
+                log_error("\towm_forecast() - city_id NOT FOUND")
                 return None
                 # sleep(60)
 
