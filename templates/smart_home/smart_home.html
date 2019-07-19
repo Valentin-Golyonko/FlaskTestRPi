@@ -38,36 +38,9 @@
         </div>
 
         <div class="col-md-8">
-
             <section class="content rounded py-sm-1" style="background-color: #344955">
                 {% include "smart_home/chart_bme280.html" %}
             </section>
-
-            <br>
-
-            <div class="rounded py-sm-1" style="background-color: #344955">
-                <table class="table table-striped text-center" style="color: #f5f5f5">
-                    <thead>
-                    <tr style="color: #F9AA33">
-                        <th scope="col">temperature</th>
-                        <th scope="col">humidity</th>
-                        <th scope="col">pressure</th>
-                        <th scope="col">created</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for dt in db_data[0] %}
-                        <tr>
-                            <td>{{ dt['temperature'] }}</td>
-                            <td>{{ dt['humidity'] }}</td>
-                            <td>{{ dt['pressure'] }}</td>
-                            <td>{{ dt['created'].strftime('%H:%M %d/%m/%Y ') }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
         </div>
     </div>
 {% endblock %}

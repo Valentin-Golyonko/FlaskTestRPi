@@ -44,6 +44,8 @@ def create_app(test_config=None):
     app.register_blueprint(weather.bp)
     from . import social
     app.register_blueprint(social.bp)
+    from . import about
+    app.register_blueprint(about.bp)
 
     from .bme280_sensor import update_bme280_db_table
     th_s = Thread(target=update_bme280_db_table, daemon=True, name="Thread - update_bme280_db_table")

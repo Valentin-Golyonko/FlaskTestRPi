@@ -1,0 +1,20 @@
+{% for tw in data %}
+    <li class="list-group-item text-white" style="background-color: #344955">
+        <p>
+            <img src="{{ tw[4] }}" alt="img">    <!--user icon-->
+            {{ tw[1] }},      <!-- user name-->
+            {{ tw[0] }}      <!-- time -->
+        </p>
+        <p class="m-sm-0">
+            {{ tw[2] }}      <!-- tweet text-->
+        </p>
+        {% if tw[5] %}
+            <p class="m-sm-0">
+                <a href="{{ tw[5] }}" target="_blank">external reference</a>
+            </p>
+        {% endif %}
+        {% if tw[3] %}
+            <img class="m-sm-0" src="{{ tw[3] }}" alt="img" width="70%"> <!--media file(image)-->
+        {% endif %}
+    </li>
+{% endfor %}

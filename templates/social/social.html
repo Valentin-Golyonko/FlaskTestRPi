@@ -11,8 +11,13 @@
 
             <div class="list-group">
 
-                <a href="#" class="list-group-item list-group-item-action list-group-item-primary">
+                <a href="#" class="list-group-item list-group-item-action list-group-item-primary"
+                   id="twitter">
                     Twitter
+                </a>
+                <a href="#" class="list-group-item list-group-item-action list-group-item-primary"
+                   id="instagram">
+                    Instagram
                 </a>
 
                 <a href="#" class="list-group-item list-group-item-action list-group-item-danger">
@@ -23,31 +28,19 @@
 
         <div class="col-md-8">
             <h3 class="h3 ml-sm-2" style="color: #F9AA33">Your Feed</h3>
-
             <ul class="list-group">
-                {% for i in data %}
-                    <li class="list-group-item text-white" style="background-color: #344955">
-                        <p>
-                            <img src="{{ i[4] }}" alt="img">    <!--user icon-->
-                            {{ i[1] }},      <!-- user name-->
-                            {{ i[0] }}      <!-- time -->
-                        </p>
-                        <p class="m-sm-0">
-                            {{ i[2] }}      <!-- tweet text-->
-                        </p>
-                        {% if i[5] %}
-                            <p class="m-sm-0">
-                                <a href="{{ i[5] }}" target="_blank">external reference</a>
-                            </p>
-                        {% endif %}
-                        {% if i[3] %}
-                            <img class="m-sm-0" src="{{ i[3] }}" alt="img" width="70%"> <!--media file(image)-->
-                        {% endif %}
-                    </li>
-                {% endfor %}
+                {% if data %}
+                    {% include "social/twitter.html" %}
+                {% else %}
+                    <h4 class="rounded pl-sm-1" style="color: crimson">Connection Error</h4>
+                {% endif %}
             </ul>
         </div>
     </div>
+
+    <script type="text/javascript">
+
+    </script>
 
 
 {% endblock %}

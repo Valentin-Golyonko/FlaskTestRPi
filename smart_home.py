@@ -11,7 +11,6 @@ bp = Blueprint('smart_home', __name__)
 @bp.route('/smart_home')
 def index():
     log_verbose("smart_home: index()")
-    global db_data, _id, t, h, p, c, rp
     cur = get_db().cursor()
     db_data = cur.execute(
         'SELECT *'
