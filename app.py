@@ -49,9 +49,9 @@ def create_app(test_config=None):
     th_s = Thread(target=update_bme280_db_table, daemon=True, name="Thread - update_bme280_db_table")
     th_s.start()
 
-    from .weather import update_owm_db_table
-    th_w = Thread(target=update_owm_db_table, daemon=True, name="Thread - update_owm_db_table")
-    th_w.start()
+    # from .weather import update_owm_db_table
+    # th_w = Thread(target=update_owm_db_table, daemon=True, name="Thread - update_owm_db_table")
+    # th_w.start()
 
     # make url_for('index') == url_for('blog.index')
     # in another app, you might define a separate main index here with

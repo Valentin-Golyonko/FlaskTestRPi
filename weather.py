@@ -5,7 +5,6 @@ Weather API:
 from datetime import datetime
 from json import loads
 from sqlite3 import connect
-from time import sleep
 from urllib.request import urlopen
 
 from flask import (
@@ -18,7 +17,7 @@ from .db import get_db, close_db
 bp = Blueprint('weather', __name__)
 
 
-@bp.route('/weather', methods=('GET', 'POST', 'PUT'))
+@bp.route('/weather', methods=('GET', 'POST'))
 def index():
     log_verbose("weather: index()")
 
@@ -28,11 +27,13 @@ def index():
         if city:
             city = str(city).split()
             set_city(city)
-            upd_db_new_city()
+            # upd_db_new_city()
 
     forecast = owm_forecast()
 
-    db_row_data = get_owm_data()[0]
+    # db_row_data = get_owm_data()
+    db_row_data = owm()
+    log_warning("db_row_data %s" % db_row_data)
 
     if db_row_data:
         data = [i for i in db_row_data]
@@ -43,7 +44,7 @@ def index():
         return render_template('weather/weather.html', owm_db_data=[data, forecast])
     else:
         log_warning("redirect to 'smart_home.index'")
-        return redirect(url_for('smart_home.index'))
+        return redirect(url_for('weather.index'))
 
 
 def get_owm_data():
@@ -54,7 +55,7 @@ def get_owm_data():
             'SELECT *'
             ' FROM owm'
             ' ORDER BY id DESC LIMIT 1'
-        ).fetchall()
+        ).fetchall()[0]
         close_db()
 
         if owm_db_data:
@@ -124,16 +125,16 @@ def owm(delta_time=600):
     log_verbose("owm()")
     try:
         while True:
+            owm_output = []
             db = connect("data/flask_test.sqlite")
             cur = db.cursor()
-            city_id = cur.execute("SELECT id FROM owm_city_list "
-                                  "WHERE active = ?",
-                                  (True,)).fetchone()[0]
+            city_id, name, country = cur.execute("SELECT id, name, country FROM owm_city_list"
+                                                 " WHERE active = ?",
+                                                 (True,)).fetchone()
             db.close()
-            # log_info("\towm() - city_id: %s" % city_id)
+            log_info("\towm() - city_id: %s, %s, %s" % (city_id, name, country))
 
             if city_id:
-                owm_output = []
                 owm_call = "http://api.openweathermap.org/data/2.5/weather?id=" + \
                            str(city_id) + "&units=metric&APPID=" + str(owm_api_key)
 
@@ -142,6 +143,8 @@ def owm(delta_time=600):
 
                 json_owm = loads(owm_data_str)
                 # log_info("\tjson_owm: %s" % json_owm)         # test output
+
+                owm_output.append(0)  # !!! ONLY for direct call without DB use
 
                 owm_output.append(json_owm['weather'][0]["id"])  # 0
                 owm_output.append(json_owm['weather'][0]["description"])  # 1
@@ -165,15 +168,17 @@ def owm(delta_time=600):
 
                 owm_output.append(json_owm['dt'])  # 11
 
+                owm_output.append([name, country])  # 13, City
+
                 log_info("\tLoad owm() - OK")
 
-                yield owm_output
-                sleep(delta_time)
+                return owm_output
+                # sleep(delta_time)
 
             else:
-                log_error("\towm() - city_id NOT FOUND\nretry in 1 min")
-                yield None
-                sleep(60)
+                log_error("\towm() - city_id NOT FOUND")
+                return None
+                # sleep(60)
 
     except Exception as ex:
         log_error("\tEx. in - owm():\n%s" % ex)
@@ -230,7 +235,11 @@ def owm_forecast():
                 forecast_len = len(json_owm['list'])
                 for i in range(forecast_len):
                     # convert from unix time to local time
-                    json_owm['list'][i]['dt'] = datetime.fromtimestamp(json_owm['list'][i]['dt']).strftime('%A %b %d')
+                    json_owm['list'][i]['dt'] = datetime.fromtimestamp(
+                        json_owm['list'][i]['dt']).strftime('%A %b %d %H:%M')
+
+                    if json_owm['list'][i]['wind']:
+                        json_owm['list'][i]['wind']['deg'] = int(json_owm['list'][i]['wind']['deg'])
 
                 log_info("\tLoad owm_forecast() - OK")
 
