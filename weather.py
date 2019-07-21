@@ -33,7 +33,7 @@ def index():
 
     # db_row_data = get_owm_data()
     db_row_data = owm()
-    log_warning("db_row_data %s" % db_row_data)
+    # log_warning("db_row_data %s" % db_row_data)
 
     if db_row_data:
         data = [i for i in db_row_data]
