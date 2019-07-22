@@ -4,17 +4,17 @@
 
 unsigned long updMillis = 0;
 const uint8_t LED_BUILTIN = 2;
+bool start = true;
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH);    // tern on
+  digitalWrite(LED_BUILTIN, HIGH);
   Serial.begin(115200);
   Serial.println("Booting");
 
   startWiFi();
   ota();
   ArduinoOTA.begin();
-
 }
 
 void sendJson() {
@@ -22,7 +22,7 @@ void sendJson() {
   int h = random(5, 95);
   int a = random(100, 300);
   int p = random(950, 1100);
-  
+
   // Use WiFiClient class to create TCP connections
   WiFiClient client;
   const int httpPort = 5001;
@@ -41,7 +41,7 @@ void sendJson() {
   doc["pres"] = p;
 
   serializeJson(doc, client);
-  
+
   unsigned long timeout = millis();
   while (client.available() == 0) {
     if (millis() - timeout > 5000) {
@@ -66,15 +66,19 @@ void sendJson() {
 void loop() {
   ArduinoOTA.handle();
   unsigned long currentMillis = millis();
-
-  if (currentMillis - updMillis > 10000) {     // update sensors every 'period'
+  
+  if (currentMillis - updMillis > 300000) {     // update sensors every 'period'
     updMillis = currentMillis;
+    
     digitalWrite(LED_BUILTIN, LOW);
-
-    Serial.println("delta time 10 sec");
+    Serial.println("delta time 5 min");
 
     sendJson();
 
     digitalWrite(LED_BUILTIN, HIGH);
+  }
+  if (start) {
+    sendJson();
+    start = false;
   }
 }

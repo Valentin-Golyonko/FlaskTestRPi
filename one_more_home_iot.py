@@ -1,10 +1,11 @@
 import json
 import os
-from select import select
 from socket import socket
+from sqlite3 import connect
+
+from select import select
 
 from color_log.log_color import log_verbose, log_info, log_error, log_warning
-from db import get_db, close_db
 
 
 def my_server():
@@ -17,7 +18,7 @@ def my_server():
     #     keyfile="api_keys/alice.key")
 
     server = socket()
-    server.bind(('0.0.0.0', 5001))
+    server.bind(('192.168.0.102', 5001))
     server.listen(5)
     to_monitor = [server]
 
@@ -43,11 +44,11 @@ def my_server():
                 if message == b'q':
                     sock.send(b'poka')
                     sock.close()
-                    log_warning("\tremove %s" % sock)
+                    # log_warning("\tremove %s" % sock)
                     to_monitor.remove(sock)
                     ready_to_read.remove(sock)
 
-                    log_info("\tfull massage.e: %s" % s)
+                    # log_info("\tfull massage.e: %s" % s)
                     json_iot = json.loads(s)
                     s = ''
 
@@ -58,27 +59,25 @@ def my_server():
                     save_iot_data_to_db(iot_data)
 
                 elif message:
-                    log_info("\tmassage: %s (%s)" % (message, type(message)))
-                    # log_info("massage.e: %s" % message.decode())
-
+                    # log_info("\tmassage: %s (%s)" % (message, type(message)))
                     s += message.decode()
-
                     # ssl_text = connstream.read()
                     # log_info("ssl_text: %s" % ssl_text)
-
                     sock.send(b"OK from RPi server")
-# except Exception as ex:
-#     log_error("\tEx. in my_server()\n%s" % ex)
+    # except Exception as ex:
+    #     log_error("\tEx. in my_server()\n%s" % ex)
 
 
 def save_iot_data_to_db(_json_iot):
     log_verbose("save_iot_data_to_db()")
 
-    db = get_db()
+    # db = get_db()
+    db = connect("data/flask_test.sqlite")
     cur = db.cursor()
 
-    iot_names = cur.execute('SELECT iot_name FROM home_iot').fetchall()
-    log_warning("iot_names: %s" % iot_names)
+    iot_names = cur.execute('SELECT iot_name FROM home_iot').fetchall()  # list of tuples
+    iot_names = [i[0] for i in iot_names]  # Before: iot_names: [('esp32',), ('esp8266',)];
+    log_warning("iot_names: %s" % iot_names)  # After: iot_names: ['esp32', 'esp8266']
 
     if _json_iot[0] in iot_names:
 
@@ -92,8 +91,9 @@ def save_iot_data_to_db(_json_iot):
     else:
         log_error("\tEr. in save_iot_data_to_db\nno satch name in DB")
 
-    close_db()
-    log_verbose("exit save_iot_data_to_db()")
+    # close_db()
+    db.close()
+    log_verbose("save_iot_data_to_db() - EXIT")
 
 
 def ping(address):

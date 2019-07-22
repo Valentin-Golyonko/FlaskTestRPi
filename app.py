@@ -56,7 +56,7 @@ def create_app(test_config=None):
     # th_w.start()
 
     from .one_more_home_iot import my_server
-    my_server()
+    # my_server()
 
     # make url_for('index') == url_for('blog.index')
     # in another app, you might define a separate main index here with
