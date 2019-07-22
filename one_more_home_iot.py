@@ -61,8 +61,6 @@ def my_server():
 
                     s += message.decode()
 
-
-
                     # ssl_text = connstream.read()
                     # log_info("ssl_text: %s" % ssl_text)
 

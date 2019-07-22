@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+
+{% block title %}Create{% endblock %}
+
+{% block content %}
+
+    <div class="container text-white">
+        <form method="post">
+
+            <div class="form-group">
+                <label for="s_name">Device name</label>
+                <input type="text" class="form-control col-4" placeholder="esp32"
+                       aria-label="Device name" id="s_name"
+                       value="{{ request.form['name'] }}" name="s_name">
+            </div>
+
+            <div class="form-group">
+                <label for="s_name">Device address</label>
+                <input type="text" class="form-control col-4" placeholder="192.168.0.1"
+                       aria-label="Device address" id="s_address"
+                       value="{{ request.form['address'] }}" name="s_address">
+            </div>
+
+            <div class="form-group">
+                <label for="s_name">Parameters:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="check_tmp"
+                           aria-label="Checkbox" id="check_tmp" value="">
+                    <label class="form-check-label" for="check_tmp">
+                        Temperature
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="check_hum"
+                           aria-label="Checkbox" id="check_hum" value="">
+                    <label class="form-check-label" for="check_hum">
+                        Humidity
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="check_air"
+                           aria-label="Checkbox" id="check_air" value="">
+                    <label class="form-check-label" for="check_air">
+                        Air quality
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="check_press"
+                           aria-label="Checkbox" id="check_press" value="">
+                    <label class="form-check-label" for="check_press">
+                        Pressure
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="check_else"
+                           aria-label="Checkbox" id="check_else" value="">
+                    <input type="text" class="form-control col-4" placeholder="else"
+                       aria-label="Device name" id="s_else"
+                       value="{{ request.form['check_else'] }}" name="s_else">
+                </div>
+            </div>
+
+
+            <input class="btn btn-primary m-sm-3" type="submit" value="Save">
+        </form>
+    </div>
+
+{% endblock %}
