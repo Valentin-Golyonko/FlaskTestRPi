@@ -17,7 +17,7 @@ void setup() {
 
 }
 
-void sendNotJson() {
+void sendJson() {
   int t = random(-40, 50);
   int h = random(5, 95);
   int a = random(100, 300);
@@ -73,7 +73,7 @@ void loop() {
 
     Serial.println("delta time 10 sec");
 
-    sendNotJson();
+    sendJson();
 
     digitalWrite(LED_BUILTIN, HIGH);
   }

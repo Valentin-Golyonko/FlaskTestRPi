@@ -1,7 +1,8 @@
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, flash)
+    Blueprint, render_template, request, redirect, url_for)
 
-from .color_log.log_color import log_verbose, log_info, log_warning
+from one_more_home_iot import ping
+from .color_log.log_color import log_verbose, log_warning
 from .db import get_db, close_db
 from .rpi_temp import measure_rpi_temp
 
@@ -44,20 +45,35 @@ def create():
         check_press = request.form.get('check_press')
         s_else = request.form['s_else']
         check_else = request.form.get('check_else')
-        error = None
+        s_description = request.form['s_description']
 
-        log_warning("n %s, a %s, t %s, h %s, a %s, p %s, e %s %s" % (
-            s_name, s_address, check_tmp, check_hum, check_air, check_press, s_else, check_else))
+        log_warning("n %s, a %s, t %s, h %s, a %s, p %s, e %s %s, d %s" % (
+            s_name, s_address, check_tmp, check_hum, check_air, check_press, s_else, check_else, s_description))
 
-        if error is not None:
-            flash(error)
-        else:
+        if str(s_name).isalnum():
             db = get_db()
             cur = db.cursor()
-            pass
+
+            cur.execute("INSERT INTO home_iot"
+                        " (iot_name, iot_address, iot_description)"
+                        " VALUES (?, ?, ?)",
+                        [s_name, s_address, s_description])
             db.commit()
+
+            cur.execute(f"CREATE TABLE IF NOT EXISTS {s_name}"
+                        f" (temp NUMERIC,"
+                        f" hum NUMERIC,"
+                        f" air NUMERIC,"
+                        f" pess NUMERIC,"
+                        f" {s_else} TEXT,"
+                        f" created INTEGER NOT NULL DEFAULT CURRENT_TIME)"
+                        f";")
+            db.commit()
+
             close_db()
 
-        return redirect(url_for('smart_home.index'))
+            ping(s_address)
+
+            return redirect(url_for('smart_home.index'))
 
     return render_template('smart_home/create.html')

@@ -55,6 +55,9 @@ def create_app(test_config=None):
     # th_w = Thread(target=update_owm_db_table, daemon=True, name="Thread - update_owm_db_table")
     # th_w.start()
 
+    from .one_more_home_iot import my_server
+    my_server()
+
     # make url_for('index') == url_for('blog.index')
     # in another app, you might define a separate main index here with
     # app.route, while giving the blog blueprint a url_prefix, but for
