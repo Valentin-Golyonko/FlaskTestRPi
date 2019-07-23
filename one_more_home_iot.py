@@ -5,10 +5,9 @@ from sqlite3 import connect
 
 from select import select
 
-from color_log.log_color import log_verbose, log_info, log_error, log_warning
-
 
 def my_server():
+    from color_log.log_color import log_verbose, log_info, log_error
     log_verbose("my_server()")
 
     # try:
@@ -69,6 +68,7 @@ def my_server():
 
 
 def save_iot_data_to_db(_json_iot):
+    from color_log.log_color import log_verbose, log_info, log_warning, log_error
     log_verbose("save_iot_data_to_db()")
 
     # db = get_db()
@@ -87,7 +87,7 @@ def save_iot_data_to_db(_json_iot):
                     _json_iot[1:])
 
         db.commit()
-        log_info("\tINSERT iot data - OK")
+        log_info("\tINSERT iot data (table %s) - OK" % _json_iot[0])
     else:
         log_error("\tEr. in save_iot_data_to_db\nno satch name in DB")
 
@@ -97,6 +97,7 @@ def save_iot_data_to_db(_json_iot):
 
 
 def ping(address):
+    from color_log.log_color import log_verbose, log_info, log_error
     log_verbose("ping()")
 
     host_name = str(address)
