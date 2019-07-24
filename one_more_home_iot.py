@@ -17,7 +17,7 @@ def my_server():
     #     keyfile="api_keys/alice.key")
 
     server = socket()
-    server.bind(('192.168.0.102', 5001))
+    server.bind(('0.0.0.0', 5001))
     server.listen(5)
     to_monitor = [server]
 
