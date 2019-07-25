@@ -23,6 +23,16 @@
                     Altitude: {{ db_data[5][0] }} m</a>-->
             </div>
 
+            {% if db_data[7] %}
+                <h3 class="h3 py-sm-1" style="color: #F9AA33">Home IoT</h3>
+                <div class="list-group">
+                    {% for i in db_data[7] %}
+                        <a href="#" id="{{ i }}" class="list-group-item list-group-item-action list-group-item-success">
+                            {{ i }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             <h3 class="h3 py-sm-1" style="color: #F9AA33">RPi</h3>
             <div class="list-group">
                 <a href="#" class="list-group-item list-group-item-action list-group-item-success">

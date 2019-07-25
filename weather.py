@@ -10,9 +10,9 @@ from urllib.request import urlopen
 from flask import (
     Blueprint, render_template, request, redirect, url_for)
 
-from .api_keys.keys import owm_api_key
-from .color_log.log_color import log_verbose, log_error, log_info, log_warning
-from .db import get_db, close_db
+from api_keys.keys import owm_api_key
+from color_log.log_color import log_verbose, log_error, log_info, log_warning
+from db import get_db, close_db
 
 bp = Blueprint('weather', __name__)
 

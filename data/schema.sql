@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS bme280;
 DROP TABLE IF EXISTS owm;
 DROP TABLE IF EXISTS twee;
 DROP TABLE IF EXISTS owm_city_list;
+DROP TABLE IF EXISTS home_iot;
 
 CREATE TABLE bme280
 (
@@ -49,4 +50,11 @@ CREATE TABLE owm_city_list
     coord_lat NUMERIC             NOT NULL,
     coord_lon NUMERIC             NOT NULL,
     active    TEXT                NOT NULL
+);
+
+CREATE TABLE home_iot
+(
+    iot_name        TEXT NOT NULL,
+    iot_address     TEXT NOT NULL,
+    iot_description TEXT NOT NULL
 );
