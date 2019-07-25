@@ -41,7 +41,8 @@ def index():
     if db_iot_names:
         for name in db_iot_names:
             db_iot_data_i = cur.execute(
-                f'SELECT temp, hum, air, pess, TEXT, created FROM {name} ORDER BY created'
+                f'SELECT temp, hum, air, pess, TEXT, created FROM'
+                f' {name} ORDER BY created DESC LIMIT 50'
             ).fetchall()
             t_iot = [i['temp'] for i in db_iot_data_i]
             h_iot = [i['hum'] for i in db_iot_data_i]

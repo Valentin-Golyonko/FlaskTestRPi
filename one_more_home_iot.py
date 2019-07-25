@@ -7,7 +7,7 @@ from select import select
 
 
 def my_server():
-    from color_log.log_color import log_verbose, log_info, log_error
+    from color_log.log_color import log_verbose, log_info, log_error, log_warning
     log_verbose("my_server()")
 
     # try:
@@ -47,15 +47,17 @@ def my_server():
                     to_monitor.remove(sock)
                     ready_to_read.remove(sock)
 
-                    # log_info("\tfull massage.e: %s" % s)
-                    json_iot = json.loads(s)
+                    log_info("\tfull massage.e: %s" % s)
+                    if s:
+                        json_iot = json.loads(s)
+                        iot_data = [json_iot['sensor'], json_iot['time'], json_iot['temp'], json_iot['hum'],
+                                    json_iot['air'], json_iot['pres']]
+
+                        log_info('\tiot_data: %s' % iot_data)
+                        save_iot_data_to_db(iot_data)
+                    else:
+                        log_warning("error, massage %s" % s)
                     s = ''
-
-                    iot_data = [json_iot['sensor'], json_iot['time'], json_iot['temp'], json_iot['hum'],
-                                json_iot['air'], json_iot['pres']]
-
-                    log_info('\tiot_data: %s' % iot_data)
-                    save_iot_data_to_db(iot_data)
 
                 elif message:
                     # log_info("\tmassage: %s (%s)" % (message, type(message)))
@@ -65,6 +67,8 @@ def my_server():
                     sock.send(b"OK from RPi server")
     # except Exception as ex:
     #     log_error("\tEx. in my_server()\n%s" % ex)
+
+    # TODO: massage check, add key
 
 
 def save_iot_data_to_db(_json_iot):
