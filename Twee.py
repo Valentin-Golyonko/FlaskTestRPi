@@ -60,7 +60,7 @@ def twee():
                 # log_warning("\ttwee() - reference %s" % reference)
             else:
                 one_tweet.append("")  # 5
-                log_warning("\ttwee() - reference Not found")
+                # log_warning("\ttwee() - reference Not found")
 
             your_feed.append(one_tweet)
             # log_info(str(one_tweet))

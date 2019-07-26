@@ -29,14 +29,14 @@ def index():
             set_city(city)
             # upd_db_new_city()
 
-    forecast = owm_forecast()
+    forecast = owm_forecast()  # TODO: Streaming https://flask.palletsprojects.com/en/1.1.x/patterns/streaming/
 
-    # db_row_data = get_owm_data()
-    db_row_data = owm()
-    # log_warning("db_row_data %s" % db_row_data)
+    # weather_now = get_owm_data()
+    weather_now = owm()
+    # log_warning("weather_now %s" % weather_now)
 
-    if db_row_data:
-        data = [i for i in db_row_data]
+    if weather_now:
+        data = [i for i in weather_now]
 
         data[12] = datetime.fromtimestamp(data[12])  # convert from unix time to local time
         # log_info("\tlast owm time: %s (%s)" % (data[12], type(data[12])))  # test print

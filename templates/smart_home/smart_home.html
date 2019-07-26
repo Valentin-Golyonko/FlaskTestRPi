@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 
-{% block title %}Sensors{% endblock %}
+{% block title %}Smart Home{% endblock %}
 
 {% block content %}
 
@@ -39,8 +39,8 @@
                     temperature: {{ db_data[6] }} °C</a>
             </div>
 
-            <h3 class="h3 py-sm-1" style="color: #F9AA33">TBD</h3>
-            <div class="list-group">
+            <h3 class="h3 pt-sm-2" style="color: #F9AA33">New</h3>
+            <div class="list-group pb-2">
                 <a href="{{ url_for('smart_home.create') }}"
                    class="list-group-item list-group-item-action list-group-item-danger">
                     Add new
@@ -51,7 +51,9 @@
 
         <div class="col-md-8">
             <section class="content rounded py-sm-1" style="background-color: #344955">
-                {% include "smart_home/chart_bme280.html" %}
+                {% cache 60 * 5 %}
+                    {% include "smart_home/chart_bme280.html" %}
+                {% endcache %}
             </section>
         </div>
     </div>

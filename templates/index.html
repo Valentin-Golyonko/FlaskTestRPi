@@ -13,23 +13,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="../static/js/utils.js"></script>
 
-    <title>{% block title %}{% endblock %} - FlaskTestRPi</title>
+    <title>{% block title %}{% endblock %} - HomeBox</title>
 </head>
 <body style="background-color: #232F34; font-size: large">
 
 <div>
     <nav class="nav fixed-top" style="background-color: #344955">
-        <a class="nav-link text-white" href="/">Main page</a>
-        <a class="nav-link text-white" href="/smart_home">Smart Home</a>
-        <a class="nav-link text-white" href="/weather">Weather</a>
-        <a class="nav-link disabled" href="#">Test 3</a>
-        <a class="nav-link text-white" href="/social">Social</a>
+        <a class="nav-link text-white" href="{{ url_for('main.index') }}">Main page</a>
+        <a class="nav-link text-white" href="{{ url_for('smart_home.index') }}">Smart Home</a>
+        <a class="nav-link text-white" href="{{ url_for('weather.index') }}">Weather</a>
+        <a class="nav-link text-white" href="{{ url_for('calendar.index') }}">Calendar</a>
+        <a class="nav-link text-white" href="{{ url_for('social.index') }}">Social</a>
         <a class="nav-link disabled" href="#">Test 5</a>
-        <a class="nav-link text-white" href="/about">About</a>
+        <a class="nav-link text-white" href="{{ url_for('about.index') }}">About</a>
     </nav>
 </div>
 
-<div class="p-sm-2 pt-sm-5">
+<div class="p-sm-3 pt-sm-5">
     <section class="content">
         {% block content %}{% endblock %}
     </section>

@@ -4,12 +4,13 @@
 
 {% block content %}
 
+    {% cache 60 %}
     <div class="row">
         <div class="col">
 
             <div class="card-deck">
 
-                <a href="/smart_home" class="card mb-3 btn-outline-warning" style="background-color: #344955">
+                <a href="{{ url_for('smart_home.index') }}" class="card mb-3 btn-outline-warning" style="background-color: #344955">
                     <img class="card-img" src="../static/img/home_iot.jpg" alt="Card image">
                     <div class="card-img-overlay" style="color: #232F34">
                         <h5 class="card-title">Smart Home</h5>
@@ -18,7 +19,7 @@
                     </div>
                 </a>
 
-                <a href="/weather" class="card mb-3 btn-outline-warning" style="background-color: #344955">
+                <a href="{{ url_for('weather.index') }}" class="card mb-3 btn-outline-warning" style="background-color: #344955">
                     <img class="card-img" src="../static/img/weather_forecast.png" alt="Card image">
                     <div class="card-img-overlay" style="color: #232F34">
                         <h5 class="card-title">Weather</h5>
@@ -27,10 +28,10 @@
                     </div>
                 </a>
 
-                <a href="#" class="card mb-3 btn-outline-warning" style="background-color: #344955">
-                    <img class="card-img" src="../static/img/spaceX.jpeg" alt="Card image">
+                <a href="{{ url_for('calendar.index') }}" class="card mb-3 btn-outline-warning" style="background-color: #344955">
+                    <img class="card-img" src="../static/img/calendar_img.jpg" alt="Card image">
                     <div class="card-img-overlay" style="color: #232F34">
-                        <h5 class="card-title">Test 3</h5>
+                        <h5 class="card-title">Calendar</h5>
                         <!--<p class="card-text">
                             </p>-->
                     </div>
@@ -39,7 +40,7 @@
             </div>
             <div class="card-deck">
 
-                <a href="/social" class="card mb-3 btn-outline-warning" style="background-color: #344955">
+                <a href="{{ url_for('social.index') }}" class="card mb-3 btn-outline-warning" style="background-color: #344955">
                     <img class="card-img" src="../static/img/social_net.jpg" alt="Card image">
                     <div class="card-img-overlay" style="color: #232F34">
                         <h5 class="card-title">Social</h5>
@@ -65,4 +66,5 @@
             </div>
         </div>
     </div>
+    {% endcache %}
 {% endblock %}

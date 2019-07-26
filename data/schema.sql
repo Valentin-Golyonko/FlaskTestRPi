@@ -45,8 +45,8 @@ CREATE TABLE twee
 CREATE TABLE owm_city_list
 (
     id        INTEGER PRIMARY KEY NOT NULL,
-    name      TEXT                NOT NULL,
-    country   TEXT                NOT NULL,
+    name      TEXT                NOT NULL COLLATE NOCASE,
+    country   TEXT                NOT NULL COLLATE NOCASE,
     coord_lat NUMERIC             NOT NULL,
     coord_lon NUMERIC             NOT NULL,
     active    TEXT                NOT NULL
