@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 
-{% block title %}Sensors{% endblock %}
+{% block title %}Social{% endblock %}
 
 {% block content %}
 
@@ -29,8 +29,13 @@
         <div class="col-md-8">
             <h3 class="h3 ml-sm-2" style="color: #F9AA33">Your Feed</h3>
             <ul class="list-group">
+
                 {% if data %}
-                    {% include "social/twitter.html" %}
+                    {% cache 60 * 5 %}
+
+                        {% include "social/twitter.html" %}
+
+                    {% endcache %}
                 {% else %}
                     <h4 class="rounded pl-sm-1" style="color: crimson">Connection Error</h4>
                 {% endif %}

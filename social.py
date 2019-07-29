@@ -1,9 +1,9 @@
 from flask import (
     Blueprint, render_template, redirect, url_for)
 
-from .Twee import twee
-from .color_log.log_color import log_info, log_error
-from .work_with_twee_db import create_db_twee_table, log_verbose, open_db_twee_table
+from Twee import twee
+from color_log.log_color import log_info, log_error
+from work_with_twee_db import create_db_twee_table, log_verbose
 
 bp = Blueprint('social', __name__)
 
@@ -13,7 +13,7 @@ def index():
     log_verbose("social.index()")
 
     # feed_from_db = open_db_twee_table()
-    feed_from_db = twee()
+    feed_from_db = twee()  # TODO: Streaming https://flask.palletsprojects.com/en/1.1.x/patterns/streaming/
 
     if feed_from_db:
         log_info("\tfeed_from_db - OK")

@@ -66,8 +66,11 @@
             <h3 class="h3 py-sm-1" style="color: #F9AA33">
                 Current weather and forecasts in your city</h3>
             <div class="rounded py-sm-1 text-white">
+
                 {% if owm_db_data[1] %}
-                    {% include "weather/forecast5.html" %}
+                    {% cache 60 * 5 %}
+                        {% include "weather/forecast5.html" %}
+                    {% endcache %}
                 {% else %}
                     <h4 class="rounded pl-sm-1" style="color: crimson">Connection Error</h4>
                 {% endif %}

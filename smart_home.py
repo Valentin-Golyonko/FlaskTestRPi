@@ -3,9 +3,9 @@ from datetime import datetime
 from flask import (
     Blueprint, render_template, request, redirect, url_for)
 
-from .color_log.log_color import log_verbose, log_warning
-from .db import get_db, close_db
-from .rpi_temp import measure_rpi_temp
+from color_log.log_color import log_verbose, log_warning
+from db import get_db, close_db
+from rpi_temp import measure_rpi_temp
 
 bp = Blueprint('smart_home', __name__)
 
@@ -41,7 +41,8 @@ def index():
     if db_iot_names:
         for name in db_iot_names:
             db_iot_data_i = cur.execute(
-                f'SELECT temp, hum, air, pess, TEXT, created FROM {name} ORDER BY created'
+                f'SELECT temp, hum, air, pess, TEXT, created FROM'
+                f' {name} ORDER BY created DESC LIMIT 50'
             ).fetchall()
             t_iot = [i['temp'] for i in db_iot_data_i]
             h_iot = [i['hum'] for i in db_iot_data_i]

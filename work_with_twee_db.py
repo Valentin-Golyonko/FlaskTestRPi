@@ -1,6 +1,6 @@
 from sqlite3 import connect, Error, DatabaseError
 
-from .color_log.log_color import log_verbose, log_info, log_error
+from color_log.log_color import log_verbose, log_info, log_error
 
 
 def create_db_twee_table(twee_data):

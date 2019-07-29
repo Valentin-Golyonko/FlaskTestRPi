@@ -6,9 +6,9 @@ import re
 
 import tweepy
 
-from .MySteamListener_twee import MyStreamListener
-from .api_keys.keys import (access_token, consumer_secret, consumer_key, access_token_secret)
-from .color_log.log_color import log_verbose, log_error, log_info, log_warning
+from MySteamListener_twee import MyStreamListener
+from api_keys.keys import (access_token, consumer_secret, consumer_key, access_token_secret)
+from color_log.log_color import log_verbose, log_error, log_info, log_warning
 
 
 def twee():
@@ -60,7 +60,7 @@ def twee():
                 # log_warning("\ttwee() - reference %s" % reference)
             else:
                 one_tweet.append("")  # 5
-                log_warning("\ttwee() - reference Not found")
+                # log_warning("\ttwee() - reference Not found")
 
             your_feed.append(one_tweet)
             # log_info(str(one_tweet))
