@@ -14,7 +14,7 @@ from api_keys.keys import owm_api_key
 from color_log.log_color import log_verbose, log_error, log_info, log_warning
 from db import get_db, close_db
 
-bp = Blueprint('weather', __name__)
+bp = Blueprint('weather', __name__, template_folder='templates')
 
 
 @bp.route('/weather', methods=('GET', 'POST'))
@@ -22,11 +22,17 @@ def index():
     log_verbose("weather: index()")
 
     if request.method == 'POST':
-        city = request.form['city']
+        search = request.form['city']
 
-        if city:
-            city = str(city).split()
-            set_city(city)
+        if search:
+            search = str(search).split()
+            if len(search) > 2:
+                city = ' '.join(search[:-1])
+                country = search[-1]
+                # print(city, country)
+                set_city([city, country])
+            else:
+                set_city(search)
             # upd_db_new_city()
 
     forecast = owm_forecast()  # TODO: Streaming https://flask.palletsprojects.com/en/1.1.x/patterns/streaming/
@@ -74,24 +80,26 @@ def set_city(city):
         cur = get_db().cursor()
         city_id = cur.execute("SELECT id FROM owm_city_list "
                               "WHERE name = ? AND country = ?",
-                              (city[0], city[1],)).fetchone()[0]
+                              (city[0], city[1],)).fetchone()
         if city_id:
             cur.execute(
-                "UPDATE owm_city_list SET active = 0"  # reset all
+                "UPDATE owm_city_list SET active = 0 WHERE active = 1"  # reset all
             )
             db.commit()
 
             cur.execute(
                 "UPDATE owm_city_list SET active = ?"  # set ONE to True
                 " WHERE id = ?",
-                (True, city_id,)
+                (True, city_id[0],)
             )
             db.commit()
-            close_db()
+
             log_info("\tset_city() - OK")
         else:
             log_error("\tset_city() - city_id NOT FOUND\nredirect to 'smart_home.index'")
             redirect(url_for('smart_home.index'))
+
+        close_db()
     except Exception as ex:
         log_error("\tEx. in - set_city():\n%s" % ex)
         close_db()

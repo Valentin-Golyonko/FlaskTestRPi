@@ -27,7 +27,7 @@ void sendJson() {
   WiFiClient client;
   const int httpPort = 5001;
   if (!client.connect(host, httpPort)) {
-    //Serial.println("connection failed");
+    Serial.println("connection failed");
     return;
   }
 
@@ -39,13 +39,15 @@ void sendJson() {
   doc["hum"] = h;
   doc["air"] = a;
   doc["pres"] = p;
-
+  
+  serializeJson(doc, Serial);
+  Serial.println();
   serializeJson(doc, client);
 
   unsigned long timeout = millis();
   while (client.available() == 0) {
     if (millis() - timeout > 5000) {
-      Serial.println(">>> Client Timeout !");
+      Serial.println("Client Timeout!");
       client.stop();
       return;
     }
@@ -67,15 +69,15 @@ void loop() {
   ArduinoOTA.handle();
   unsigned long currentMillis = millis();
   
-  if (currentMillis - updMillis > 300000) {     // update sensors every 'period'
+  if (currentMillis - updMillis > 10000) {     // update sensors every 'period' = 300000 = 5 min
     updMillis = currentMillis;
     
-    digitalWrite(LED_BUILTIN, LOW);
-    Serial.println("delta time 5 min");
+    digitalWrite(LED_BUILTIN, HIGH);
+    Serial.println("delta time 10 sec");
 
     sendJson();
 
-    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(LED_BUILTIN, LOW);
   }
   if (start) {
     sendJson();

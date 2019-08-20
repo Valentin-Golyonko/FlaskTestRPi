@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from flask import (
     Blueprint, render_template, request, redirect, url_for)
 
@@ -37,19 +35,21 @@ def index():
     db_iot_names = cur.execute('SELECT iot_name FROM home_iot').fetchall()
     db_iot_names = [i[0] for i in db_iot_names]
 
-    db_iot_data = []
+    db_iot_data = []  # crutch !
     if db_iot_names:
         for name in db_iot_names:
             db_iot_data_i = cur.execute(
-                f'SELECT temp, hum, air, pess, TEXT, created FROM'
-                f' {name} ORDER BY created DESC LIMIT 50'
+                f'SELECT temp, hum, air, press, TEXT, created '
+                f'FROM {name} '
+                f'ORDER BY created '
+                f'DESC LIMIT 50'
             ).fetchall()
             t_iot = [i['temp'] for i in db_iot_data_i]
             h_iot = [i['hum'] for i in db_iot_data_i]
             a_iot = [i['air'] for i in db_iot_data_i]
-            p_iot = [i['pess'] for i in db_iot_data_i]
-            # test_iot = [i['TEXT'] for i in db_iot_data_i]
-            c_iot = [datetime.fromtimestamp(i['created']).strftime('%x %X') for i in db_iot_data_i]
+            p_iot = [i['press'] for i in db_iot_data_i]
+            # test_iot = [i[4] for i in db_iot_data_i]
+            c_iot = [i['created'].strftime('%x %X') for i in db_iot_data_i]
 
             db_iot_data.append([t_iot, h_iot, a_iot, p_iot, c_iot])
 
@@ -96,7 +96,7 @@ def create():
                         f" air NUMERIC,"
                         f" press NUMERIC,"
                         f" {s_else} TEXT,"
-                        f" created INTEGER NOT NULL DEFAULT CURRENT_TIME)"
+                        f" created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)"
                         f";")
             db.commit()
 

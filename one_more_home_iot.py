@@ -64,7 +64,7 @@ def my_server():
                     s += message.decode()
                     # ssl_text = connstream.read()
                     # log_info("ssl_text: %s" % ssl_text)
-                    sock.send(b"OK from RPi server")
+                    sock.send(b"RPi server - OK")
     # except Exception as ex:
     #     log_error("\tEx. in my_server()\n%s" % ex)
 
@@ -85,10 +85,10 @@ def save_iot_data_to_db(_json_iot):
 
     if _json_iot[0] in iot_names:
 
-        cur.execute(f"INSERT INTO {_json_iot[0]}"
-                    f" (created, temp, hum, air, pess)"
-                    f" VALUES (?, ?, ?, ?, ?)",
-                    _json_iot[1:])
+        cur.execute(f"INSERT INTO {_json_iot[0]} "
+                    f"(temp, hum, air, press) "
+                    f"VALUES (?, ?, ?, ?)",
+                    _json_iot[2:])
 
         db.commit()
         log_info("\tINSERT iot data (table %s) - OK" % _json_iot[0])
