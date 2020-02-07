@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/my_css.css' %}">
+
+    <title>{% block title %}Title{% endblock %} - HomeBox</title>
+</head>
+<body>
+
+<div class="container bg-light">
+
+    <div class="bg-dark my-nav-margin">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <a class="navbar-brand" href="{% url 'main-page' %}">HomeBox</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">3</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">4</a>
+                    </li>
+                </ul>
+
+                <form class="form-inline my-2 my-lg-0">
+                    <a class="btn btn-info mr-sm-2" href="#">
+                        Notifications <span class="badge badge-warning">{{ msg_count|default:'0' }}</span>
+                    </a>
+                    {% if is_authed %}
+                        <a class="btn btn-success" href="#">Logout</a>
+                    {% else %}
+                        <a class="btn btn-success mr-sm-2" href="#">Login</a>
+                        <a class="btn btn-primary" href="#">Register</a>
+                    {% endif %}
+                </form>
+            </div>
+        </nav>
+    </div>
+    <br>
+
+    <div>
+        {% block content %}{% endblock %}
+    </div>
+
+</div>
+
+<div class="message-include">
+    {% include 'messages.html' %}
+</div>
+
+</body>
+</html>

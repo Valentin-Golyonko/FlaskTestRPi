@@ -74,6 +74,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            os.path.join(BASE_DIR, 'templates/WebApp/'),
             os.path.join(BASE_DIR, 'sensors/templates/sensors/'),
         ],
         'APP_DIRS': True,
@@ -138,6 +139,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static/WebApp/'),
     os.path.join(BASE_DIR, 'sensors/static/sensors/'),
 ]
 

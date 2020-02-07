@@ -127,7 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-/app/books/migrations/
-/HomeBoxApp/sensors/migrations/
-/HomeBoxApp/forecast/migrations/
-/HomeBoxApp/bot/migrations/
+/WebApp/sensors/migrations/
+/WebApp/forecast/migrations/
+/WebApp/bot/migrations/
+
