@@ -1,0 +1,24 @@
+{% extends 'main_template.html' %}
+
+{% block title %}
+    Forecast
+{% endblock %}
+
+{% block content %}
+    {% load static %}
+
+    <p>main: {{ forecast.weather.0.main }}</p>
+    <p>description: {{ forecast.weather.0.description }}</p>
+    <img src="{% static  icon  %}" alt="icon">
+    <p>temp: {{ forecast.main.temp }}</p>
+    <p>feels_like: {{ forecast.main.feels_like }}</p>
+    <p>temp_min: {{ forecast.main.temp_min }}</p>
+    <p>temp_max: {{ forecast.main.temp_max }}</p>
+    <p>pressure: {{ forecast.main.pressure }}</p>
+    <p>humidity: {{ forecast.main.humidity }}</p>
+    <p>speed: {{ forecast.wind.speed }}</p>
+    <p>deg: {{ forecast.wind.deg|default:'-' }}</p>
+    <p>gust: {{ forecast.wind.gust|default:'-' }}</p>
+    <p>clouds: {{ forecast.clouds.all }}</p>
+
+{% endblock %}

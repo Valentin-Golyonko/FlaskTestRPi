@@ -21,5 +21,6 @@ from main_page.main_view import MainPage
 urlpatterns = [
     path('', MainPage.as_view(), name='main-page'),
     path('sensors/', include('sensors.urls_sensors')),
+    path('forecast/', include('forecast.urls_forecast')),
     path('admin/', admin.site.urls),
 ]
