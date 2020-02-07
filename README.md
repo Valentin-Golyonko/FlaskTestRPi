@@ -8,7 +8,7 @@
 <p><img src="https://github.com/Valentin-Golyonko/HomeBox/blob/master/static/img/homebox_img_1.png" alt="web_view"></p>
 
 # Video
-<p><a href="https://youtu.be/MQXEVhyyNSk" target="_blank">see in YouTube<a></p>
+<p><a href="https://youtu.be/MQXEVhyyNSk" target="_blank">see in YouTube</a></p>
 
 # Instalation:
 - install circuitpython to work with bme280:
