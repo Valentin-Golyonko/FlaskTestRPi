@@ -3,7 +3,6 @@ from threading import Thread
 
 from flask import Flask
 from flask_caching import Cache
-from flask_sqlalchemy import SQLAlchemy
 
 import about
 import calendar_hb

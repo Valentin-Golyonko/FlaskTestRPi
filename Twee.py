@@ -2,19 +2,18 @@
 Tweepy Documentation:
     https://tweepy.readthedocs.io/en/latest/
 """
+import os
 import re
 
 import tweepy
 
-from MySteamListener_twee import MyStreamListener
-from api_keys.keys import (access_token, consumer_secret, consumer_key, access_token_secret)
-from color_log.log_color import log_verbose, log_error, log_info, log_warning
+from color_log.log_color import log_verbose, log_error, log_info
 
 
 def twee():
     log_verbose("twee()")
-    auth = tweepy.OAuthHandler(consumer_key=consumer_key,
-                               consumer_secret=consumer_secret,
+    auth = tweepy.OAuthHandler(consumer_key=os.environ.get('TWEE_Consumer'),
+                               consumer_secret=os.environ.get('TWEE_Consumer_secret'),
                                callback="twitter.com ")
     # TODO: user sing in
     # https://tweepy.readthedocs.io/en/latest/auth_tutorial.html
@@ -25,7 +24,7 @@ def twee():
     # ....
 
     # AT THE MOMENT I USE MY personal keys
-    auth.set_access_token(access_token, access_token_secret)
+    auth.set_access_token(os.environ.get('TWEE_Access_token'), os.environ.get('TWEE_Access_token_secret'))
 
     api_twee = tweepy.API(auth)
 
@@ -42,7 +41,7 @@ def twee():
             twit_ft = str(tweet.full_text)
             twit_end = re.search(r"https://", twit_ft)
             if twit_end:
-                twit_end = twit_end.start(0)    # get index of a first met of 'https://'
+                twit_end = twit_end.start(0)  # get index of a first met of 'https://'
                 twit_text = twit_ft[:twit_end]
                 one_tweet.append(twit_text)  # 2 * 5
             else:
@@ -56,7 +55,7 @@ def twee():
 
             reference = re.findall(r"https://\w+.\w+/\w+", twit_ft)
             if reference:
-                one_tweet.append(reference[0])     # 5
+                one_tweet.append(reference[0])  # 5
                 # log_warning("\ttwee() - reference %s" % reference)
             else:
                 one_tweet.append("")  # 5
@@ -76,20 +75,5 @@ def twee():
     return your_feed
 
 
-def twee_stream():
-    log_verbose("twee_stream()")
-    auth = tweepy.OAuthHandler(consumer_key=consumer_key,
-                               consumer_secret=consumer_secret,
-                               callback="twitter.com ")
-    auth.set_access_token(access_token, access_token_secret)
-    api_twee = tweepy.API
-
-    stream_listener = MyStreamListener()
-    my_stream = tweepy.Stream(auth=api_twee, listener=stream_listener)
-
-    my_stream.filter(track=['python'], is_async=True)
-
-
 if __name__ == '__main__':
-    # twee_stream()
     twee()

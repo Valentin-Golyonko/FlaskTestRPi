@@ -2,3 +2,9 @@ Django
 celery
 requests
 djangorestframework
+Flask
+Flask-Caching
+Flask-SQLAlchemy
+tweepy
+python-dotenv
+adafruit-circuitpython-bme280

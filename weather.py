@@ -2,6 +2,7 @@
 Weather API:
     https://openweathermap.org/api
 """
+import os
 from datetime import datetime
 from json import loads
 from sqlite3 import connect
@@ -10,7 +11,6 @@ from urllib.request import urlopen
 from flask import (
     Blueprint, render_template, request, redirect, url_for)
 
-from api_keys.keys import owm_api_key
 from color_log.log_color import log_verbose, log_error, log_info, log_warning
 from db import get_db, close_db
 
@@ -144,7 +144,7 @@ def owm(delta_time=600):
 
             if city_id:
                 owm_call = "http://api.openweathermap.org/data/2.5/weather?id=" + \
-                           str(city_id) + "&units=metric&APPID=" + str(owm_api_key)
+                           str(city_id) + "&units=metric&APPID=" + str(os.environ.get('OWM_API_KEY'))
 
                 owm_data = urlopen(owm_call).read()
                 owm_data_str = owm_data.decode('utf8').replace("'", '"')  # for python 3.5 on raspberry !
@@ -228,7 +228,7 @@ def owm_forecast():
 
             if city_id:
                 owm_call = "http://api.openweathermap.org/data/2.5/forecast?id=" + \
-                           str(city_id) + "&units=metric&APPID=" + str(owm_api_key)
+                           str(city_id) + "&units=metric&APPID=" + str(os.environ.get('OWM_API_KEY'))
 
                 owm_data = urlopen(owm_call).read()
                 owm_data_str = owm_data.decode('utf8').replace("'", '"')  # for python 3.5 on raspberry !

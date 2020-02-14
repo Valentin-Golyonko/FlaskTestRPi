@@ -9,7 +9,7 @@
 
     <p>main: {{ forecast.weather.0.main }}</p>
     <p>description: {{ forecast.weather.0.description }}</p>
-    <img src="{% static  icon  %}" alt="icon">
+    <img src="{% static  'forecast/img/owm_icons/' %}{{ forecast.weather.0.icon }}.png" alt="icon">
     <p>temp: {{ forecast.main.temp }}</p>
     <p>feels_like: {{ forecast.main.feels_like }}</p>
     <p>temp_min: {{ forecast.main.temp_min }}</p>

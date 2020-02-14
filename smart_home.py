@@ -1,5 +1,4 @@
-from flask import (
-    Blueprint, render_template, request, redirect, url_for)
+from flask import (Blueprint, render_template, request, redirect, url_for)
 
 from color_log.log_color import log_verbose, log_warning
 from db import get_db, close_db

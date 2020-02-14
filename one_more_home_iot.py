@@ -1,9 +1,8 @@
 import json
 import os
+from select import select
 from socket import socket
 from sqlite3 import connect
-
-from select import select
 
 
 def my_server():

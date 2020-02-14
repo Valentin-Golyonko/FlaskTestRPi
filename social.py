@@ -1,5 +1,4 @@
-from flask import (
-    Blueprint, render_template, redirect, url_for)
+from flask import (Blueprint, render_template, redirect, url_for)
 
 from Twee import twee
 from color_log.log_color import log_info, log_error
