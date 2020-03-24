@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+  webapp:
+    image: homebox-python-image
+    container_name: homebox-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./WebApp:/WebApp
+    command: bash -c
+      "python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - rabitmq
+      - celery
+    restart: on-failure # always
+    environment:
+      - DEBUG=${DEBUG}
+      - C_BROKER=${CELERY_BROKER}
+      - C_BACKEND=${CELERY_BACKEND}
+      - OWM_API_KEY=${OWM_API_KEY}
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: homebox-python-image
+    container_name: homebox-celery
+    command: celery -A HomeBoxApp worker -P prefork -c 2 -l info
+    volumes:
+      - ./WebApp:/WebApp
+    depends_on:
+      - rabitmq
+    restart: on-failure
+    environment:
+      - DEBUG=${DEBUG}
+      - C_BROKER=${CELERY_BROKER}
+      - C_BACKEND=${CELERY_BACKEND}
+      - OWM_API_KEY=${OWM_API_KEY}
+
+  rabitmq:
+    image: rabbitmq:3-management
+    container_name: homebox-rabbitmq
+    ports:
+    - '15672:15672'
+    - '5672:5672'
+    restart: on-failure

@@ -18,8 +18,8 @@ from django.contrib.messages import constants as messages
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Celery settings
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', default=-1)
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_BACKEND', default=-1)
+CELERY_BROKER_URL = os.environ.get('C_BROKER', default=-1)
+CELERY_RESULT_BACKEND = os.environ.get('C_BACKEND', default=-1)
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -53,10 +53,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'crispy_forms',
     'sensors.apps.SensorsConfig',
     'forecast.apps.ForecastConfig',
     'bot.apps.BotConfig',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

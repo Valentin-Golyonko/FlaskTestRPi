@@ -8,3 +8,4 @@ Flask-SQLAlchemy
 tweepy
 python-dotenv
 adafruit-circuitpython-bme280
+django-crispy-forms
