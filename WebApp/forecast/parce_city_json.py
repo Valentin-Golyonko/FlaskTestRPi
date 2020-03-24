@@ -3,7 +3,7 @@ import sqlite3
 
 
 def parse_city():
-    with open('city.list.json') as file:
+    with open('city.list.json', encoding='utf-8') as file:
         cities = json.load(file)
 
     purchases = []

@@ -39,7 +39,7 @@ MESSAGE_TAGS = {
 SECRET_KEY = 'dmamk4yce8f=j68a346s0iv*^4hjmfeaxlm)(0(!abkmppfq#n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DEBUG', default=-1))
+DEBUG = int(os.environ.get('DEBUG', default=0))
 
 ALLOWED_HOSTS = ['*']
 
@@ -74,8 +74,11 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates/WebApp/'),
-            os.path.join(BASE_DIR, 'sensors/templates/sensors/'),
+            os.path.join(BASE_DIR, 'templates/'),
+            os.path.join(BASE_DIR, 'main_page/templates/'),
+            os.path.join(BASE_DIR, 'sensors/templates/'),
+            os.path.join(BASE_DIR, 'forecast/templates/'),
+            os.path.join(BASE_DIR, 'bot/templates/'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -139,8 +142,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static/WebApp/'),
-    os.path.join(BASE_DIR, 'sensors/static/sensors/'),
+    os.path.join(BASE_DIR, 'main_page/static/'),
+    os.path.join(BASE_DIR, 'sensors/static/'),
+    os.path.join(BASE_DIR, 'forecast/static/'),
 ]
 
 MEDIA_URL = '/media/'

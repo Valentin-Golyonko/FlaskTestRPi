@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 
 
 class MainPage(TemplateView):
-    template_name = 'main_page.html'
+    template_name = 'main_page/main_page.html'
 
     def get(self, request, *args, **kwargs):
         response = {}
