@@ -27,7 +27,7 @@ services:
       dockerfile: Dockerfile
     image: homebox-python-image
     container_name: homebox-celery
-    command: celery -A HomeBoxApp worker -P prefork -c 2 -l info
+    command: celery -A HomeBoxApp worker -B -P prefork -c 2 -l info
     volumes:
       - ./WebApp:/WebApp
     depends_on:
