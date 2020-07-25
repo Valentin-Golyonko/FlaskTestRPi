@@ -4,6 +4,8 @@ from celery import Celery
 # set the default Django settings module for the 'celery' program.
 from celery.schedules import crontab
 
+from sensors.tasks import print_hello
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'HomeBoxApp.settings')
 
 app = Celery('HomeBoxApp')
@@ -25,19 +27,7 @@ def debug_task(self):
 
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
-    # Calls test('hello') every 10 seconds.
-    sender.add_periodic_task(10.0, test.s('hello'), name='add every 10')
-
-    # Calls test('world') every 30 seconds
-    sender.add_periodic_task(30.0, test.s('world'), expires=10)
-
-    # Executes every Monday morning at 7:30 a.m.
     sender.add_periodic_task(
-        crontab(hour=11, minute=00, day_of_week=3),
-        test.s('Happy Mondays!'),
+        crontab(),  # minute='*/10'
+        print_hello.s('Sensors!'),
     )
-
-
-@app.task
-def test(arg):
-    print(arg)
