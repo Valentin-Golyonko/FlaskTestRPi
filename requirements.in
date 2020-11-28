@@ -1,0 +1,14 @@
+Django
+djangorestframework
+django-crispy-forms
+
+psycopg2
+psycopg2-binary
+
+celery
+django-celery-beat
+
+adafruit-circuitpython-bme280
+
+pip-tools
+ipython
