@@ -11,11 +11,7 @@
 <p><a href="https://youtu.be/MQXEVhyyNSk" target="_blank">see in YouTube</a></p>
 
 # Instalation:
-- <code>sudo apt install python3-gpiozero</code>
-- install circuitpython to work with bme280:
-  <p><a href="https://github.com/adafruit/Adafruit_CircuitPython_BME280" target="_blank">Adafruit_CircuitPython_BME280</a></p>
-  <p><code>sudo pip3 install adafruit-circuitpython-bme280</code></p>
-  <p>Check I2C - <code>i2cdetect -y 1</code>
+- check I2C BME280 sensor - <code>i2cdetect -y 1</code>
 - 
 
 # How to run

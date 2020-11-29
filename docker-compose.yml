@@ -1,0 +1,51 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: python:3.8-slim-buster
+    container_name: homebox-django
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/homebox
+    command: bash -c
+      "python manage.py runserver 192.168.0.102:8000"
+    depends_on:
+      - db
+      - rabbitmq
+    restart: on-failure # always
+    environment:
+      DEBUG: ${DEBUG}
+      POSTGRES_DATABASE: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_HOST: ${DB_HOST}
+      POSTGRES_PORT: ${DB_PORT}
+      C_BROKER: ${CELERY_BROKER}
+      C_BACKEND: ${CELERY_BACKEND}
+
+  db:
+    build:
+      context: config/local_postgres_for_docker
+      args:
+        psql_pass: ${DB_PASSWORD}
+        psql_db: ${DB_NAME}
+      dockerfile: Dockerfile
+    image: postgres:latest
+    container_name: homebox-db
+    ports:
+      - '5555:5432'
+    restart: on-failure
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: homebox-rabbitmq
+    ports:
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "15672:15672"
+    restart: on-failure
