@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework import routers
 
-from app.core.views import SimpleAPIView
+from app.core.views import CeleryTestRunAPIView
 
 router = routers.DefaultRouter()
 # router.register('some_view_set', SomeViewSet, basename='some_view_set')
@@ -9,5 +9,5 @@ router = routers.DefaultRouter()
 urlpatterns = router.urls
 
 urlpatterns += [
-    path('', SimpleAPIView.as_view(), name='simple_view'),
+    path('celery_test_run/', CeleryTestRunAPIView.as_view(), name='celery_test_run'),
 ]

@@ -131,3 +131,4 @@ dmypy.json
 # my ignore
 config/settings/local.py
 .idea
+logs/worker.pid
