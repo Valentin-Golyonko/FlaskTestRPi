@@ -10,3 +10,4 @@ django-celery-beat
 adafruit-circuitpython-bme280
 gpiozero
 ipython
+pip

@@ -16,7 +16,7 @@ services:
     depends_on:
       - db
       - rabbit
-    restart: on-failure # always
+    restart: always # always  / on-failure
     environment:
       DEBUG: ${DEBUG}
       POSTGRES_DATABASE: ${DB_NAME}
@@ -38,7 +38,7 @@ services:
     container_name: homebox-db
     ports:
       - '5432:5432'
-    restart: on-failure
+    restart: always
 
   rabbit:
     image: rabbitmq:3-management
@@ -48,4 +48,4 @@ services:
       - "5671:5671"
       - "5672:5672"
       - "15672:15672"
-    restart: on-failure
+    restart: always

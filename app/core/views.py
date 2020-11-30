@@ -12,4 +12,5 @@ class CeleryTestRunAPIView(APIView):
     @classmethod
     def get(cls, request, *args, **kwargs):
         result = task_celery_test_run.delay()
-        return Response(data={'result': result.get()}, status=status.HTTP_200_OK)
+        out_data = {'result': result.get()}
+        return Response(data=out_data, status=status.HTTP_200_OK)
