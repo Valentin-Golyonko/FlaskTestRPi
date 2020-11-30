@@ -4,7 +4,9 @@ Django
 djangorestframework
 django-crispy-forms
 drf-extensions
+django-extensions
 celery
 django-celery-beat
 adafruit-circuitpython-bme280
+gpiozero
 ipython

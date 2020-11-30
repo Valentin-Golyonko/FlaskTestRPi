@@ -12,10 +12,10 @@ services:
     volumes:
       - .:/homebox
     command: bash -c
-      "python manage.py runserver 0.0.0.0:8000"
+      "python manage.py runserver 192.168.0.102:8000"
     depends_on:
       - db
-      - rabbitmq
+      - rabbit
     restart: on-failure # always
     environment:
       DEBUG: ${DEBUG}
@@ -37,10 +37,10 @@ services:
     image: postgres:latest
     container_name: homebox-db
     ports:
-      - '5555:5432'
+      - '5432:5432'
     restart: on-failure
 
-  rabbitmq:
+  rabbit:
     image: rabbitmq:3-management
     container_name: homebox-rabbitmq
     ports:

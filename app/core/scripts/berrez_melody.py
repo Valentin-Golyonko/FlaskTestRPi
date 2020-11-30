@@ -1,11 +1,11 @@
 from time import sleep
 
-from gpiozero import ToneBuzzer
+from gpiozero import TonalBuzzer
 from gpiozero.tones import Tone
 
 
 def alarm_buzzer_melody():
-    tone_buzzer = ToneBuzzer(27)
+    tone_buzzer = TonalBuzzer(27)
 
     for _ in range(2):
         tone_buzzer.play(Tone("C4"))
