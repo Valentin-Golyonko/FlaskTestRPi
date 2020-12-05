@@ -2,22 +2,57 @@ import logging
 from random import randint
 
 from celery import shared_task
+from celery.schedules import crontab
 
 from app.core.scripts.berrez_melody import alarm_buzzer_melody
+from app.core.scripts.bme280_sensor import get_bme280_data
 from config.celery import app
 
 logger = logging.getLogger(__name__)
 
 
 @app.task
-def morning_alarm(**kwargs) -> None:
-    logger.debug(f"time to wake up! {kwargs.get('hello')}")
+def task_morning_alarm():
     alarm_buzzer_melody()
-    return None
 
 
 @shared_task
 def task_celery_test_run() -> int:
     some_int = randint(0, 10)
-    logger.debug(f"task_celery_test_run(): some_int: {some_int}.")
+    logger.info(f"task_celery_test_run(): some_int: {some_int}.")
     return some_int
+
+
+app.conf.beat_schedule = {
+    'morning-alarm-1': {
+        'task': 'app.core.tasks.task_morning_alarm',
+        'schedule': crontab(hour=9, minute=0),
+    },
+}
+
+app.conf.beat_schedule = {
+    'morning-alarm-2': {
+        'task': 'app.core.tasks.task_morning_alarm',
+        'schedule': crontab(hour=9, minute=10),
+    },
+}
+
+app.conf.beat_schedule = {
+    'morning-alarm-3': {
+        'task': 'app.core.tasks.task_morning_alarm',
+        'schedule': crontab(hour=9, minute=20),
+    },
+}
+
+
+@app.task
+def task_get_bme280_data():
+    get_bme280_data()
+
+
+app.conf.beat_schedule = {
+    'get-bme280-data': {
+        'task': 'app.core.tasks.task_get_bme280_data',
+        'schedule': crontab(minute='*/10'),
+    },
+}
