@@ -1,4 +1,4 @@
-FROM python:3.8-slim-buster
+FROM arm32v7/python:3.8-slim-buster
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
