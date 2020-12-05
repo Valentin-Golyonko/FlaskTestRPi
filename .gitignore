@@ -132,3 +132,4 @@ dmypy.json
 config/settings/local.py
 .idea
 logs/worker.pid
+/static
