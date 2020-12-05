@@ -1,13 +1,13 @@
-FROM arm32v7/python:3.8-slim-buster
+FROM python:3.8-slim-buster
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    musl-dev \
-    python3-dev \
-    libpq-dev \
-    git \
-    nano \
-    && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install -y --no-install-recommends \
+#    gcc \
+#    musl-dev \
+#    python3-dev \
+#    libpq-dev \
+#    git \
+#    nano \
+#    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /homebox
 RUN python -m pip install --upgrade setuptools pip wheel \
