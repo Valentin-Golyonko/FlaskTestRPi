@@ -133,3 +133,6 @@ config/settings/local.py
 .idea
 logs/worker.pid
 /static
+/media
+/logs
+/venv
