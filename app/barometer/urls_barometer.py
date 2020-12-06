@@ -1,8 +1,10 @@
 from django.urls import path
 from rest_framework import routers
 
+from app.barometer.views import BarometerViewSet
+
 router = routers.DefaultRouter()
-# router.register('some_view_set', SomeViewSet, basename='some_view_set')
+router.register('barometers', BarometerViewSet, basename='barometers')
 
 urlpatterns = router.urls
 
