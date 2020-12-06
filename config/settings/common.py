@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
 
     'app.core',
+    'app.barometer',
 ]
 
 MIDDLEWARE = [
@@ -115,6 +116,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CELERY_IMPORTS = (
     'app.core.tasks',
+    'app.barometer.tasks'
 )
 
 # Django rest
