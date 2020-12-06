@@ -14,6 +14,7 @@ class SaveBarometerData:
                 temperature_c=kwargs.get('temperature_c'),
                 humidity=kwargs.get('humidity'),
                 pressure_hpa=kwargs.get('pressure_hpa'),
+                device=kwargs.get('device_obj'),
             )
             barometer.save()
         except Exception as ex:
