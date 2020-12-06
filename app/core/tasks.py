@@ -5,7 +5,6 @@ from celery import shared_task
 from celery.schedules import crontab
 
 from app.core.scripts.berrez_melody import alarm_buzzer_melody
-from app.core.scripts.bme280_sensor import get_bme280_data
 from config.celery import app
 
 logger = logging.getLogger(__name__)
@@ -41,18 +40,5 @@ app.conf.beat_schedule = {
     'morning-alarm-3': {
         'task': 'app.core.tasks.task_morning_alarm',
         'schedule': crontab(hour=9, minute=20),
-    },
-}
-
-
-@app.task
-def task_get_bme280_data():
-    get_bme280_data()
-
-
-app.conf.beat_schedule = {
-    'get-bme280-data': {
-        'task': 'app.core.tasks.task_get_bme280_data',
-        'schedule': crontab(minute='*/10'),
     },
 }

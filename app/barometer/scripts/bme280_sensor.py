@@ -14,19 +14,23 @@ import adafruit_bme280
 import busio
 from micropython import const
 
+from app.barometer.scripts.save_barometer_data import SaveBarometerData
+
 logger = logging.getLogger(__name__)
 
 
-def get_bme280_data():
+def get_bme280_data() -> None:
     import board
     try:
-        i2c = busio.I2C(board.SCL, board.SDA)
-        address = adafruit_bme280._BME280_ADDRESS = const(0x76)
-        bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c, address=address)
-        bme280.sea_level_pressure = 1013.25
+        bme280 = adafruit_bme280.Adafruit_BME280_I2C(
+            i2c=busio.I2C(board.SCL, board.SDA),
+            address=const(0x76)
+        )
 
-        logger.info(f"temperature: {bme280.temperature},"
-                    f" humidity: {bme280.humidity},"
-                    f" pressure: {bme280.pressure}.")
+        SaveBarometerData.save_barometer_data(
+            temperature_c=bme280.temperature,
+            humidity=bme280.humidity,
+            pressure_hpa=bme280.pressure,
+        )
     except Exception as ex:
         logger.exception(f"get_bme280_data(): {ex}.")
