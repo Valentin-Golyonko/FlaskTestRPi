@@ -7,14 +7,15 @@
 
 {% block content %}
 
-    {% cache 60 %}
+    {{ main_page_data }}
+
     <div class="row">
         <div class="col">
 
             <div class="card-deck">
 
                 <a href="#" class="card mb-3 btn-outline-warning" style="background-color: #344955">
-                    <img class="card-img" src="{% static 'home_iot.jpg' %}" alt="Card image">
+                    <img class="card-img" src="{% static 'img/home_iot.jpg' %}" alt="Card image">
                     <div class="card-img-overlay" style="color: #232F34">
                         <h5 class="card-title">Smart Home</h5>
                         <!--<p class="card-text">
@@ -23,7 +24,7 @@
                 </a>
 
                 <a href="#" class="card mb-3 btn-outline-warning" style="background-color: #344955">
-                    <img class="card-img" src="{% static 'static/weather_forecast.png' %}" alt="Card image">
+                    <img class="card-img" src="{% static 'img/weather_forecast.png' %}" alt="Card image">
                     <div class="card-img-overlay" style="color: #232F34">
                         <h5 class="card-title">Weather</h5>
                         <!--<p class="card-text">
@@ -32,7 +33,7 @@
                 </a>
 
                 <a href="#" class="card mb-3 btn-outline-warning" style="background-color: #344955">
-                    <img class="card-img" src="{% static 'spaceX.jpeg' %}" alt="Card image">
+                    <img class="card-img" src="{% static 'img/spaceX.jpeg' %}" alt="Card image">
                     <div class="card-img-overlay" style="color: #232F34">
                         <h5 class="card-title">Calendar</h5>
                         <!--<p class="card-text">
@@ -44,7 +45,7 @@
             <div class="card-deck">
 
                 <a href="#" class="card mb-3 btn-outline-warning" style="background-color: #344955">
-                    <img class="card-img" src="{% static 'spaceX.jpeg' %}" alt="Card image">
+                    <img class="card-img" src="{% static 'img/spaceX.jpeg' %}" alt="Card image">
                     <div class="card-img-overlay" style="color: #232F34">
                         <h5 class="card-title">Social</h5>
                         <!--<p class="card-text">
@@ -53,7 +54,7 @@
                 </a>
 
                 <a href="#" class="card mb-3 btn-outline-warning" style="background-color: #344955">
-                    <img class="card-img" src="{% static 'spaceX.jpeg' %}" alt="Card image">
+                    <img class="card-img" src="{% static 'img/spaceX.jpeg' %}" alt="Card image">
                     <div class="card-img-overlay" style="color: #232F34">
                         <h5 class="card-title">Test 5</h5>
                         <!--<p class="card-text">
@@ -69,5 +70,4 @@
             </div>
         </div>
     </div>
-    {% endcache %}
 {% endblock %}
