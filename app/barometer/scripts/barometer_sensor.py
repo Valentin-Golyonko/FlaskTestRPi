@@ -1,12 +1,3 @@
-"""
-Adafruit BME280 Library - https://circuitpython.readthedocs.io/projects/bme280/en/latest/
-
-RPi commands:
-pip3 install adafruit-circuitpython-bme280
-pip3 install --upgrade adafruit_blinka
-i2cdetect -y 1
-"""
-
 import logging
 
 import adafruit_bme280
@@ -31,7 +22,7 @@ def get_barometer_data() -> None:
                 if device_obj.i2c_address:
                     device_module = adafruit_bme280.Adafruit_BME280_I2C(
                         i2c=busio.I2C(board.SCL, board.SDA),
-                        address=const(device_obj.i2c_address)
+                        address=const(int(device_obj.i2c_address, 16))
                     )
 
             if device_obj is not None:
