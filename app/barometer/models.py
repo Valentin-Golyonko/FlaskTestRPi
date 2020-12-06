@@ -11,3 +11,4 @@ class Barometer(models.Model):
     class Meta:
         verbose_name = 'Barometer'
         verbose_name_plural = 'Barometer'
+        ordering = ('device', 'time_created')

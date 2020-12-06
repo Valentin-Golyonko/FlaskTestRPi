@@ -16,6 +16,7 @@ class Device(models.Model):
     class Meta:
         verbose_name = 'Device'
         verbose_name_plural = 'Devices'
+        ordering = ('id',)
 
     def __str__(self):
         return self.title
