@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # /<some_path>/HomeBox
@@ -117,7 +118,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CELERY_IMPORTS = (
     'app.core.tasks',
-    'app.barometer.tasks'
+    'app.barometer.tasks',
 )
 
 # Django rest
@@ -125,11 +126,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    "DEFAULT_PARSER_CLASSES": (
+
+    'DEFAULT_PARSER_CLASSES': (
         "rest_framework.parsers.JSONParser",
+        "rest_framework.parsers.FormParser",
+        "rest_framework.parsers.MultiPartParser",
     ),
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -193,3 +200,11 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = 1
 EMAIL_USE_SSL = 0
 EMAIL_PORT = 587
+
+# LOGIN_URL = 'token_obtain_pair'
+LOGOUT_REDIRECT_URL = 'login'
+# REST_USE_JWT = True
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+}

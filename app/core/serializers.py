@@ -15,3 +15,8 @@ class DeviceSerializer(serializers.ModelSerializer):
             'i2c_address',
             'ip_address',
         )
+
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(min_length=1, required=True)
+    password = serializers.CharField(min_length=1, required=True)

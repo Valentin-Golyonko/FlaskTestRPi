@@ -1,0 +1,41 @@
+{% extends 'main_template.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+
+    <input value="" name="username">
+    <input value="" name="password">
+    <button class="btn btn-success">Login</button>
+
+    <script>
+        $(document).ready(function () {
+            {#const token = '{{csrf_token}}';#}
+
+            $('.btn').on('click', function () {
+                $.ajax({
+                    {#contentType: 'application/json',#}
+                    {#headers: {"X-CSRFToken": token},#}
+                    method: "POST",
+                    url: "{% url 'token_obtain_pair' %}",
+                    data: {
+                        'username': $('input[name=username]').val(),
+                        'password': $('input[name=password]').val(),
+                    },
+                    dataType: 'json',
+                    success: function (ajax_data) {
+                        sessionStorage.setItem('refresh', ajax_data.refresh);
+                        sessionStorage.setItem('access', ajax_data.access);
+                    },
+                    error: function (ajax_error) {
+                        console.log('ajax_error', ajax_error);
+                    },
+                });
+            })
+
+        });
+    </script>
+
+{% endblock %}

@@ -11,5 +11,6 @@ adafruit-circuitpython-bme280
 gpiozero
 ipython
 gunicorn
+djangorestframework-simplejwt
 
 # pip install -U git+git://github.com/chibisov/drf-extensions.git@8001a440c7322be26bbe2d16f3a334a8b0b5860b
