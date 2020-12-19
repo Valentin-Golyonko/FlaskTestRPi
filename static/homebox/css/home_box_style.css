@@ -1,9 +1,27 @@
 .bg_dark {
     background-color: #2C2C2C !important;
 }
-.text_dark {
+
+.text_dark a, div, p, h5 {
     color: #2C2C2C;
 }
-.text_light {
+
+.text_light a, div, p, h5 {
     color: lightgrey;
+}
+
+.text_dark:hover a, div, p, h5 {
+    text-decoration: none;
+}
+
+.text_dark:link a, div, p, h5 {
+    text-decoration: none;
+}
+
+.text_light:hover a, div, p, h5 {
+    text-decoration: none;
+}
+
+.text_light:link a, div, p, h5 {
+    text-decoration: none;
 }

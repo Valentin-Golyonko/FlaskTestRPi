@@ -10,73 +10,68 @@
     <div class="row">
         <div class="col">
 
-            <div class="card-deck">
+            <div class="card-deck mb-4">
 
-                <a href="{% url 'barometers-list' %}"
-                   class="card mb-3 btn-outline-warning bg_dark" >
-                    <img class="card-img"
-                         src="{% static 'img/home_iot.jpg' %}"
-                         alt="Card image">
-                    <div class="card-img-overlay text_dark">
-                        <h5 class="card-title">Smart Home</h5>
-                        <!--<p class="card-text">
-                            </p>-->
-                    </div>
-                </a>
+                <div class="card btn-outline-warning bg_dark text_light">
+                    <a href="{% url 'barometers-list' %}">
+                        <div class="card-body">
+                            <h5 class="card-title">Barometer</h5>
+                            <p class="card-text">{{ barometer_data.temperature_c }} C</p>
+                            <p class="card-text">{{ barometer_data.humidity }} %</p>
+                            <p class="card-text">{{ barometer_data.pressure_hpa }} hPa</p>
+                            <p class="card-text">at {{ barometer_data.time_created }}</p>
+                        </div>
+                    </a>
+                </div>
 
-                <a href="#"
-                   class="card mb-3 btn-outline-warning bg_dark">
-                    <img class="card-img"
-                         src="{% static 'img/weather_forecast.png' %}"
-                         alt="Card image">
-                    <div class="card-img-overlay text_dark">
-                        <h5 class="card-title">Weather</h5>
-                        <!--<p class="card-text">
-                            </p>-->
-                    </div>
-                </a>
+                <div class="card btn-outline-warning bg_dark text_light">
+                    <a href="#">
+                        <div class="card-body">
+                            <h5 class="card-title">Forecast</h5>
+                            <p class="card-text">{{ forecast }}</p>
+                        </div>
+                    </a>
+                </div>
 
-                <a href="#"
-                   class="card mb-3 btn-outline-warning bg_dark">
-                    <img class="card-img"
-                         src="{% static 'img/spaceX.jpeg' %}"
-                         alt="Card image">
-                    <div class="card-img-overlay text_dark">
-                        <h5 class="card-title">Calendar</h5>
-                        <!--<p class="card-text">
-                            </p>-->
-                    </div>
-                </a>
+                <div class="card btn-outline-warning bg_dark text_light">
+                    <a href="#">
+                        <img class="card-img"
+                             src="{% static 'img/spaceX.jpeg' %}"
+                             alt="Card image">
+                        <div class="card-img-overlay">
+                            <h5 class="card-title">Some text</h5>
+                            <p class="card-text">Some text</p>
+                        </div>
+                    </a>
+                </div>
 
             </div>
             <div class="card-deck">
 
                 <a href="#"
-                   class="card mb-3 btn-outline-warning bg_dark">
+                   class="card btn-outline-warning bg_dark">
                     <img class="card-img"
                          src="{% static 'img/spaceX.jpeg' %}"
                          alt="Card image">
                     <div class="card-img-overlay text_dark">
-                        <h5 class="card-title">Social</h5>
-                        <!--<p class="card-text">
-                            </p>-->
+                        <h5 class="card-title">Some text</h5>
+                        <!--<p class="card-text"></p>-->
                     </div>
                 </a>
 
                 <a href="#"
-                   class="card mb-3 btn-outline-warning bg_dark">
+                   class="card btn-outline-warning bg_dark">
                     <img class="card-img"
                          src="{% static 'img/spaceX.jpeg' %}"
                          alt="Card image">
                     <div class="card-img-overlay text_dark">
-                        <h5 class="card-title">Test 5</h5>
-                        <!--<p class="card-text">
-                            </p>-->
+                        <h5 class="card-title">Some text</h5>
+                        <!--<p class="card-text"></p>-->
                     </div>
                 </a>
 
                 <a href="#"
-                   class="card mb-3 btn-outline-warning justify-content-center bg_dark">
+                   class="card btn-outline-warning justify-content-center bg_dark">
                     <h3 class="card-title text-white align-self-center">+</h3>
                 </a>
 

@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 
+from app.core.main_page_data.main_page import MainPage
 from app.core.serializers import LoginSerializer
 from app.core.tasks import task_celery_test_run
 from config.settings import LOGOUT_REDIRECT_URL
@@ -33,7 +34,7 @@ class MainPageView(LoginRequiredMixin, GenericAPIView):
 
     @staticmethod
     def get(request, *args, **kwargs):
-        return Response(status=status.HTTP_200_OK)
+        return Response(data=MainPage.get_main_page_data(), status=status.HTTP_200_OK)
 
 
 class LogInView(GenericAPIView):
