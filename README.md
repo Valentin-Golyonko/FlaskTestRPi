@@ -5,13 +5,19 @@
 <b>! the project is under development !</b>
 
 # Server install:
+- <code>sudo apt-get update -y</code>
+- <code>sudo apt-get upgrade -y</code>
 - install docker https://docs.docker.com/engine/install/debian/ for Raspbian!
-- create and run PostgreSQL container with auto restart on raspberry restart <code>docker run -d --name rpi-postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres --restart always postgres:latest</code>
-- config DB: <code>docker exec -it rpi-postgres psql -U postgres</code>
+- install PostgreSQL locally:
+  -  <code>sudo apt install postgresql postgresql-contrib -y</code>
+  - config DB: <code>sudo -u postgres psql</code>
+- (*or optional) create and run PostgreSQL container with auto restart:
+  - <code>docker run -d --name rpi-postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres --restart always postgres:latest</code>
+  - config DB: <code>docker exec -it rpi-postgres psql -U postgres</code>
 - create and run Rabbitmq (with manager) container <code>docker run -d --hostname localhost --name some-rabbit -p 5672:5672 -p 15672:15672 --restart always rabbitmq:3-management</code>
 - install some packages:
-  - <code>sudo apt-get update -y && apt-get install -y nginx python3-dev libpq-dev virtualenv supervisor</code>
-  - <code>sudo python3 -m pip install --upgrade setuptools pip wheel</code>
+  - <code>sudo apt-get install -y nginx python3-dev libpq-dev virtualenv supervisor</code>
+  - <code>sudo python3 -m pip install --upgrade setuptools pip wheel pip-tools</code>
 - clone repository <code>git clone https://github.com/Valentin-Golyonko/HomeBox.git</code> and <code>cd HomeBox/</code>
 - add permissions to .sh scripts:
   - <code>chmod +x config/gunicorn/start_gunicorn.sh</code>
@@ -22,6 +28,7 @@
   - <code>. venv/bin/activate</code>
 - inside venv:
   - <code>pip install --upgrade setuptools pip wheel</code>
+  - generate requirements.txt: <code>pip-compyle</code>
   - <code>pip install -r requirements.txt</code>
   - <code>python manage.py migrate</code>
   - <code>python manage.py collectstatic --no-input</code>

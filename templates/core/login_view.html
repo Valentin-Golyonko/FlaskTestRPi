@@ -1,23 +1,26 @@
 {% extends 'main_template.html' %}
 
+{% load rest_framework %}
+{% load crispy_forms_tags %}
+
 {% block title %}
     Login
 {% endblock %}
 
 {% block content %}
 
-    <input value="" name="username">
-    <input value="" name="password">
-    <button class="btn btn-success">Login</button>
+    <form method="post" class="container">
+        {% csrf_token %}
+        {% render_form serializer %}
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Login</button>
+        </div>
+    </form>
 
     <script>
         $(document).ready(function () {
-            {#const token = '{{csrf_token}}';#}
-
             $('.btn').on('click', function () {
                 $.ajax({
-                    {#contentType: 'application/json',#}
-                    {#headers: {"X-CSRFToken": token},#}
                     method: "POST",
                     url: "{% url 'token_obtain_pair' %}",
                     data: {

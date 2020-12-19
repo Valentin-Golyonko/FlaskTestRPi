@@ -4,7 +4,6 @@ from app.core.models import Device
 
 
 class DeviceSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Device
         fields = (
@@ -18,5 +17,11 @@ class DeviceSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(min_length=1, required=True)
-    password = serializers.CharField(min_length=1, required=True)
+    username = serializers.CharField(
+        min_length=1, required=True,
+        style={'input_type': 'username', 'placeholder': 'Username'},
+    )
+    password = serializers.CharField(
+        min_length=1, required=True,
+        style={'input_type': 'password', 'placeholder': 'Password'},
+    )

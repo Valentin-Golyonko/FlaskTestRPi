@@ -6,8 +6,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent  # /<some_path>/HomeBox
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
+
 SECRET_KEY = os.environ.get('SECRET_KEY')
+
 DEBUG = os.environ.get('DEBUG') == 'True'
+
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 # Application definition
@@ -22,6 +25,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'django_celery_beat',
+    'crispy_forms',
 
     'app.core',
     'app.barometer',
@@ -134,7 +138,6 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -201,10 +204,13 @@ EMAIL_USE_TLS = 1
 EMAIL_USE_SSL = 0
 EMAIL_PORT = 587
 
-# LOGIN_URL = 'token_obtain_pair'
 LOGOUT_REDIRECT_URL = 'login'
-# REST_USE_JWT = True
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
 }
+
+SESSION_COOKIE_AGE = 600  # 10 min
+SESSION_SAVE_EVERY_REQUEST = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

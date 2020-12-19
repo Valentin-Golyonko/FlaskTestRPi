@@ -1,10 +1,13 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 
+from app.core.serializers import LoginSerializer
 from app.core.tasks import task_celery_test_run
 from config.settings import LOGOUT_REDIRECT_URL
 
@@ -26,8 +29,9 @@ class MainPageView(LoginRequiredMixin, GenericAPIView):
     permission_classes = (IsAuthenticated,)
     pagination_class = None
 
-    def get(self, request, *args, **kwargs):
-        return Response({'main_page_data': 'Hello world'})
+    @staticmethod
+    def get(request, *args, **kwargs):
+        return Response(status=status.HTTP_200_OK)
 
 
 class LogInView(GenericAPIView):
@@ -35,7 +39,21 @@ class LogInView(GenericAPIView):
     template_name = 'core/login_view.html'
     permission_classes = (AllowAny,)
     pagination_class = None
+    serializer_class = LoginSerializer
 
-    @staticmethod
-    def get(request, *args, **kwargs):
-        return Response(status=status.HTTP_200_OK)
+    def get(self, request, *args, **kwargs):
+        return Response(data={'serializer': self.get_serializer()}, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = authenticate(
+            username=serializer.validated_data.get('username'),
+            password=serializer.validated_data.get('password'),
+        )
+        if user is not None:
+            login(request, user)
+            return redirect('main_page')
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
