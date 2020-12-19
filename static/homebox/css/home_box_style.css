@@ -1,0 +1,9 @@
+.bg_dark {
+    background-color: #2C2C2C !important;
+}
+.text_dark {
+    color: #2C2C2C;
+}
+.text_light {
+    color: lightgrey;
+}
