@@ -12,8 +12,10 @@ from app.core.tasks import task_celery_test_run
 from config.settings import LOGOUT_REDIRECT_URL
 
 
-class CeleryTestRunAPIView(GenericAPIView):
+class CeleryTestRunAPIView(LoginRequiredMixin, GenericAPIView):
+    login_url = LOGOUT_REDIRECT_URL
     permission_classes = (IsAuthenticated,)
+    pagination_class = None
 
     @classmethod
     def get(cls, request, *args, **kwargs):
