@@ -15,3 +15,12 @@ class Choices:
         (DEVICE_ADDRESS_TYPE_I2C, 'I2C'),
         (DEVICE_ADDRESS_TYPE_ETH_WIFI, 'Ethernet/WiFi')
     ]
+
+    FORECAST_UNITS_STANDARD = 1
+    FORECAST_UNITS_METRIC = 2
+    FORECAST_UNITS_IMPERIAL = 3
+    FORECAST_UNITS_CHOICES = [
+        (FORECAST_UNITS_STANDARD, 'standard'),
+        (FORECAST_UNITS_METRIC, 'metric'),
+        (FORECAST_UNITS_IMPERIAL, 'imperial'),
+    ]

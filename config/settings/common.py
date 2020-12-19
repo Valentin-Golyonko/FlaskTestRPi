@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
     'app.core',
     'app.barometer',
+    'app.owm_forecast',
 ]
 
 MIDDLEWARE = [

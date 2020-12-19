@@ -11,6 +11,7 @@ urlpatterns = [
 
     path('api/core/', include('app.core.urls_core')),
     path('api/', include('app.barometer.urls_barometer')),
+    path('api/', include('app.owm_forecast.urls_owm_forecast')),
 
     path('login/', LogInView.as_view(), name='login'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

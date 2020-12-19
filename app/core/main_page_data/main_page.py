@@ -1,7 +1,12 @@
+import logging
+
 from django.utils.timezone import localtime
 
 from app.barometer.models import Barometer
 from app.barometer.serializers import BarometerSerializer
+from app.owm_forecast.forecast_scripts.forecast_data import ForecastData
+
+logger = logging.getLogger(__name__)
 
 
 class MainPage:
@@ -21,4 +26,7 @@ class MainPage:
 
     @staticmethod
     def forecast() -> dict:
-        return {'forecast': None}
+        all_data = ForecastData.get_forecast_data()
+        if all_data:
+            return {'forecast': all_data.get('main')}
+        return {}

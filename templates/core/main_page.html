@@ -16,19 +16,39 @@
                     <a href="{% url 'barometers-list' %}">
                         <div class="card-body">
                             <h5 class="card-title">Barometer</h5>
-                            <p class="card-text">{{ barometer_data.temperature_c }} C</p>
-                            <p class="card-text">{{ barometer_data.humidity }} %</p>
-                            <p class="card-text">{{ barometer_data.pressure_hpa }} hPa</p>
-                            <p class="card-text">at {{ barometer_data.time_created }}</p>
+                            <p class="card-text">
+                                <i class="fas fa-temperature-high"></i>
+                                {{ barometer_data.temperature_c }} &#8451;
+                            </p>
+                            <p class="card-text">
+                                {{ barometer_data.humidity }} &#37;
+                            </p>
+                            <p class="card-text">
+                                {{ barometer_data.pressure_hpa }} hPa
+                            </p>
+                            <p class="card-text">
+                                at {{ barometer_data.time_created }}
+                            </p>
                         </div>
                     </a>
                 </div>
 
                 <div class="card btn-outline-warning bg_dark text_light">
-                    <a href="#">
+                    <a href="{% url 'forecasts' %}">
                         <div class="card-body">
                             <h5 class="card-title">Forecast</h5>
-                            <p class="card-text">{{ forecast }}</p>
+                            <p class="card-text">
+                                temp: {{ forecast.temp }} ({{ forecast.temp_min }} - {{ forecast.temp_max }}) &#8451;
+                            </p>
+                            <p class="card-text">
+                                feels_like: {{ forecast.feels_like }} &#8451;
+                            </p>
+                            <p class="card-text">
+                                humidity: {{ forecast.humidity }} &#37;
+                            </p>
+                            <p class="card-text">
+                                pressure: {{ forecast.pressure }} hPa
+                            </p>
                         </div>
                     </a>
                 </div>
