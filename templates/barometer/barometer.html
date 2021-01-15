@@ -7,14 +7,98 @@
 
 {% block content %}
 
-    {% for datum in results %}
-        <p class="text_light">
-            temperature_c: {{ datum.temperature_c }}
-            humidity: {{ datum.humidity }}
-            pressure_hpa: {{ datum.pressure_hpa }}
-            device.title: {{ datum.device.title }}
-            time_created: {{ datum.time_created }}
-        </p>
-    {% endfor %}
+    <div class="m-2 barometer_chart"
+         id='BarometerCharts'>
+        <!-- Plotly chart will be drawn inside this DIV -->
+    </div>
+
+    <script>
+        const token = '{{csrf_token}}';
+        $(document).ready(function () {
+            const time_created_data = {{ time_created | safe }};
+            const temperature_c_data = {{ temperature_c }};
+            const humidity_data = {{ humidity }};
+            const xaxis_range = {{ xaxis_range | safe }};
+
+            var trace1 = {
+                x: time_created_data,
+                y: temperature_c_data,
+                type: 'scatter',
+                mode: "lines",
+                name: '&#8451;, temperature',
+                line: {color: '#561eb4'},
+            };
+
+            var trace2 = {
+                x: time_created_data,
+                y: humidity_data,
+                type: 'scatter',
+                mode: "lines",
+                name: '&#37;, humidity',
+                line: {color: '#287ddc'},
+            };
+
+            var data = [trace1, trace2];
+
+            var layout = {
+                autosize: true,
+                height: window.innerHeight * 0.8,
+                {#width: window.innerWidth * 0.8,#}
+                plot_bgcolor: "#2C2C2C",
+                paper_bgcolor: "#2C2C2C",
+                font: {
+                    {#family: 'Courier New, monospace',#}
+                    size: 14,
+                    color: 'lightgrey',
+                },
+                title: 'inside home data',
+                xaxis: {
+                    autorange: true,
+                    range: xaxis_range,
+                    rangeselector: {
+                        bgColor: "orange",
+                        font: {
+                            color: '#2C2C2C',
+                        },
+                        buttons: [
+                            {
+                                count: 6,
+                                label: '6h',
+                                step: 'hour',
+                                stepmode: 'backward'
+                            },
+                            {
+                                count: 1,
+                                label: '1d',
+                                step: 'day',
+                                stepmode: 'backward'
+                            },
+                            {
+                                count: 7,
+                                label: '7d',
+                                step: 'day',
+                                stepmode: 'backward'
+                            },
+                            {step: 'all'}
+                        ]
+                    },
+                    rangeslider: {range: xaxis_range},
+                    type: 'date'
+                },
+                yaxis: {
+                    autorange: true,
+                    type: 'linear'
+                }
+            };
+
+            var config = {
+                responsive: true,
+                scrollZoom: true,
+            }
+
+            Plotly.newPlot('BarometerCharts', data, layout, config);
+
+        });
+    </script>
 
 {% endblock content %}

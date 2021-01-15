@@ -53,8 +53,7 @@
 - setup supervisor config for gunicorn and celery:
   - <code>sudo nano /etc/supervisor/conf.d/homebox.conf</code>
   - <code>sudo nano /etc/supervisor/conf.d/celeryd.conf</code>
-- <code>sudo service supervisor stop</code>
-- <code>sudo service supervisor start</code>
+- <code>sudo service supervisor restart</code>
 - supervisor logs is here <code>sudo nano /var/log/supervisor/supervisord.log</code>
 - celery result backend check on http://'server_ip'/api/core/celery_test_run/
 

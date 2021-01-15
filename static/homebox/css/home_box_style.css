@@ -25,3 +25,9 @@
 .text_light:link a, div, p, h5 {
     text-decoration: none;
 }
+
+.barometer_chart {
+    min-height: 50%;
+    max-height: 90%;
+    max-width: 90%;
+}
