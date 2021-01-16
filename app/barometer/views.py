@@ -1,3 +1,7 @@
+from datetime import date
+from typing import List
+
+from django.utils.timezone import localtime
 from rest_framework import mixins, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -39,14 +43,18 @@ class BarometerViewSet(mixins.RetrieveModelMixin,
             'device': [],
             'time_created': [],
             'xaxis_range': [
-                last_x_obj.time_created.strftime('%Y-%m-%d %H:%M'),
-                last_obj.time_created.strftime('%Y-%m-%d %H:%M')
+                self.get_local_datetime_as_str(last_x_obj.time_created),
+                self.get_local_datetime_as_str(last_obj.time_created),
             ],
         }
 
         for data_obj in query_list:
             out_data.get('temperature_c').append(float(data_obj.temperature_c))
             out_data.get('humidity').append(float(data_obj.humidity))
-            out_data.get('time_created').append(data_obj.time_created.strftime('%Y-%m-%d %H:%M'))
+            out_data.get('time_created').append(self.get_local_datetime_as_str(data_obj.time_created))
 
         return Response(data=out_data, status=status.HTTP_200_OK)
+
+    @staticmethod
+    def get_local_datetime_as_str(date_obj: date) -> str:
+        return localtime(date_obj).strftime('%Y-%m-%d %H:%M')
