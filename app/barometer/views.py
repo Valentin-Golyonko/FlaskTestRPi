@@ -1,6 +1,6 @@
 from datetime import date
-from typing import List
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.timezone import localtime
 from rest_framework import mixins, status
 from rest_framework.permissions import IsAuthenticated
@@ -10,12 +10,15 @@ from rest_framework.viewsets import GenericViewSet
 
 from app.barometer.models import Barometer
 from app.barometer.serializers import BarometerSerializer
+from config.settings import LOGOUT_REDIRECT_URL
 
 
-class BarometerViewSet(mixins.RetrieveModelMixin,
+class BarometerViewSet(LoginRequiredMixin,
+                       mixins.RetrieveModelMixin,
                        mixins.DestroyModelMixin,
                        mixins.ListModelMixin,
                        GenericViewSet):
+    login_url = LOGOUT_REDIRECT_URL
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'barometer/barometer.html'
     permission_classes = (IsAuthenticated,)
