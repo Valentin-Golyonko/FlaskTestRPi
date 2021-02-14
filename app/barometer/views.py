@@ -1,7 +1,4 @@
-from datetime import date
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils.timezone import localtime
 from rest_framework import mixins, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -9,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from app.barometer.models import Barometer
+from app.barometer.scripts.collect_barometer_data import CollectBarometerData
 from app.barometer.serializers import BarometerSerializer
 from config.settings import LOGOUT_REDIRECT_URL
 
@@ -26,38 +24,14 @@ class BarometerViewSet(LoginRequiredMixin,
     serializer_class = BarometerSerializer
     pagination_class = None
 
+    def get_queryset(self):
+        # todo: filter per device
+        return Barometer.objects.all()
+
     def list(self, request, *args, **kwargs):
-        query_list = list(self.filter_queryset(self.get_queryset()))
-        if not query_list:
-            return Response(data={}, status=status.HTTP_200_OK)
-
-        x_axis_limit = 10
-
-        last_obj = query_list[-1]
-        if len(query_list) >= x_axis_limit:
-            last_x_obj = query_list[-x_axis_limit]
-        else:
-            last_x_obj = query_list[0]
-
-        out_data = {
-            'temperature_c': [],
-            'humidity': [],
-            'pressure_hpa': [],
-            'device': [],
-            'time_created': [],
-            'xaxis_range': [
-                self.get_local_datetime_as_str(last_x_obj.time_created),
-                self.get_local_datetime_as_str(last_obj.time_created),
-            ],
-        }
-
-        for data_obj in query_list:
-            out_data.get('temperature_c').append(float(data_obj.temperature_c))
-            out_data.get('humidity').append(float(data_obj.humidity))
-            out_data.get('time_created').append(self.get_local_datetime_as_str(data_obj.time_created))
-
-        return Response(data=out_data, status=status.HTTP_200_OK)
-
-    @staticmethod
-    def get_local_datetime_as_str(date_obj: date) -> str:
-        return localtime(date_obj).strftime('%Y-%m-%d %H:%M')
+        return Response(
+            data=CollectBarometerData.list_data(
+                queryset=self.filter_queryset(self.get_queryset()),
+            ),
+            status=status.HTTP_200_OK
+        )

@@ -15,35 +15,29 @@
     <script>
         const token = '{{csrf_token}}';
         $(document).ready(function () {
-            const time_created_data = {{ time_created | safe }};
-            const temperature_c_data = {{ temperature_c }};
-            const humidity_data = {{ humidity }};
-            const xaxis_range = {{ xaxis_range | safe }};
-
-            var trace1 = {
-                x: time_created_data,
-                y: temperature_c_data,
+            const trace_1 = {
+                x: {{ time_created | safe }},
+                y: {{ temperature_c | safe }},
                 type: 'scatter',
                 mode: "lines",
                 name: '&#8451;, temperature',
                 line: {color: '#561eb4'},
             };
 
-            var trace2 = {
-                x: time_created_data,
-                y: humidity_data,
+            const trace_2 = {
+                x: {{ time_created | safe }},
+                y: {{ humidity | safe }},
                 type: 'scatter',
                 mode: "lines",
                 name: '&#37;, humidity',
                 line: {color: '#287ddc'},
             };
 
-            var data = [trace1, trace2];
+            const data = [trace_1, trace_2];
 
-            var layout = {
+            const layout = {
                 autosize: true,
                 height: window.innerHeight * 0.8,
-                {#width: window.innerWidth * 0.8,#}
                 plot_bgcolor: "#2C2C2C",
                 paper_bgcolor: "#2C2C2C",
                 font: {
@@ -54,7 +48,7 @@
                 title: 'inside home data',
                 xaxis: {
                     autorange: true,
-                    range: xaxis_range,
+                    range: {{ xaxis_range | safe }},
                     rangeselector: {
                         bgColor: "orange",
                         font: {
@@ -82,7 +76,9 @@
                             {step: 'all'}
                         ]
                     },
-                    rangeslider: {range: xaxis_range},
+                    rangeslider: {
+                        range: {{ xaxis_range | safe }},
+                    },
                     type: 'date'
                 },
                 yaxis: {
