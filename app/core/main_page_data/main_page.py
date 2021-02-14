@@ -27,6 +27,4 @@ class MainPage:
     @staticmethod
     def forecast() -> dict:
         all_data = ForecastData.get_forecast_data()
-        if all_data:
-            return {'forecast': all_data.get('main')}
-        return {}
+        return {'forecast': all_data.get('main', None)}

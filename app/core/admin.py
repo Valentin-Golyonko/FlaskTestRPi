@@ -9,12 +9,29 @@ class DeviceAdmin(admin.ModelAdmin):
         'title',
         'i2c_address',
         'ip_address',
+        'mac_address',
     )
     list_display = (
         'title',
         'device_type',
         'sub_type',
         'address_type',
-        'i2c_address',
-        'ip_address',
+        'i2c_address_',
+        'ip_address_',
+        'mac_address_',
     )
+
+    def i2c_address_(self, obj) -> bool:
+        return bool(obj.i2c_address)
+
+    i2c_address_.boolean = True
+
+    def ip_address_(self, obj) -> bool:
+        return bool(obj.ip_address)
+
+    ip_address_.boolean = True
+
+    def mac_address_(self, obj) -> bool:
+        return bool(obj.mac_address)
+
+    mac_address_.boolean = True
