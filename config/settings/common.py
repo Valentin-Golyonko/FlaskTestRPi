@@ -151,6 +151,8 @@ REST_FRAMEWORK = {
 DJANGO_LOG_LEVEL = 'WARNING'
 APP_LOG_LVL = 'DEBUG'
 LOGS_DIR = 'logs/'
+FILE_DJANGO = BASE_DIR / LOGS_DIR / 'django.log'
+FILE_DEBUG = BASE_DIR / LOGS_DIR / 'debug.log'
 
 LOGGING = {
     'version': 1,
@@ -168,14 +170,20 @@ LOGGING = {
     'handlers': {
         'file_django': {
             'level': DJANGO_LOG_LEVEL,
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / LOGS_DIR / 'django_warning.log',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'when': 'midnight',
+            'interval': 1,
+            'backupCount': 31,
+            'filename': FILE_DJANGO,
             'formatter': 'verbose',
         },
         'file': {
             'level': APP_LOG_LVL,
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / LOGS_DIR / 'debug.log',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'when': 'midnight',
+            'interval': 1,
+            'backupCount': 31,
+            'filename': FILE_DEBUG,
             'formatter': 'verbose',
         },
         'console': {
@@ -191,6 +199,16 @@ LOGGING = {
             'propagate': True,
         },
         'app.core': {
+            'handlers': ['file', 'console'],
+            'level': APP_LOG_LVL,
+            'propagate': True,
+        },
+        'app.barometer': {
+            'handlers': ['file', 'console'],
+            'level': APP_LOG_LVL,
+            'propagate': True,
+        },
+        'app.owm_forecast': {
             'handlers': ['file', 'console'],
             'level': APP_LOG_LVL,
             'propagate': True,
