@@ -2,6 +2,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from celery.schedules import crontab
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # /<some_path>/HomeBox
 
 # Quick-start development settings - unsuitable for production
@@ -113,9 +115,9 @@ STATICFILES_DIRS = [BASE_DIR / 'static/homebox/']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
-# Celery settings
-CELERY_BROKER_URL = os.environ.get('C_BROKER', default=None)
-CELERY_RESULT_BACKEND = os.environ.get('C_BACKEND', default=None)
+# Celery settings ->
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', default=None)
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_BACKEND', default=None)
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -124,7 +126,20 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_IMPORTS = (
     'app.core.tasks',
     'app.barometer.tasks',
+    'app.owm_forecast.tasks',
 )
+
+CELERY_BEAT_SCHEDULE = {
+    'request-barometer-data': {
+        'task': 'app.barometer.tasks.task_request_barometer_data',
+        'schedule': crontab(minute='*/10'),
+    },
+    'request-forecast-data': {
+        'task': 'app.owm_forecast.tasks.task_request_owm_data',
+        'schedule': crontab(minute='*/10'),
+    },
+}
+# <- Celery settings
 
 # Django rest
 REST_FRAMEWORK = {

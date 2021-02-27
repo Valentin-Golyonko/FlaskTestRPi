@@ -38,16 +38,16 @@
                         <div class="card-body">
                             <h5 class="card-title">Forecast</h5>
                             <p class="card-text">
-                                now: {{ forecast.temp }} (day: {{ forecast.temp_max }}, night: {{ forecast.temp_min }}) &#8451;
+                                now: {{ weather_data.temp }} &#8451; (max: {{ weather_data.temp_max }}, min: {{ weather_data.temp_min }} at this location)
                             </p>
                             <p class="card-text">
-                                feels like: {{ forecast.feels_like }} &#8451;
+                                feels like: {{ weather_data.feels_like }} &#8451;
                             </p>
                             <p class="card-text">
-                                humidity: {{ forecast.humidity }} &#37;
+                                humidity: {{ weather_data.humidity }} &#37;
                             </p>
                             <p class="card-text">
-                                pressure: {{ forecast.pressure }} hPa
+                                pressure: {{ weather_data.pressure }} hPa
                             </p>
                         </div>
                     </a>

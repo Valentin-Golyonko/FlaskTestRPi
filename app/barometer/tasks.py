@@ -1,17 +1,14 @@
-from celery.schedules import crontab
+import logging
 
-from app.barometer.scripts.barometer_sensor import get_barometer_data
+from app.barometer.scripts.barometer_sensor import request_barometer_data
 from config.celery import app
 
-
-@app.task
-def task_get_barometer_data() -> None:
-    get_barometer_data()
+logger = logging.getLogger(__name__)
 
 
-app.conf.beat_schedule = {
-    'get-barometer-data': {
-        'task': 'app.barometer.tasks.task_get_barometer_data',
-        'schedule': crontab(minute='*/10'),
-    },
-}
+@app.task(name='app.barometer.tasks.task_request_barometer_data', ignore_result=True)
+def task_request_barometer_data() -> None:
+    try:
+        request_barometer_data()
+    except Exception as ex:
+        logger.error(f"task_request_barometer_data(): {ex}")

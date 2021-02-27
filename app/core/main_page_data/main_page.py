@@ -4,7 +4,7 @@ from django.utils.timezone import localtime
 
 from app.barometer.models import Barometer
 from app.barometer.serializers import BarometerSerializer
-from app.owm_forecast.forecast_scripts.forecast_data import ForecastData
+from app.owm_forecast.models import Forecast
 
 logger = logging.getLogger(__name__)
 
@@ -26,5 +26,10 @@ class MainPage:
 
     @staticmethod
     def forecast() -> dict:
-        all_data = ForecastData.get_forecast_data()
-        return {'forecast': all_data.get('main', None)}
+        forecast_obj = Forecast.objects.filter(main_source=True).first()
+        if forecast_obj:
+            try:
+                return {'weather_data': forecast_obj.current_weather_data.get('main', None)}
+            except AttributeError:
+                pass
+        return {}

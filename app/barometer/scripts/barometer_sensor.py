@@ -11,7 +11,7 @@ from app.core.models import Device
 logger = logging.getLogger(__name__)
 
 
-def get_barometer_data() -> None:
+def request_barometer_data() -> None:
     import board
 
     for device_obj in Device.objects.filter(device_type=Choices.DEVICE_TYPE_BAROMETER):
@@ -33,5 +33,5 @@ def get_barometer_data() -> None:
                     device_obj=device_obj,
                 )
         except Exception as ex:
-            logger.exception(f"get_barometer_data(): {ex}.")
+            logger.exception(f"request_barometer_data(): {ex}")
             continue

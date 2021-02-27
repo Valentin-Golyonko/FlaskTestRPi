@@ -12,5 +12,9 @@ class Forecast(models.Model):
     )
     main_source = models.BooleanField(default=False)
 
+    geo_coord = models.JSONField(blank=True, null=True)
+    current_weather_data = models.JSONField(blank=True, null=True)
+    current_air_pollution_data = models.JSONField(blank=True, null=True)
+
     def __str__(self):
         return self.title
