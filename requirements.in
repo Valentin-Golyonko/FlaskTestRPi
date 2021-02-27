@@ -1,20 +1,23 @@
 pip-tools
+
 psycopg2-binary
 psycopg2
+
 Django
 djangorestframework
 django-crispy-forms
 drf-extensions
 django-extensions
-celery
 django-celery-beat
+djangorestframework-simplejwt
+
+celery
+
 adafruit-circuitpython-bme280
 gpiozero
-ipython
-gunicorn
-djangorestframework-simplejwt
-django-crispy-forms
-requests
 bleak
 
-# pip install -U git+git://github.com/chibisov/drf-extensions.git@8001a440c7322be26bbe2d16f3a334a8b0b5860b
+gunicorn
+
+ipython
+requests
