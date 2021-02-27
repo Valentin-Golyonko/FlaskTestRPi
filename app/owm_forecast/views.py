@@ -20,13 +20,11 @@ class ForecastView(LoginRequiredMixin, GenericAPIView):
     def get(request, *args, **kwargs):
         forecast_obj = Forecast.objects.filter(main_source=True).first()
         if forecast_obj:
-            weather_data = forecast_obj.current_weather_data if forecast_obj.current_weather_data else {}
-            air_pollution_data = forecast_obj.current_air_pollution_data if forecast_obj.current_air_pollution_data else {}
-            return Response(
-                data={**weather_data,
-                      **air_pollution_data,
-                      },
-                status=status.HTTP_200_OK
-            )
+            out_data = {}
+            if forecast_obj.current_weather_data:
+                out_data.update(forecast_obj.current_weather_data)
+            if forecast_obj.current_air_pollution_data:
+                out_data.update(forecast_obj.current_air_pollution_data)
+            return Response(data=out_data, status=status.HTTP_200_OK)
         else:
             return Response(data={}, status=status.HTTP_404_NOT_FOUND)

@@ -7,31 +7,64 @@
 
 {% block content %}
 
-    <div class="text_light">
-        {% if coord %}
-            <p>coord: lon={{ coord.lon }}, lat={{ coord.lat }}</p>
-        {% endif %}
+    <div class="text_light d-flex justify-content-center">
+        <div class="col-3 border border-warning rounded">
+            <p class="m-2 text-center">
+                Your location: <b>{{ name }}, {{ sys.country }}</b> (lon = {{ coord.lon }}, lat = {{ coord.lat }})
+            </p>
+            <p class="m-2 text-center">
+                Today weather:
+            </p>
+            <h4 class="m-2 text-center">
+                {{ main.temp }} &#8451;
+            </h4>
+            <p class="m-2 text-left">
+                feels like: {{ main.feels_like }} &#8451;
+            </p>
+            <p class="m-2">
+                max: {{ main.temp_max }}, min: {{ main.temp_min }} &#8451; at this location
+            </p>
+            <p class="m-2">
+                humidity: {{ main.humidity }} &#37;
+            </p>
+            {% for i in weather %}
+                <p class="m-2">
+                    <img src="http://openweathermap.org/img/wn/{{ i.icon }}.png" alt="weather_icon">
+                    {{ i.main }}, {{ i.description }}
+                </p>
+            {% endfor %}
+            <p class="m-2">
+                wind speed: {{ wind.speed }}, wind deg: {{ wind.deg }}
+            </p>
+            <p class="m-2">
+                clouds: {{ clouds.all }}
+            </p>
+            <p class="m-2">
+                sunrise: {{ sys.sunrise }}, sunset: {{ sys.sunset }}
+            </p>
+            <p class="m-2">
+                at time: {{ dt }}
+            </p>
+            <br>
+            <p class="m-2">
+                air quality:
+                {% with aqi=list.0.main.aqi %}
+                    {% if aqi == 1 %}
+                        Good
+                    {% elif aqi == 2 %}
+                        Fair
+                    {% elif aqi == 3 %}
+                        Moderate
+                    {% elif aqi == 4 %}
+                        Poor
+                    {% elif aqi == 5 %}
+                        Very Poor
+                    {% endif %}
+                {% endwith %}
+                (at time: {{ list.0.dt }})
+            </p>
 
-        {% for i in weather %}
-            <p>weather: {{ i.main }}, {{ i.description }}</p>
-        {% endfor %}
-
-        {% if main %}
-            <p>main: {{ main.temp }}, feels_like: {{ main.feels_like }}, humidity: {{ main.humidity }}</p>
-        {% endif %}
-
-        {% if wind %}
-            <p>wind speed: {{ wind.speed }}, wind deg: {{ wind.deg }}</p>
-        {% endif %}
-
-        {% if clouds %}
-            <p>clouds: {{ clouds.all }}</p>
-        {% endif %}
-
-        {% if name and sys %}
-            <p>{{ name }}, {{ sys.country }}</p>
-            <p>{{ sys.sunrise }}, {{ sys.sunset }}</p>
-        {% endif %}
+        </div>
     </div>
 
 {% endblock content %}

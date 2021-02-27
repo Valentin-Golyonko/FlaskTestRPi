@@ -1,6 +1,6 @@
 import logging
 from typing import Optional
-
+from datetime import datetime
 import requests
 
 from app.owm_forecast.models import Forecast
@@ -54,11 +54,29 @@ class ForecastData:
         new_data = False
         try:
             if weather_data:
+                try:
+                    weather_data['dt'] = str(datetime.fromtimestamp(
+                        weather_data.get('dt')
+                    ).time())
+                    weather_data['sys']['sunrise'] = str(datetime.fromtimestamp(
+                        weather_data.get('sys').get('sunrise')
+                    ).time())
+                    weather_data['sys']['sunset'] = str(datetime.fromtimestamp(
+                        weather_data.get('sys').get('sunset')
+                    ).time())
+                except Exception as ex:
+                    logger.debug(f"save_owm_data(): weather_data: {ex}")
                 forecast_obj.current_weather_data = weather_data
                 forecast_obj.geo_coord = weather_data.get('coord')
                 new_data = True
 
             if air_pollution_data:
+                try:
+                    air_pollution_data['list'][0]['dt'] = str(datetime.fromtimestamp(
+                        air_pollution_data.get('list', [])[0].get('dt')
+                    ).time())
+                except Exception as ex:
+                    logger.debug(f"save_owm_data(): air_pollution_data: {ex}")
                 forecast_obj.current_air_pollution_data = air_pollution_data
                 new_data = True
 
