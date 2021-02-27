@@ -9,7 +9,6 @@
 
     <div class="m-2 barometer_chart"
          id='BarometerCharts'>
-        <!-- Plotly chart will be drawn inside this DIV -->
     </div>
 
     <script>
@@ -33,7 +32,17 @@
                 line: {color: '#287ddc'},
             };
 
-            const data = [trace_1, trace_2];
+            const trace_3 = {
+                x: {{ time_created | safe }},
+                y: {{ pressure_hpa | safe }},
+                type: 'scatter',    // scatter == SVG, scattergl == WebGL (but without range slider!)
+                mode: "lines",
+                name: 'hPa, pressure',
+                line: {color: '#15870c'},
+                yaxis: 'y2',
+            };
+
+            const data = [trace_1, trace_2, trace_3];
 
             const layout = {
                 autosize: true,
@@ -47,7 +56,7 @@
                 },
                 title: 'inside home data',
                 xaxis: {
-                    autorange: true,
+                    autorange: false,
                     range: {{ xaxis_range | safe }},
                     rangeselector: {
                         bgColor: "orange",
@@ -78,13 +87,22 @@
                     },
                     rangeslider: {
                         range: {{ xaxis_range | safe }},
+                        visible: true,
                     },
-                    type: 'date'
+                    type: 'date',
                 },
                 yaxis: {
                     autorange: true,
-                    type: 'linear'
-                }
+                    type: 'linear',
+                    title: '&#8451; (temperature) or &#37; (humidity)',
+                },
+                yaxis2: {
+                    title: 'hPa, pressure',
+                    {#titlefont: {color: '#15870c'},#}
+                    {#tickfont: {color: '#15870c'},#}
+                    overlaying: 'y',
+                    side: 'right'
+                },
             };
 
             var config = {

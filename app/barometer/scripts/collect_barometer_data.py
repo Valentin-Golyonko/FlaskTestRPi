@@ -21,7 +21,7 @@ class CollectBarometerData:
         if not queryset:
             return out_data
 
-        x_axis_limit = 10
+        x_axis_limit = 144  # 6 point in hour * 24 hours = ideally 1 day
         query_list = list(queryset)
         last_obj = query_list[-1]
 
@@ -39,5 +39,6 @@ class CollectBarometerData:
             out_data.get('temperature_c').append(float(data_obj.temperature_c))
             out_data.get('humidity').append(float(data_obj.humidity))
             out_data.get('time_created').append(get_local_datetime_as_str(data_obj.time_created))
+            out_data.get('pressure_hpa').append(float(data_obj.pressure_hpa))
 
         return out_data
