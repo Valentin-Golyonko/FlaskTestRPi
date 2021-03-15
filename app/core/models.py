@@ -33,6 +33,16 @@ class Device(models.Model):
         verbose_name='MAC address',
         help_text="e.g. A1:B2:C3:D4:5E:6F",
     )
+    bluetooth_uuid_tx = models.CharField(
+        max_length=100, blank=True, null=True,
+        verbose_name='Bluetooth UUID TX',
+        help_text="e.g. 0000ffe1-0000-1000-8000-00805f9b34fb",
+    )
+    bluetooth_uuid_rx = models.CharField(
+        max_length=100, blank=True, null=True,
+        verbose_name='Bluetooth UUID RX',
+        help_text="e.g. 0000ffe1-0000-1000-8000-00805f9b34fb",
+    )
 
     class Meta:
         verbose_name = 'Device'
