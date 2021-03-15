@@ -1,13 +1,13 @@
 from django.db.models import QuerySet
 
 from app.barometer.models import Barometer
-from app.core.scripts.utils import get_local_datetime_as_str, time_it
+from app.core.scripts.utils import Utility
 
 
 class CollectBarometerData:
 
     @staticmethod
-    @time_it('list_data()')
+    @Utility.time_it('list_data()')
     def list_data(queryset: QuerySet[Barometer]) -> dict:
         out_data = {
             'temperature_c': [],
@@ -31,14 +31,14 @@ class CollectBarometerData:
             last_x_obj = query_list[0]
 
         out_data.get('xaxis_range').extend([
-            get_local_datetime_as_str(last_x_obj.time_created),
-            get_local_datetime_as_str(last_obj.time_created),
+            Utility.get_local_datetime_as_str(last_x_obj.time_created),
+            Utility.get_local_datetime_as_str(last_obj.time_created),
         ])
 
         for data_obj in query_list:
             out_data.get('temperature_c').append(float(data_obj.temperature_c))
             out_data.get('humidity').append(float(data_obj.humidity))
-            out_data.get('time_created').append(get_local_datetime_as_str(data_obj.time_created))
+            out_data.get('time_created').append(Utility.get_local_datetime_as_str(data_obj.time_created))
             out_data.get('pressure_hpa').append(float(data_obj.pressure_hpa))
 
         return out_data
