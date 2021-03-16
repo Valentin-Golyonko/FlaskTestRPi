@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_celery_beat',
     'crispy_forms',
+    'django_extensions',
 
     'app.core',
     'app.barometer',
