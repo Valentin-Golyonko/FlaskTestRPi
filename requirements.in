@@ -22,4 +22,4 @@ gunicorn
 ipython
 requests
 
-# pip install django-debug-toolbar
+# pip install -U django-debug-toolbar

@@ -7,7 +7,6 @@ const uint8_t TX = 6;
 const uint8_t BLUEPIN = 3;
 bool blue_pin_up = false;
 bool builtin_pin_up = false;
-String some_data = "";
 
 SoftwareSerial SerialBLE(RX, TX); // RX,TX on arduino board
 

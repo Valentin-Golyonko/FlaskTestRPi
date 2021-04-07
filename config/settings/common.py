@@ -251,3 +251,5 @@ SESSION_COOKIE_AGE = 600  # 10 min
 SESSION_SAVE_EVERY_REQUEST = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
