@@ -27,9 +27,9 @@
   - <code>python3 -m venv venv</code>
   - <code>. venv/bin/activate</code>
 - inside venv:
-  - <code>pip install --upgrade setuptools pip wheel</code>
-  - generate requirements.txt: <code>pip-compyle</code>
-  - <code>pip install -r requirements.txt</code>
+  - <code>pip install --upgrade setuptools pip wheel pip-tools</code>
+  - generate requirements.txt: <code>pip-compile</code>
+  - install dependencies: <code>pip-sync</code> or <code>pip install -r requirements.txt</code>
   - <code>python manage.py migrate</code>
   - <code>python manage.py collectstatic --no-input</code>
   - <code>python manage.py createsuperuser</code>
