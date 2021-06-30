@@ -19,7 +19,7 @@ class Utility:
             def decor_1(*args, **kwargs):
                 time_0 = perf_counter()
                 result = foo(*args, **kwargs)
-                logger.debug('time_it(): %s = %.4f' % (foo_name, perf_counter() - time_0))
+                logger.debug(f"time_it(): {foo_name} = {(perf_counter() - time_0):.4f}")
                 return result
 
             return decor_1
