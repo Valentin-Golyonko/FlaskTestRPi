@@ -19,7 +19,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 """ <- for local usage """
 
-from app.core.choices import Choices
+from app.rgb_control.rgb_control_scripts.get_rgb_divice import GetRGBDevice
 from app.core.models import Device
 
 logger = logging.getLogger(__name__)
@@ -27,36 +27,37 @@ logger = logging.getLogger(__name__)
 
 class BLEControl:
 
-    @staticmethod
-    def ble_led_strip_alarm() -> Device:
-        return Device.objects.filter(
-            device_type=Choices.DEVICE_TYPE_LED_STRIP,
-            sub_type=Choices.DEVICE_SUB_TYPE_RGB_STRIP_WITH_ALARM,
-            address_type=Choices.DEVICE_ADDRESS_TYPE_BLUETOOTH,
-            mac_address__isnull=False,
-        ).first()
-
     @classmethod
     def ping_ble_led_strip_alarm(cls) -> None:
-        ble_led_strip_alarm_obj = cls.ble_led_strip_alarm()
+        ble_led_strip_alarm_obj = GetRGBDevice.ble_led_strip_alarm()
         if ble_led_strip_alarm_obj is None:
             logger.error(f"ping_ble_led_strip(): ble_led_strip_obj is None")
             return None
 
         try:
             loop = asyncio.get_event_loop()
-            device_response = loop.run_until_complete(cls.connect_send_get_ble_data(
-                ble_led_strip_alarm_obj,
-                {"ping": "ping"}
-            ))
+            device_response = loop.run_until_complete(
+                cls.connect_send_get_ble_data(
+                    ble_led_strip_alarm_obj,
+                    {"ping": "ping"}
+                )
+            )
             loop.close()
         except Exception as ex:
             logger.exception(f"ping_ble_led_strip_alarm(): {ex}")
         else:
             pong = device_response.get('ping')
+
             if pong != 'pong':
-                logger.error(f"ping_ble_led_strip_alarm(): device_response != 'pong', {device_response}")
-            logger.info(f"ping_ble_led_strip_alarm(): device_response: {pong}")
+                is_alive_ = False
+                logger.error(f"ping_ble_led_strip_alarm(): device_response != 'pong';"
+                             f" {device_response}")
+            else:
+                is_alive_ = True
+                logger.info(f"ping_ble_led_strip_alarm(): device_response: {pong}")
+
+            ble_led_strip_alarm_obj.is_alive = is_alive_
+            ble_led_strip_alarm_obj.save()
 
     @staticmethod
     async def connect_send_get_ble_data(ble_device_obj: Device,
@@ -67,8 +68,7 @@ class BLEControl:
 
         try:
             async with BleakClient(ble_device_obj.mac_address) as client:
-                device = await client.is_connected()
-                logger.info(f"Connected: {device}")
+                logger.info(f"Connected: {client.is_connected()}")
 
                 if send_data:
                     # send data to ble device
