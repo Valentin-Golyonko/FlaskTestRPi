@@ -56,9 +56,9 @@ class BLEControl:
             loop.close()
         except Exception as ex:
             logger.exception(f"ping_ble_led_strip_alarm(): {ex}")
+            is_alive_ = False
         else:
             pong = device_response.get('ping')
-
             if pong != 'pong':
                 is_alive_ = False
                 logger.error(f"ping_ble_led_strip_alarm(): device_response != 'pong';"
@@ -67,8 +67,8 @@ class BLEControl:
                 is_alive_ = True
                 logger.info(f"ping_ble_led_strip_alarm(): device_response: {pong}")
 
-            ble_led_strip_alarm_obj.is_alive = is_alive_
-            ble_led_strip_alarm_obj.save()
+        ble_led_strip_alarm_obj.is_alive = is_alive_
+        ble_led_strip_alarm_obj.save()
 
     @staticmethod
     async def connect_send_get_ble_data(ble_device_obj: Device,
