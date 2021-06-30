@@ -43,6 +43,8 @@ class Device(models.Model):
         verbose_name='Bluetooth UUID RX',
         help_text="e.g. 0000ffe1-0000-1000-8000-00805f9b34fb",
     )
+    is_alive = models.BooleanField(default=False)
+    last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Device'
