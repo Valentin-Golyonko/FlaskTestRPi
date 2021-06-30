@@ -1,6 +1,7 @@
 import logging
 
 from app.barometer.models import Barometer
+from app.core.choices import Choices
 from app.core.models import Device
 
 logger = logging.getLogger(__name__)
@@ -26,7 +27,15 @@ class SaveBarometerData:
 
     @staticmethod
     def limit_saved_data(device_obj: Device) -> None:
-        """ limit data to 1008 = 6 saves per hour (1 in 10 min) * 24 hours * 7 days """
-        all_data_ids = [i.id for i in Barometer.objects.filter(device=device_obj) if i]
-        if len(all_data_ids) > 1008:
-            Barometer.objects.filter(id__in=all_data_ids[1007::-1], device=device_obj).delete()
+        all_data_ids = Barometer.objects.filter(
+            device=device_obj
+        ).values_list(
+            'id', flat=True
+        ).order_by(
+            '-time_created'
+        )
+
+        if len(all_data_ids) > Choices.BAROMETER_DATA_LIMIT:
+            Barometer.objects.exclude(
+                id__in=all_data_ids[:Choices.BAROMETER_DATA_LIMIT]
+            ).delete()
