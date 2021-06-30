@@ -7,12 +7,18 @@ class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
         fields = (
+            'id',
             'title',
             'device_type',
             'sub_type',
             'address_type',
             'i2c_address',
             'ip_address',
+            'mac_address',
+            'bluetooth_uuid_tx',
+            'bluetooth_uuid_rx',
+            'is_alive',
+            'last_update',
         )
 
 
