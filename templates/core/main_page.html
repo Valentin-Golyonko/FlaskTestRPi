@@ -16,6 +16,7 @@
                     <a href="{% url 'barometers-list' %}">
                         <div class="card-body">
                             <h5 class="card-title">Barometer</h5>
+                            <hr>
                             <p class="card-text">
                                 <i class="fas fa-temperature-high"></i>
                                 {{ barometer_data.temperature_c }} &#8451;
@@ -37,8 +38,10 @@
                     <a href="{% url 'forecasts' %}">
                         <div class="card-body">
                             <h5 class="card-title">Forecast</h5>
+                            <hr>
                             <p class="card-text">
-                                now: {{ weather_data.temp }} &#8451; (max: {{ weather_data.temp_max }}, min: {{ weather_data.temp_min }} at this location)
+                                now: {{ weather_data.temp }} &#8451; (max: {{ weather_data.temp_max }},
+                                min: {{ weather_data.temp_min }} at this location)
                             </p>
                             <p class="card-text">
                                 feels like: {{ weather_data.feels_like }} &#8451;
@@ -55,45 +58,57 @@
 
                 <div class="card btn-outline-warning bg_dark text_light">
                     <a href="#">
-                        <img class="card-img"
-                             src="{% static 'img/spaceX.jpeg' %}"
-                             alt="Card image">
-                        <div class="card-img-overlay">
-                            <h5 class="card-title">Some text</h5>
-                            <p class="card-text">Some text</p>
+                        <div class="card-body">
+                            <h5 class="card-title">RGB Led strip</h5>
+                            <hr>
+                            <p class="card-text">
+                                {% if rgb_device.is_alive %}
+                                    <i class="far fa-check-circle"></i>
+                                    alive
+                                {% else %}
+                                    <i class="far fa-times-circle"></i>
+                                    not alive
+                                {% endif %}
+                            </p>
+                            <p class="card-text">
+                                last update: {{ rgb_device.last_update|default:'-' }}
+                            </p>
                         </div>
                     </a>
                 </div>
 
             </div>
-            <div class="card-deck">
+            <div class="card-deck mb-4">
 
-                <a href="#"
-                   class="card btn-outline-warning bg_dark">
-                    <img class="card-img"
-                         src="{% static 'img/spaceX.jpeg' %}"
-                         alt="Card image">
-                    <div class="card-img-overlay text_dark">
-                        <h5 class="card-title">Some text</h5>
-                        <!--<p class="card-text"></p>-->
-                    </div>
-                </a>
+                <div class="card btn-outline-warning bg_dark text_light">
+                    <a href="#">
+                        <div class="card-body">
+                            <h5 class="card-title">Alarm</h5>
+                            <hr>
+                            <p class="card-text">Some text</p>
+                        </div>
+                    </a>
+                </div>
 
-                <a href="#"
-                   class="card btn-outline-warning bg_dark">
-                    <img class="card-img"
-                         src="{% static 'img/spaceX.jpeg' %}"
-                         alt="Card image">
-                    <div class="card-img-overlay text_dark">
-                        <h5 class="card-title">Some text</h5>
-                        <!--<p class="card-text"></p>-->
-                    </div>
-                </a>
+                <div class="card btn-outline-warning bg_dark text_light">
+                    <a href="#">
+                        <div class="card-body">
+                            <h5 class="card-title">Some title</h5>
+                            <hr>
+                            <p class="card-text">Some text</p>
+                        </div>
+                    </a>
+                </div>
 
-                <a href="#"
-                   class="card btn-outline-warning justify-content-center bg_dark">
-                    <h3 class="card-title text-white align-self-center">+</h3>
-                </a>
+                <div class="card btn-outline-warning bg_dark text_light">
+                    <a href="#">
+                        <div class="card-body">
+                            <h5 class="card-title">Some title</h5>
+                            <hr>
+                            <p class="card-text">Some text</p>
+                        </div>
+                    </a>
+                </div>
 
             </div>
         </div>
