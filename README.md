@@ -5,8 +5,7 @@
 <b>! the project is under development !</b>
 
 # Server install:
-- <code>sudo apt-get update -y</code>
-- <code>sudo apt-get upgrade -y</code>
+- <code>sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt autoremove -y</code>
 - install docker https://docs.docker.com/engine/install/debian/ for Raspbian!
 - install PostgreSQL locally:
   -  <code>sudo apt install postgresql postgresql-contrib -y</code>
