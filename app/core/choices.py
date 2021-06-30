@@ -30,3 +30,7 @@ class Choices:
         (FORECAST_UNITS_METRIC, 'metric'),
         (FORECAST_UNITS_IMPERIAL, 'imperial'),
     ]
+
+    FORECAST_UPDATE_PERIOD = 10  # avery 10 min
+    BAROMETER_UPDATE_PERIOD = 10  # avery 10 min
+    BAROMETER_DATA_LIMIT = int(60 / BAROMETER_UPDATE_PERIOD) * 24 * 7  # 7 days

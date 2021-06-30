@@ -4,6 +4,8 @@ from pathlib import Path
 
 from celery.schedules import crontab
 
+from app.core.choices import Choices
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # /<some_path>/HomeBox
 
 # Quick-start development settings - unsuitable for production
@@ -135,11 +137,11 @@ CELERY_IMPORTS = (
 CELERY_BEAT_SCHEDULE = {
     'request-barometer-data': {
         'task': 'app.barometer.tasks.task_request_barometer_data',
-        'schedule': crontab(minute='*/10'),
+        'schedule': crontab(minute=f"*/{Choices.BAROMETER_UPDATE_PERIOD}"),
     },
     'request-forecast-data': {
         'task': 'app.owm_forecast.tasks.task_request_owm_data',
-        'schedule': crontab(minute='*/10'),
+        'schedule': crontab(minute=f"*/{Choices.FORECAST_UPDATE_PERIOD}"),
     },
 }
 # <- Celery settings
