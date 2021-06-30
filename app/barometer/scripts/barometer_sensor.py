@@ -1,7 +1,7 @@
 import logging
 
-import adafruit_bme280
 import busio
+from adafruit_bme280 import basic as adafruit_bme280
 from micropython import const
 
 from app.barometer.scripts.save_barometer_data import SaveBarometerData
