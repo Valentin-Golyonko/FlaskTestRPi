@@ -32,5 +32,8 @@ class Choices:
     ]
 
     FORECAST_UPDATE_PERIOD = 10  # avery 10 min
+
     BAROMETER_UPDATE_PERIOD = 10  # avery 10 min
-    BAROMETER_DATA_LIMIT = int(60 / BAROMETER_UPDATE_PERIOD) * 24 * 7  # 7 days
+    BAROMETER_DATA_LIMIT = int(60 / BAROMETER_UPDATE_PERIOD) * 24 * 7  # history for 7 days
+
+    UPDATE_ALIVE_RGB_STRIP_PERIOD = 5  # avery min

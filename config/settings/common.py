@@ -132,6 +132,7 @@ CELERY_IMPORTS = (
     'app.core.tasks',
     'app.barometer.tasks',
     'app.owm_forecast.tasks',
+    'app.rgb_control.tasks',
 )
 
 CELERY_BEAT_SCHEDULE = {
@@ -142,6 +143,10 @@ CELERY_BEAT_SCHEDULE = {
     'request-forecast-data': {
         'task': 'app.owm_forecast.tasks.task_request_owm_data',
         'schedule': crontab(minute=f"*/{Choices.FORECAST_UPDATE_PERIOD}"),
+    },
+    'update-alive-rgb-strip': {
+        'task': 'app.rgb_control.tasks.task_update_alive_rgb_strip',
+        'schedule': crontab(minute=f"*/{Choices.UPDATE_ALIVE_RGB_STRIP_PERIOD}"),
     },
 }
 # <- Celery settings
