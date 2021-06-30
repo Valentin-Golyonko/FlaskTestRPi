@@ -1,5 +1,16 @@
 """
 python manage.py runscript app.core.ble_control.bleak_client
+
+rpi commands:
+    rfkill list
+    rfkill unblock all
+    bluetoothctl power on
+    sudo bluetoothctl
+    agent on
+    default-agent
+    scan on
+    pair XX:XX:XX:XX:XX:XX
+    connect XX:XX:XX:XX:XX:XX
 """
 import asyncio
 import json

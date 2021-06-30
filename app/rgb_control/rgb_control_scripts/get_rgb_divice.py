@@ -1,6 +1,6 @@
 from django.templatetags.tz import localtime
 
-from app.core.choices import Choices
+from app.core.core_scripts.choices import Choices
 from app.core.models import Device
 from app.core.serializers import DeviceSerializer
 

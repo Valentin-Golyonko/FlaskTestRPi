@@ -5,7 +5,7 @@ from adafruit_bme280 import basic as adafruit_bme280
 from micropython import const
 
 from app.barometer.scripts.save_barometer_data import SaveBarometerData
-from app.core.choices import Choices
+from app.core.core_scripts.choices import Choices
 from app.core.models import Device
 
 logger = logging.getLogger(__name__)

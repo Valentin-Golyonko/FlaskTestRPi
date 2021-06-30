@@ -1,7 +1,7 @@
 from django.db.models import QuerySet
 
 from app.barometer.models import Barometer
-from app.core.scripts.utils import Utility
+from app.core.core_scripts.utils import Utility
 
 
 class CollectBarometerData:

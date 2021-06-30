@@ -1,7 +1,7 @@
 import logging
 
 from app.barometer.models import Barometer
-from app.core.choices import Choices
+from app.core.core_scripts.choices import Choices
 from app.core.models import Device
 
 logger = logging.getLogger(__name__)

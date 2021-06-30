@@ -1,6 +1,6 @@
 from django.db import models
 
-from app.core.choices import Choices
+from app.core.core_scripts.choices import Choices
 
 
 class Device(models.Model):

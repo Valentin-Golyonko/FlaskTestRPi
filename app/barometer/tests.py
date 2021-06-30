@@ -3,7 +3,7 @@ from random import uniform
 from django.test import TestCase
 
 from app.barometer.scripts.save_barometer_data import SaveBarometerData
-from app.core.choices import Choices
+from app.core.core_scripts.choices import Choices
 from app.core.models import Device
 
 

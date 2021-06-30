@@ -4,7 +4,7 @@ from pathlib import Path
 
 from celery.schedules import crontab
 
-from app.core.choices import Choices
+from app.core.core_scripts.choices import Choices
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # /<some_path>/HomeBox
 
