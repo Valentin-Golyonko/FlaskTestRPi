@@ -19,6 +19,8 @@ class DeviceAdmin(admin.ModelAdmin):
         'i2c_address_',
         'ip_address_',
         'mac_address_',
+        'is_alive',
+        'last_update',
     )
 
     def i2c_address_(self, obj) -> bool:
