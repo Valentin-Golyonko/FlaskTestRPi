@@ -7,6 +7,48 @@
 
 {% block content %}
 
-    {{ some_data }}
+    <div class="row">
+        <div class="col">
+
+            <div class="card-deck mb-4">
+
+                <div class="card btn-outline-warning bg_dark text_light">
+                    <div class="card-body">
+                        <p class="card-text">
+                            device title: {{ rgb_device.title }}
+                        </p>
+                        <p class="card-text">
+                            device_type: {{ rgb_device.device_type }}
+                        </p>
+                        <p class="card-text">
+                            sub_type: {{ rgb_device.sub_type }}
+                        </p>
+                        <p class="card-text">
+                            address_type: {{ rgb_device.address_type }}
+                        </p>
+                        <p class="card-text">
+                            mac_address: {{ rgb_device.mac_address }}
+                        </p>
+                        <p class="card-text">
+                            is_alive: {{ rgb_device.is_alive }}
+                        </p>
+                        <p class="card-text">
+                            last_update: {{ rgb_device.last_update }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card btn-outline-warning bg_dark text_light">
+                    <div class="card-body">
+                        <p class="card-text">
+                            RGB control
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 {% endblock content %}
