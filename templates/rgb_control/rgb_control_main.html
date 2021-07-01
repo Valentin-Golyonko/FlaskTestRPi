@@ -17,23 +17,41 @@
                         <p class="card-text">
                             device title: {{ rgb_device.title }}
                         </p>
-                        <p class="card-text">
-                            device_type: {{ rgb_device.device_type }}
+                        <p class="card-text" id="device_type_str">
+                            <script>
+                                set_common_choices_str(
+                                    sessionStorage.device_type_choices,
+                                    {{ rgb_device.device_type }},
+                                    'device_type_str',
+                                    'device type')
+                            </script>
+                        </p>
+                        <p class="card-text" id="sub_type_str">
+                            <script>
+                                set_common_choices_str(
+                                    sessionStorage.device_sub_type_choices,
+                                    {{ rgb_device.sub_type }},
+                                    'sub_type_str',
+                                    'sub type')
+                            </script>
+                        </p>
+                        <p class="card-text" id="address_type_str">
+                            <script>
+                                set_common_choices_str(
+                                    sessionStorage.device_address_type_choices,
+                                    {{ rgb_device.address_type }},
+                                    'address_type_str',
+                                    'address type')
+                            </script>
                         </p>
                         <p class="card-text">
-                            sub_type: {{ rgb_device.sub_type }}
+                            MAC address: {{ rgb_device.mac_address }}
                         </p>
                         <p class="card-text">
-                            address_type: {{ rgb_device.address_type }}
+                            is alive: {{ rgb_device.is_alive }}
                         </p>
                         <p class="card-text">
-                            mac_address: {{ rgb_device.mac_address }}
-                        </p>
-                        <p class="card-text">
-                            is_alive: {{ rgb_device.is_alive }}
-                        </p>
-                        <p class="card-text">
-                            last_update: {{ rgb_device.last_update }}
+                            last update: {{ rgb_device.last_update }}
                         </p>
                     </div>
                 </div>
