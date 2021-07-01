@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 
+from app.core.core_scripts.common_data import CommonData
 from app.core.main_page_data.main_page import MainPage
 from app.core.serializers import LoginSerializer
 from app.core.tasks import task_celery_test_run
@@ -60,3 +61,23 @@ class LogInView(GenericAPIView):
             return redirect('main_page')
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class CommonChoicesApiView(GenericAPIView):
+    permission_classes = (AllowAny,)
+    pagination_class = None
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        result = {}
+        query_params = request.query_params.get('q', '').split(',')
+        for query in query_params:
+            common_data_query = CommonData.COMMON_DATA.get(query)
+            if common_data_query:
+                if common_data_query['data_type'] == 'choice':
+                    result[query] = CommonData.choice_to_dict(common_data_query['data'])
+                elif common_data_query['data_type'] == 'queryset':
+                    result[query] = common_data_query['data'](**kwargs)
+                else:
+                    result[query] = common_data_query['data']
+        return Response(data=result, status=status.HTTP_200_OK)
