@@ -43,10 +43,29 @@ function set_common_choices_str(choice_obj, common_choices, str_id, str_name) {
 }
 
 function get_color_picker_value() {
+    const current_color = $('#rgb_color_picker').data('current-color');
+    const data_list = current_color.replace('rgba(', '').replace(')', '').split(',');
+    let color_data = {}
+    for (let i = 0; i < data_list.length; i++) {
+        if (i === 0) {
+            color_data['r'] = data_list[i]
+        } else if (i === 1) {
+            color_data['g'] = data_list[i]
+        } else if (i === 2) {
+            color_data['b'] = data_list[i]
+        } else if (i === 3) {
+            color_data['a'] = data_list[i]
+        } else {
+            console.log('get_color_picker_value(): unknown i = ' + i)
+        }
+    }
+
+    return color_data
+}
+
+function send_color_to_rgb_strip(url_) {
     $("#send_color").on('click', function () {
-        const current_color = $('#rgb_color_picker').data('current-color');
-        console.log('current-color: ', current_color);
-        const data_list = current_color.replace('rgba(', '').replace(')', '').split(',');
-        console.log('data_list: ', data_list);
+        const color_data = get_color_picker_value()
+        console.log('color_data: ', color_data)
     })
 }
