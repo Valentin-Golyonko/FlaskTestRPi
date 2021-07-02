@@ -74,7 +74,7 @@
 
                         <script>
                             jscolor.presets.default = {format: 'rgba', closeButton: true,};
-                            send_color_to_rgb_strip();
+                            send_color_to_rgb_strip("{% url 'send_color' %}", '{{csrf_token}}');
                         </script>
                     </div>
                 </div>

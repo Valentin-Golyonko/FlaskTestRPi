@@ -9,7 +9,7 @@ from app.rgb_control.rgb_control_scripts.get_rgb_divice import GetRGBDevice
 from config.settings import LOGOUT_REDIRECT_URL
 
 
-class RGBControlView(LoginRequiredMixin, GenericAPIView):
+class RGBControlAPIView(LoginRequiredMixin, GenericAPIView):
     login_url = LOGOUT_REDIRECT_URL
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'rgb_control/rgb_control_main.html'
@@ -25,3 +25,11 @@ class RGBControlView(LoginRequiredMixin, GenericAPIView):
             },
             status=status.HTTP_200_OK
         )
+
+
+class SendColorAPIView(GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+    pagination_class = None
+
+    def post(self, request, *args, **kwargs):
+        return Response(data='hello world', status=status.HTTP_200_OK)

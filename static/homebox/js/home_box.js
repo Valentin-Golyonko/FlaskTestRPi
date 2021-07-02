@@ -21,7 +21,7 @@ function get_common_choices(url_) {
             );
         },
         error: function (ajax_error) {
-            console.log('common_data | ajax_error', ajax_error);
+            console.log('common_data(): ajax_error; ', ajax_error);
         },
     });
 }
@@ -63,9 +63,25 @@ function get_color_picker_value() {
     return color_data
 }
 
-function send_color_to_rgb_strip(url_) {
+function send_color_to_rgb_strip(url_, csrf_token) {
     $("#send_color").on('click', function () {
         const color_data = get_color_picker_value()
-        console.log('color_data: ', color_data)
+
+        $.ajax({
+            method: "POST",
+            headers: {
+                "Authorization": 'Bearer ' + sessionStorage.getItem('access'),
+                "X-CSRFToken": csrf_token,
+            },
+            url: url_,
+            data: color_data,
+            dataType: 'json',
+            success: function (ajax_data) {
+                console.log('send_color_to_rgb_strip(): success; ', ajax_data);
+            },
+            error: function (ajax_error) {
+                console.log('send_color_to_rgb_strip(): ajax_error; ', ajax_error);
+            },
+        });
     })
 }
