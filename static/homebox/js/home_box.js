@@ -31,7 +31,7 @@ function set_common_choices_str(choice_obj, common_choices, str_id, str_name) {
         choice_obj
     ).forEach(
         (element) => {
-            let set_str = ''
+            let set_str;
             if (element.key === common_choices) {
                 set_str = element.label
             } else {
@@ -40,4 +40,13 @@ function set_common_choices_str(choice_obj, common_choices, str_id, str_name) {
             $('#' + str_id).text(str_name + ': ' + set_str)
         }
     );
+}
+
+function get_color_picker_value() {
+    $("#send_color").on('click', function () {
+        const current_color = $('#rgb_color_picker').data('current-color');
+        console.log('current-color: ', current_color);
+        const data_list = current_color.replace('rgba(', '').replace(')', '').split(',');
+        console.log('data_list: ', data_list);
+    })
 }

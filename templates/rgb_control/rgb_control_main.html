@@ -61,6 +61,21 @@
                         <p class="card-text">
                             RGB control
                         </p>
+
+                        <input class=""
+                               data-jscolor="{value:'#FFFFFF', alpha:0.5}"
+                               id="rgb_color_picker">
+
+                        <button class="btn btn-secondary"
+                                id="send_color"
+                                type="button">
+                            send color
+                        </button>
+
+                        <script>
+                            jscolor.presets.default = {format: 'rgba', closeButton: true,};
+                            get_color_picker_value();
+                        </script>
                     </div>
                 </div>
 
