@@ -80,19 +80,19 @@ function get_color_picker_value(light_up, light_off) {
     return color_data
 }
 
-function send_color_to_rgb_strip(url_, csrf_token) {
+function send_color_to_rgb_strip(url_, csrf_token, login_url) {
     $("#light_up").on('click', function () {
         const color_data = get_color_picker_value(true, false);
-        send_color_ajax(color_data, csrf_token, url_);
+        send_color_ajax(color_data, csrf_token, url_, login_url);
     })
 
     $("#light_off").on('click', function () {
         const color_data = get_color_picker_value(false, true);
-        send_color_ajax(color_data, csrf_token, url_);
+        send_color_ajax(color_data, csrf_token, url_, login_url);
     })
 }
 
-function send_color_ajax(color_data, csrf_token, url_) {
+function send_color_ajax(color_data, csrf_token, url_, login_url) {
     $.ajax({
         method: "POST",
         headers: {
@@ -102,11 +102,14 @@ function send_color_ajax(color_data, csrf_token, url_) {
         url: url_,
         data: color_data,
         dataType: 'json',
-        success: function (ajax_data) {
-            console.log('send_color_ajax(): success; ', ajax_data);
+        success: function (response_data, textStatus, jqXHR) {
+            console.log('send_color_ajax(): success; ', response_data, textStatus);
         },
-        error: function (ajax_error) {
-            console.log('send_color_ajax(): ajax_error; ', ajax_error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('send_color_ajax(): error; ', textStatus, errorThrown);
+            if (jqXHR.status === 401) {
+                window.location.href = login_url;
+            }
         },
     });
 }

@@ -83,7 +83,11 @@
                         <script>
                             jscolor.presets.default = {format: 'rgba', closeButton: true,};
                             $(document).ready(function () {
-                                send_color_to_rgb_strip("{% url 'send_color' %}",  '{{csrf_token}}');
+                                send_color_to_rgb_strip(
+                                    "{% url 'send_color' %}",
+                                    '{{csrf_token}}',
+                                    "{% url 'login' %}"
+                                );
                             });
                         </script>
                     </div>
