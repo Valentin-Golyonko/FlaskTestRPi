@@ -77,7 +77,7 @@ class BLEControl:
                                         get_data: bool = True) -> dict:
         device_response = {}
         logger.info(f"connect_send_get_ble_data(): info;"
-                    f" {ble_device_obj.id = }, {json_data = }")
+                    f" ble_device_obj: {ble_device_obj.id}, json_data: {json_data}")
 
         try:
             async with BleakClient(ble_device_obj.mac_address) as client:
