@@ -103,10 +103,10 @@ function send_color_ajax(color_data, csrf_token, url_) {
         data: color_data,
         dataType: 'json',
         success: function (ajax_data) {
-            console.log('send_color_to_rgb_strip(): success; ', ajax_data);
+            console.log('send_color_ajax(): success; ', ajax_data);
         },
         error: function (ajax_error) {
-            console.log('send_color_to_rgb_strip(): ajax_error; ', ajax_error);
+            console.log('send_color_ajax(): ajax_error; ', ajax_error);
         },
     });
 }
