@@ -61,20 +61,30 @@
                         <p class="card-text">
                             RGB control
                         </p>
-
-                        <input class=""
+                        <input class="mb-3 form-control"
+                               style="width: 250px;"
                                data-jscolor="{value:'#FFFFFF', alpha:0.5}"
+                               aria-label=""
                                id="rgb_color_picker">
-
-                        <button class="btn btn-secondary"
-                                id="send_color"
-                                type="button">
-                            send color
-                        </button>
-
+                        <p>
+                            <button class="btn btn-success"
+                                    id="light_up"
+                                    type="button">
+                                Light up
+                            </button>
+                        </p>
+                        <p>
+                            <button class="btn btn-secondary"
+                                    id="light_off"
+                                    type="button">
+                                Light off
+                            </button>
+                        </p>
                         <script>
                             jscolor.presets.default = {format: 'rgba', closeButton: true,};
-                            send_color_to_rgb_strip("{% url 'send_color' %}", '{{csrf_token}}');
+                            $(document).ready(function () {
+                                send_color_to_rgb_strip("{% url 'send_color' %}",  '{{csrf_token}}');
+                            });
                         </script>
                     </div>
                 </div>

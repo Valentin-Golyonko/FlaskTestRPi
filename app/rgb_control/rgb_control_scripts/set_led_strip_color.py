@@ -24,13 +24,9 @@ class SetLEDStripColor:
             data_to_send[key] = int(value * alpha)
 
         try:
-            device_response = await BLEControl.connect_send_get_ble_data(
-                ble_led_strip_alarm_obj,
-                data_to_send,
-            )
+            await BLEControl.connect_send_get_ble_data(ble_led_strip_alarm_obj, data_to_send)
         except Exception as ex:
             logger.exception(f"set_rgb_strip_color(): {ex}")
             return False, {'detail': "some error"}
         else:
-            logger.info(f"set_rgb_strip_color(): {device_response = }")
-            return True, {'detail': "send color - done"}
+            return True, {}

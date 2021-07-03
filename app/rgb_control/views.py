@@ -43,5 +43,5 @@ class SendColorAPIView(GenericAPIView):
         is_ok, error_msg = await SetLEDStripColor.set_rgb_strip_color(serializer.validated_data)
 
         if is_ok:
-            return Response(data='hello world', status=status.HTTP_200_OK)
+            return Response(data={}, status=status.HTTP_200_OK)
         return Response(data=error_msg, status=status.HTTP_400_BAD_REQUEST)

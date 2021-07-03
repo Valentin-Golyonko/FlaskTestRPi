@@ -42,21 +42,38 @@ function set_common_choices_str(choice_obj, common_choices, str_id, str_name) {
     );
 }
 
-function get_color_picker_value() {
-    const current_color = $('#rgb_color_picker').data('current-color');
-    const data_list = current_color.replace('rgba(', '').replace(')', '').split(',');
+function get_color_picker_value(light_up, light_off) {
+    const current_color = $('#rgb_color_picker').val();
+    const data_list = current_color.replace(
+        'rgba(', ''
+    ).replace(
+        ')', ''
+    ).split(
+        ','
+    );
+
     let color_data = {}
-    for (let i = 0; i < data_list.length; i++) {
-        if (i === 0) {
-            color_data['red'] = data_list[i]
-        } else if (i === 1) {
-            color_data['green'] = data_list[i]
-        } else if (i === 2) {
-            color_data['blue'] = data_list[i]
-        } else if (i === 3) {
-            color_data['alpha'] = data_list[i]
-        } else {
-            console.log('get_color_picker_value(): unknown i = ' + i)
+
+    if (light_up) {
+        for (let i = 0; i < data_list.length; i++) {
+            if (i === 0) {
+                color_data['red'] = data_list[i]
+            } else if (i === 1) {
+                color_data['green'] = data_list[i]
+            } else if (i === 2) {
+                color_data['blue'] = data_list[i]
+            } else if (i === 3) {
+                color_data['alpha'] = data_list[i]
+            } else {
+                console.log('get_color_picker_value(): unknown i = ' + i)
+            }
+        }
+    } else if (light_off) {
+        color_data = {
+            'red': 1,
+            'green': 1,
+            'blue': 1,
+            'alpha': 1,
         }
     }
 
@@ -64,24 +81,32 @@ function get_color_picker_value() {
 }
 
 function send_color_to_rgb_strip(url_, csrf_token) {
-    $("#send_color").on('click', function () {
-        const color_data = get_color_picker_value()
-
-        $.ajax({
-            method: "POST",
-            headers: {
-                "Authorization": 'Bearer ' + sessionStorage.getItem('access'),
-                "X-CSRFToken": csrf_token,
-            },
-            url: url_,
-            data: color_data,
-            dataType: 'json',
-            success: function (ajax_data) {
-                console.log('send_color_to_rgb_strip(): success; ', ajax_data);
-            },
-            error: function (ajax_error) {
-                console.log('send_color_to_rgb_strip(): ajax_error; ', ajax_error);
-            },
-        });
+    $("#light_up").on('click', function () {
+        const color_data = get_color_picker_value(true, false);
+        send_color_ajax(color_data, csrf_token, url_);
     })
+
+    $("#light_off").on('click', function () {
+        const color_data = get_color_picker_value(false, true);
+        send_color_ajax(color_data, csrf_token, url_);
+    })
+}
+
+function send_color_ajax(color_data, csrf_token, url_) {
+    $.ajax({
+        method: "POST",
+        headers: {
+            "Authorization": 'Bearer ' + sessionStorage.getItem('access'),
+            "X-CSRFToken": csrf_token,
+        },
+        url: url_,
+        data: color_data,
+        dataType: 'json',
+        success: function (ajax_data) {
+            console.log('send_color_to_rgb_strip(): success; ', ajax_data);
+        },
+        error: function (ajax_error) {
+            console.log('send_color_to_rgb_strip(): ajax_error; ', ajax_error);
+        },
+    });
 }
