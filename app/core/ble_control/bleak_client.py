@@ -17,6 +17,7 @@ import json
 import logging
 import os
 import sys
+from asyncio import sleep
 
 import django
 from bleak import BleakClient
@@ -53,7 +54,6 @@ class BLEControl:
                     {"ping": "ping"}
                 )
             )
-            loop.close()
         except Exception as ex:
             logger.exception(f"ping_ble_led_strip_alarm(): {ex}")
             is_alive_ = False
@@ -76,6 +76,8 @@ class BLEControl:
                                         send_data: bool = True,
                                         get_data: bool = True) -> dict:
         device_response = {}
+        logger.info(f"connect_send_get_ble_data(): info;"
+                    f" {ble_device_obj.id = }, {json_data = }")
 
         try:
             async with BleakClient(ble_device_obj.mac_address) as client:
@@ -83,10 +85,12 @@ class BLEControl:
 
                 if send_data:
                     # send data to ble device
-                    await client.write_gatt_char(
-                        ble_device_obj.bluetooth_uuid_tx,
-                        bytearray(json.dumps(json_data).encode('utf-8'))
-                    )
+                    for key, value in json_data.items():
+                        await client.write_gatt_char(
+                            ble_device_obj.bluetooth_uuid_tx,
+                            bytearray(json.dumps({key: value}).encode('utf-8'))
+                        )
+                        await sleep(.1)  # 100ms
 
                 if get_data:
                     # get data from ble device

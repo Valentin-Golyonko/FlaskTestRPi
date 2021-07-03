@@ -48,13 +48,13 @@ function get_color_picker_value() {
     let color_data = {}
     for (let i = 0; i < data_list.length; i++) {
         if (i === 0) {
-            color_data['r'] = data_list[i]
+            color_data['red'] = data_list[i]
         } else if (i === 1) {
-            color_data['g'] = data_list[i]
+            color_data['green'] = data_list[i]
         } else if (i === 2) {
-            color_data['b'] = data_list[i]
+            color_data['blue'] = data_list[i]
         } else if (i === 3) {
-            color_data['a'] = data_list[i]
+            color_data['alpha'] = data_list[i]
         } else {
             console.log('get_color_picker_value(): unknown i = ' + i)
         }

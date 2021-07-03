@@ -1,3 +1,4 @@
+from asgiref.sync import async_to_sync
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
@@ -6,6 +7,8 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 
 from app.rgb_control.rgb_control_scripts.get_rgb_divice import GetRGBDevice
+from app.rgb_control.rgb_control_scripts.set_led_strip_color import SetLEDStripColor
+from app.rgb_control.serializers import SendColorSerializer
 from config.settings import LOGOUT_REDIRECT_URL
 
 
@@ -30,6 +33,15 @@ class RGBControlAPIView(LoginRequiredMixin, GenericAPIView):
 class SendColorAPIView(GenericAPIView):
     permission_classes = (IsAuthenticated,)
     pagination_class = None
+    serializer_class = SendColorSerializer
 
-    def post(self, request, *args, **kwargs):
-        return Response(data='hello world', status=status.HTTP_200_OK)
+    @async_to_sync
+    async def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        is_ok, error_msg = await SetLEDStripColor.set_rgb_strip_color(serializer.validated_data)
+
+        if is_ok:
+            return Response(data='hello world', status=status.HTTP_200_OK)
+        return Response(data=error_msg, status=status.HTTP_400_BAD_REQUEST)
