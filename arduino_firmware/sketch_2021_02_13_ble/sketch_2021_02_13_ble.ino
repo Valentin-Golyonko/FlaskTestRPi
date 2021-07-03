@@ -15,13 +15,13 @@ const uint16_t default_update_time = 1000;
 unsigned long previousMillis_1 = 0;
 unsigned long previousMillis_2 = 0;
 
-const uint16_t default_red_color = 127;
-const uint16_t default_green_color = 127;
-const uint16_t default_blue_color = 127;
+const uint8_t default_red_color = 127;
+const uint8_t default_green_color = 127;
+const uint8_t default_blue_color = 127;
 
-uint16_t new_red_color = NULL;
-uint16_t new_green_color = NULL;
-uint16_t new_blue_color = NULL;
+uint8_t new_red_color = NULL;
+uint8_t new_green_color = NULL;
+uint8_t new_blue_color = NULL;
 
 SoftwareSerial SerialBLE(RX, TX); // RX, TX on arduino board
 
