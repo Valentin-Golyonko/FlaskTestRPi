@@ -55,17 +55,18 @@ class BLEControl:
                 )
             )
         except Exception as ex:
-            logger.exception(f"ping_ble_led_strip_alarm(): {ex}")
+            logger.exception(f"ping_ble_led_strip_alarm(): event_loop Ex; {ex}")
             is_alive_ = False
         else:
             pong = device_response.get('ping')
             if pong != 'pong':
                 is_alive_ = False
                 logger.error(f"ping_ble_led_strip_alarm(): device_response != 'pong';"
-                             f" {device_response}")
+                             f" {device_response = }")
             else:
                 is_alive_ = True
-                logger.info(f"ping_ble_led_strip_alarm(): device_response: {pong}")
+                logger.info(f"ping_ble_led_strip_alarm(): pong;"
+                            f" {pong = }")
 
         ble_led_strip_alarm_obj.is_alive = is_alive_
         ble_led_strip_alarm_obj.save()
@@ -81,7 +82,7 @@ class BLEControl:
 
         try:
             async with BleakClient(ble_device_obj.mac_address) as client:
-                logger.info(f"Connected: {client.is_connected()}")
+                logger.info(f"connect_send_get_ble_data(): connected;")
 
                 if send_data:
                     # send data to ble device
@@ -104,9 +105,11 @@ class BLEControl:
 
                     device_response = json.loads(ble_data_cls.data_)
         except Exception as ex:
-            logger.exception(f"connect_send_get_ble_data(): {ex}")
+            logger.exception(f"connect_send_get_ble_data(): BleakClient Ex;"
+                             f" {ex}")
 
-        logger.debug(f"connect_send_get_ble_data(): device response: {device_response}")
+        logger.debug(f"connect_send_get_ble_data(): got device_response;"
+                     f" {device_response = }")
         return device_response
 
 
@@ -118,7 +121,8 @@ class BLEData:
         """Simple notification handler which prints the data received."""
         data_chunk = data.decode('utf-8')
         self.data_ += data_chunk
-        logger.debug(f"notification_handler(): sender: {sender}, data_chunk: {data_chunk}")
+        logger.debug(f"notification_handler(): info;"
+                     f" sender: {sender}, data_chunk: {data_chunk}")
 
 
 def run():
